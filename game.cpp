@@ -5,22 +5,24 @@ void Game::start() {
 	bool isSmallShipMove = false;
 
 	do {
-		if (_kbhit())
-		{
+		//bigShip.draw();
+		if (_kbhit()){
 			key = _getch();
-			if ((Keys)key == Keys::SwitchSmall) {
+			if (getKeyByChar(key) == Keys::SwitchSmall) {
 				isSmallShipMove = true;
 			}
-			else if ((Keys)key == Keys::SwitchBig) {
+			else if (getKeyByChar(key) == Keys::SwitchBig) {
 				isSmallShipMove = false;
 			}
 			else {
 				Direction nextDirection = getDirectionByKey(key);
 				if (isSmallShipMove) {
-					smallShip.move(nextDirection);
+					smallShip.setDirection(nextDirection);
+					smallShip.move();
 				}
 				else {
-					bigShip.move(nextDirection);
+					bigShip.setDirection(nextDirection);
+					bigShip.move();
 				}
 			}
 		}

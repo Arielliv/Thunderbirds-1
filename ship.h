@@ -8,24 +8,35 @@ enum class ShipSize{ Small = 1, Big=2 };
 class ship
 {
 	ShipSize shipSize;
+	point startPoint = point(1,1);
 	char figure;
 	Color color;
 	Direction direction = Direction::Right;
 	point** body;
 public:
-	ship(ShipSize _shipSize, char _figure, Color _color) : shipSize(_shipSize), figure(_figure), color(_color) {
+	ship(ShipSize _shipSize, char _figure, Color _color, point _startPoint) : shipSize(_shipSize), figure(_figure), color(_color), startPoint(_startPoint) {
 		if (_shipSize == ShipSize::Small) {
-			body = new point * [(int)ShipSize::Small];
+			body = new point *[(int)ShipSize::Small];
 			// Allocate memory for each pointer
+			body[0] = new point[2];
 			for (int i = 0; i < 2; i++) {
-				body[i] = (point*)new point[1];
+				body[0][i] = point(startPoint.getXPoint() +i, startPoint.getYPoint());
 			}
 		}
 		else {
-			body = new point * [(int)ShipSize::Big];
+			body = new point *[(int)ShipSize::Big];
 			// Allocate memory for each pointer
 			for (int i = 0; i < 2; i++) {
-				body[i] = (point*)new point[2];
+				body[i] = new point[2];
+				for (int j = 0; j < 2; j++)
+				{
+					/*1,1 2,1 1,2 2,2
+					* [1,1][2,1]
+					* [1,2][2,2]
+					*/
+					
+					body[i][j] = point(startPoint.getXPoint() + j, startPoint.getYPoint()+i);
+				}
 			}
 		}
 		
@@ -34,9 +45,9 @@ public:
 	void setDirection(Direction _direction);
 	Direction getDirection();
 	void move();
-	void move(Direction _direction);
+	void draw();
 	~ship() {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < (int)shipSize; i++) {
 			delete body[i];
 		}
 		delete body;

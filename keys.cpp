@@ -1,13 +1,26 @@
 #include "keys.h"
 
-char keyboardKeys[6] = { 'w','x','a','d','s','b' };
+char keyboardDirectionKeys[4] = { 'w','x','a','d'};
+int directionKeys[4] = { 0,1,2,3 };
 
-int keys[6] = { 0,1,2,3,4,5 };
+char keyboardSwitchKeys[2] = { 's','b' };
+int switchKeys[2] = { 4,5 };
 
 Direction getDirectionByKey(char key) {
-    int index = binarySearch(keyboardKeys, 0, 5, key);
+    int n = sizeof(keyboardDirectionKeys) / sizeof(keyboardDirectionKeys[0]);
+    int index = findInArray(keyboardDirectionKeys, n, key);
     if (index != -1) {
-        return (Direction)keys[index];
+        return (Direction)directionKeys[index];
     }
     return Direction::Right;
+}
+
+Keys getKeyByChar(char key) {
+    int n = sizeof(keyboardSwitchKeys) / sizeof(keyboardSwitchKeys[0]);
+    int index = findInArray(keyboardSwitchKeys, n, key);
+    if (index != -1) {
+        return (Keys)switchKeys[index];
+    }
+
+    return Keys::None;
 }

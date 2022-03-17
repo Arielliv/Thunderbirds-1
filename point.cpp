@@ -5,6 +5,13 @@ void point::draw(char ch) {
 	gotoxy(x, y);
 	cout << ch << endl;
 }
+int point::getXPoint() {
+	return x;
+}
+
+int point::getYPoint() {
+	return y;
+}
 
 void point::move(Direction direction) {
 	switch ((int)direction) {
