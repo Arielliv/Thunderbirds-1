@@ -6,8 +6,8 @@ void point::draw(char ch) {
 	cout << ch << endl;
 }
 
-void point::move(int dir) {
-	switch (dir) {
+void point::move(Direction direction) {
+	switch ((int)direction) {
 	case 0: // UP
 		--y;
 		if (y < 1) {

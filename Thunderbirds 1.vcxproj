@@ -149,17 +149,20 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="ship.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\AppData\Local\Temp\Rar$DRa0.894\main.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="io_utils.cpp" />
+    <ClCompile Include="keys.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="ship.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

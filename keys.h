@@ -1,13 +1,18 @@
 #pragma once
 
+#include "point.h"
+#include "utils.h"
+
+enum { ESC = 27 };
+
 enum class Keys
 {
+	Up, 
+	Down,
 	Left,
 	Right,
-	Up,
-	Down,
 	SwitchSmall,
 	SwitchBig
 };
 
-int keys[6] = { 0,1,2,3,4,5 }
+Direction getDirectionByKey(char key);
