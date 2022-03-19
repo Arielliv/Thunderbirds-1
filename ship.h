@@ -5,20 +5,20 @@
 
 enum class ShipSize{ Small = 1, Big=2 };
 
-class ship
+class Ship
 {
 	ShipSize shipSize;
-	point startPoint = point(1,1);
+	Point startPoint = Point(1,1);
 	char figure;
 	Color color;
 	Direction direction = Direction::Right;
-	point** body;
+	Point** body;
 public:
-	ship(ShipSize shipSize, char figure, Color color, point startPoint);
+	Ship(ShipSize shipSize, char figure, Color color, Point startPoint);
 	void setDirection(Direction _direction);
 	Direction getDirection();
 	void move();
 	void draw();
-	~ship();
+	~Ship();
 };
 

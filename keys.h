@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cctype>
 #include "point.h"
 #include "utils.h"
 

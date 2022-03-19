@@ -1,5 +1,5 @@
 #pragma once
-class block
+class Block
 {
 };
 

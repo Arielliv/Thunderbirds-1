@@ -1,42 +1,37 @@
 #include "ship.h"
 
-ship::ship(ShipSize shipSize, char figure, Color color, point startPoint) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint) {
+Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint) {
 	if (shipSize == ShipSize::Small) {
-		body = new point * [(int)ShipSize::Small];
+		body = new Point * [(int)ShipSize::Small];
 		// Allocate memory for each pointer
-		body[0] = new point[2];
+		body[0] = new Point[2];
 		for (int i = 0; i < 2; i++) {
-			body[0][i] = point(startPoint.getXPoint() + i, startPoint.getYPoint());
+			body[0][i] = Point(startPoint.getXPoint() + i, startPoint.getYPoint());
 		}
 	}
 	else {
-		body = new point * [(int)ShipSize::Big];
+		body = new Point * [(int)ShipSize::Big];
 		// Allocate memory for each pointer
 		for (int i = 0; i < 2; i++) {
-			body[i] = new point[2];
+			body[i] = new Point[2];
 			for (int j = 0; j < 2; j++)
 			{
-				/*1,1 2,1 1,2 2,2
-				* [1,1][2,1]
-				* [1,2][2,2]
-				*/
-
-				body[i][j] = point(startPoint.getXPoint() + j, startPoint.getYPoint() + i);
+				body[i][j] = Point(startPoint.getXPoint() + j, startPoint.getYPoint() + i);
 			}
 		}
 	}
 
 }
 
-void ship::setDirection(Direction _direction) {
+void Ship::setDirection(Direction _direction) {
 	direction = _direction;
 }
 
-Direction ship::getDirection() {
+Direction Ship::getDirection() {
 	return direction;
 }
 
-void ship::move() {
+void Ship::move() {
 	if (shipSize == ShipSize::Small) {
 		if (direction == Direction::Left) {
 			for (int i = 0; i < 2; i++) {
@@ -82,13 +77,15 @@ void ship::move() {
 		}
 	}
 }
+                         
 
-void ship::draw() {
+void Ship::draw() {
 	if (shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
 			setTextColor(color);
-			body[i][0].draw(figure);
+			body[0][i].draw(figure);
+			setTextColor(Color::WHITE);
 		}
 
 	}
@@ -99,12 +96,13 @@ void ship::draw() {
 			{
 				setTextColor(color);
 				body[i][j].draw(figure);
+				setTextColor(Color::WHITE);
 			}
 		}
 	}
 }
 
-ship::~ship() {
+Ship::~Ship() {
 	for (int i = 0; i < (int)shipSize; i++) {
 		delete body[i];
 	}

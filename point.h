@@ -16,11 +16,11 @@ using namespace std;
 
 enum class Direction { Up = 0, Down = 1, Left = 2, Right = 3};
 
-class point {
+class Point {
 	int x = 1, y = 1;
 public:
-	point() :x(1), y(1) {}
-	point(int x,int y):x(x), y(y){}
+	Point() :x(1), y(1) {}
+	Point(int x,int y):x(x), y(y){}
 	void draw(char ch);
 	//void move();
 	void move(Direction direction);
