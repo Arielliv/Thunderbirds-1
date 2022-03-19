@@ -20,7 +20,7 @@ class point {
 	int x = 1, y = 1;
 public:
 	point() :x(1), y(1) {}
-	point(int _x,int _y):x(_x), y(_y){}
+	point(int x,int y):x(x), y(y){}
 	void draw(char ch);
 	//void move();
 	void move(Direction direction);
