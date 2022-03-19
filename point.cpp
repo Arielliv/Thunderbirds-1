@@ -17,26 +17,26 @@ void Point::move(Direction direction) {
 	switch ((int)direction) {
 	case 0: // UP
 		--this->y;
-		if (y < 1) {
-			y = Bounderies::rows -1;
+		if (this->y < 1) {
+			this->y = Bounderies::rows -1;
 		}
 		break;
 	case 1: // DOWN
 		++this->y;
-		if (y > Bounderies::rows - 1) {
-			y = 1;
+		if (this->y > Bounderies::rows - 1) {
+			this->y = 1;
 		}
 		break;
 	case 2: // LEFT
 		--this->x;
-		if (x < 1) {
-			x = Bounderies::cols - 1;
+		if (this->x < 1) {
+			this->x = Bounderies::cols - 1;
 		}
 		break;
 	case 3: // RIGHT
 		++this->x;
-		if (x > Bounderies::cols - 1) {
-			x = 1;
+		if (this->x > Bounderies::cols - 1) {
+			this->x = 1;
 		}
 		break;
 	}

@@ -17,6 +17,9 @@ public:
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint);
 	void setDirection(Direction _direction);
 	Direction getDirection();
+	// get first left point of ship
+	Point getCurrentShipPoint();
+	Point* getCurrentBodyPoints();
 	void move();
 	void draw();
 	~Ship();

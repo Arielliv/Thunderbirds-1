@@ -2,77 +2,76 @@
 
 Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint) {
 	if (shipSize == ShipSize::Small) {
-		body = new Point * [(int)ShipSize::Small];
+		this->body = new Point * [(int)ShipSize::Small];
 		// Allocate memory for each pointer
-		body[0] = new Point[2];
+		this->body[0] = new Point[2];
 		for (int i = 0; i < 2; i++) {
-			body[0][i] = Point(startPoint.getXPoint() + i, startPoint.getYPoint());
+			this->body[0][i] = Point(this->startPoint.getXPoint() + i, this->startPoint.getYPoint());
 		}
 	}
 	else {
-		body = new Point * [(int)ShipSize::Big];
+		this->body = new Point * [(int)ShipSize::Big];
 		// Allocate memory for each pointer
 		for (int i = 0; i < 2; i++) {
-			body[i] = new Point[2];
+			this->body[i] = new Point[2];
 			for (int j = 0; j < 2; j++)
 			{
-				body[i][j] = Point(startPoint.getXPoint() + j, startPoint.getYPoint() + i);
+				this->body[i][j] = Point(this->startPoint.getXPoint() + j, this->startPoint.getYPoint() + i);
 			}
 		}
 	}
-
 }
 
-void Ship::setDirection(Direction _direction) {
-	direction = _direction;
+void Ship::setDirection(Direction direction) {
+	this->direction = direction;
 }
 
 Direction Ship::getDirection() {
-	return direction;
+	return this->direction;
 }
 
 void Ship::move() {
-	if (shipSize == ShipSize::Small) {
-		if (direction == Direction::Left) {
+	if (this->shipSize == ShipSize::Small) {
+		if (this->direction == Direction::Left) {
 			for (int i = 0; i < 2; i++) {
-				body[0][i].draw(' ');
-				body[0][i].move(direction);
+				this->body[0][i].draw(' ');
+				this->body[0][i].move(direction);
 				setTextColor(color);
-				body[0][i].draw(figure);
+				this->body[0][i].draw(figure);
 			}
 		}
 		else {
 			for (int i = 1; i >= 0; i--) {
-				body[0][i].draw(' ');
-				body[0][i].move(direction);
+				this->body[0][i].draw(' ');
+				this->body[0][i].move(direction);
 				setTextColor(color);
-				body[0][i].draw(figure);
+				this->body[0][i].draw(figure);
 			}
 		}	
 
 	}
 	else {
-		if (direction == Direction::Up) {
+		if (this->direction == Direction::Up) {
 			for (int i = 0; i < 2; i++){
-				body[i][1].draw(' ');
-				body[i][0].draw(' ');
-				body[i][1].move(direction);
-				body[i][0].move(direction);
+				this->body[i][1].draw(' ');
+				this->body[i][0].draw(' ');
+				this->body[i][1].move(direction);
+				this->body[i][0].move(direction);
 				setTextColor(color);
-				body[i][1].draw(figure);
-				body[i][0].draw(figure);
+				this->body[i][1].draw(figure);
+				this->body[i][0].draw(figure);
 			}
 		}
 		else {
 			for (int i = 1; i >= 0; i--)
 			{
-				body[i][1].draw(' ');
-				body[i][0].draw(' ');
-				body[i][1].move(direction);
-				body[i][0].move(direction);
+				this->body[i][1].draw(' ');
+				this->body[i][0].draw(' ');
+				this->body[i][1].move(direction);
+				this->body[i][0].move(direction);
 				setTextColor(color);
-				body[i][1].draw(figure);
-				body[i][0].draw(figure);
+				this->body[i][1].draw(figure);
+				this->body[i][0].draw(figure);
 			}
 		}
 	}
@@ -80,11 +79,11 @@ void Ship::move() {
                          
 
 void Ship::draw() {
-	if (shipSize == ShipSize::Small) {
+	if (this->shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
 			setTextColor(color);
-			body[0][i].draw(figure);
+			this->body[0][i].draw(figure);
 			setTextColor(Color::WHITE);
 		}
 
@@ -95,7 +94,7 @@ void Ship::draw() {
 			for (int j = 0; j < 2; j++)
 			{
 				setTextColor(color);
-				body[i][j].draw(figure);
+				this->body[i][j].draw(figure);
 				setTextColor(Color::WHITE);
 			}
 		}
@@ -104,7 +103,32 @@ void Ship::draw() {
 
 Ship::~Ship() {
 	for (int i = 0; i < (int)shipSize; i++) {
-		delete body[i];
+		delete this->body[i];
 	}
-	delete body;
+	delete this->body;
 }
+
+Point Ship::getCurrentShipPoint() {
+	return Point(this->body[0][0]);
+}
+
+Point* Ship::getCurrentBodyPoints() {
+	Point* curPoints;
+	if (this->shipSize == ShipSize::Small) {
+		curPoints = new Point[2];
+		for (int i = 0; i < 2; i++) {
+			curPoints[i] = this->body[0][i];
+		}
+		
+	}
+	else {
+		curPoints = new Point[4];
+		for (int i = 0; i < 2; i++)
+			for (int y = 0; y < 2; y++)
+			{
+				curPoints[i * 2 + y] = this->body[i][y];
+			}
+	}
+	return curPoints;
+	}
+	
