@@ -68,9 +68,9 @@ void Board::start() {
 	this->bigShip.draw();
 	this->smallShip.draw();
 	Point* curPoints;
-	while (key != ESC)
-	{
-		if (_kbhit()) {
+
+	while (key != ESC){
+		if (_kbhit()){
 			isHittedOnce = true;
 			key = _getch();
 			if (getKeyByChar(key) == Keys::SwitchSmall) {
@@ -85,6 +85,8 @@ void Board::start() {
 					this->smallShip.setDirection(nextDirection);
 					
 					if (this->isValidMove(ShipSize::Small)) {
+						curPoints = this->smallShip.getCurrentBodyPoints();
+						this->updateValueByPoints(curPoints, 2, BoardCellType::Empty);
 						this->smallShip.move();
 						curPoints = this->smallShip.getCurrentBodyPoints();
 						this->updateValueByPoints(curPoints, 2, BoardCellType::SmallShip);
@@ -95,23 +97,30 @@ void Board::start() {
 					this->bigShip.setDirection(nextDirection);
 
 					if(this->isValidMove(ShipSize::Big)){
+						curPoints = this->bigShip.getCurrentBodyPoints();
+						this->updateValueByPoints(curPoints, 4, BoardCellType::Empty);
 						this->bigShip.move();
 						curPoints = this->bigShip.getCurrentBodyPoints();
 						this->updateValueByPoints(curPoints, 4, BoardCellType::BigShip);
 					}
-					
 				}
 			}
-		}
-		if (isHittedOnce) {
+		} else if (isHittedOnce) {
 			if (isSmallShipMove) {
 				if (this->isValidMove(ShipSize::Small)) {
+					curPoints = this->smallShip.getCurrentBodyPoints();
+					this->updateValueByPoints(curPoints, 2, BoardCellType::Empty);
 					this->smallShip.move();
+					curPoints = this->smallShip.getCurrentBodyPoints();
+					this->updateValueByPoints(curPoints, 2, BoardCellType::SmallShip);
 				}
-			}
-			else {
+			} else {
 				if (this->isValidMove(ShipSize::Big)) {
+					curPoints = this->bigShip.getCurrentBodyPoints();
+					this->updateValueByPoints(curPoints, 4, BoardCellType::Empty);
 					this->bigShip.move();
+					curPoints = this->bigShip.getCurrentBodyPoints();
+					this->updateValueByPoints(curPoints, 4, BoardCellType::BigShip);
 				}
 			}
 		}
@@ -130,33 +139,88 @@ void Board::updateValueByPoints(Point* points, int size, BoardCellType cellType)
 
 bool Board::isValidMove(ShipSize shipSize) {
 	if (shipSize == ShipSize::Small) {
-		Point curP = this->smallShip.getCurrentShipPoint();
-		int curY = curP.getYPoint();
-		int curX = curP.getXPoint();
+		return this->isSmallShipValidMove();
+	}
+	else {
+		return this->isBigShipValidMove();
+	}
+}
+
+
+bool Board::isSmallShipValidMove() {
+	Point curShipPoint = this->smallShip.getCurrentShipPoint();
+	int curShipPointY = curShipPoint.getYPoint();
+	int curShipPointX = curShipPoint.getXPoint();
+
 		Direction dir = this->smallShip.getDirection();
 
 		switch ((int)dir) {
 		case 0: // UP
-			if (this->getValueByIndex(Point(curY-1,curX)) != BoardCellType::Empty) {
-				return false;
+			if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == BoardCellType::Empty
+				&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == BoardCellType::Empty)) {
+				return true;
 			}
+			
 			break;
 		case 1: // DOWN
-			if (this->getValueByIndex(Point(curY + 1, curX)) != BoardCellType::Empty) {
-				return false;
+			if ((this->getValueByIndex(Point(curShipPointY + 1, curShipPointX)) == BoardCellType::Empty
+				&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1)) == BoardCellType::Empty)) {
+				return true;
 			}
+			
 			break;
 		case 2: // LEFT
-			if (this->getValueByIndex(Point(curY, curX-1)) != BoardCellType::Empty) {
-				return false;
+			if (this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == BoardCellType::Empty) {
+				return true;
 			}
+			
 			break;
 		case 3: // RIGHT
-			if (this->getValueByIndex(Point(curY, curX + 1)) != BoardCellType::Empty) {
-				return false;
+			if (this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == BoardCellType::Empty) {
+				return true;
 			}
+			
 			break;
 		}
-		return true;
+		return false;
+}
+
+bool Board::isBigShipValidMove() {
+	Point curShipPoint = this->bigShip.getCurrentShipPoint();
+	int curShipPointY = curShipPoint.getYPoint();
+	int curShipPointX = curShipPoint.getXPoint();
+
+	Direction dir = this->bigShip.getDirection();
+	
+	switch ((int)dir) {
+	case 0: // UP
+		if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == BoardCellType::Empty
+			&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == BoardCellType::Empty)) {
+			return true;
+		}
+		
+		break;
+	case 1: // DOWN
+		if ((this->getValueByIndex(Point(curShipPointY + 2, curShipPointX)) == BoardCellType::Empty
+			&& this->getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1)) == BoardCellType::Empty)) {
+			return true;
+		}
+			
+		break;
+	case 2: // LEFT
+		if ((this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == BoardCellType::Empty
+			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1)) == BoardCellType::Empty)) {
+			return true;
+		}
+			
+		break;
+	case 3: // RIGHT
+		if ((this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == BoardCellType::Empty
+			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2)) == BoardCellType::Empty)) {
+			return true;
+		}
+		
+		break;
 	}
+	return false;
 }

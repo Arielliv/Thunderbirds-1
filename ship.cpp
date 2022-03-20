@@ -53,25 +53,25 @@ void Ship::move() {
 	else {
 		if (this->direction == Direction::Up) {
 			for (int i = 0; i < 2; i++){
-				this->body[i][1].draw(' ');
 				this->body[i][0].draw(' ');
-				this->body[i][1].move(direction);
+				this->body[i][1].draw(' ');
 				this->body[i][0].move(direction);
+				this->body[i][1].move(direction);
 				setTextColor(color);
-				this->body[i][1].draw(figure);
 				this->body[i][0].draw(figure);
+				this->body[i][1].draw(figure);
 			}
 		}
 		else {
 			for (int i = 1; i >= 0; i--)
 			{
-				this->body[i][1].draw(' ');
 				this->body[i][0].draw(' ');
-				this->body[i][1].move(direction);
+				this->body[i][1].draw(' ');
 				this->body[i][0].move(direction);
+				this->body[i][1].move(direction);
 				setTextColor(color);
-				this->body[i][1].draw(figure);
 				this->body[i][0].draw(figure);
+				this->body[i][1].draw(figure);
 			}
 		}
 	}

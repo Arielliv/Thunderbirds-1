@@ -23,6 +23,8 @@ class Board{
 	char boardGame[Bounderies::rows][Bounderies::cols];
 private:
 	void setValueByIndex(Point p, BoardCellType boardCellType);
+	bool isSmallShipValidMove();
+	bool isBigShipValidMove();
 public:
 	Board();
 	BoardCellType getValueByIndex(Point p);
