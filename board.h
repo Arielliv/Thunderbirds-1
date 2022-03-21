@@ -3,13 +3,15 @@
 #include "ship.h"
 #include "keys.h"
 #include "point.h"
+#include "block.h"
 
 enum class BoardCellType {
 	Empty = '0',
 	Wall = '1',
-	Block = '2',
-	SmallShip = '3',
-	BigShip = '4',
+	SmallBlock = '2',
+	BigBlock = '3',
+	SmallShip = '4',
+	BigShip = '5',
 };
 
 enum Bounderies {
@@ -20,11 +22,14 @@ enum Bounderies {
 class Board{
 	Ship bigShip;
 	Ship smallShip;
+	Block bigBlock;
+	Block smallBlock;
 	char boardGame[Bounderies::rows][Bounderies::cols];
 private:
 	void setValueByIndex(Point p, BoardCellType boardCellType);
 	bool isSmallShipValidMove();
 	bool isBigShipValidMove();
+	bool isBlockNextToSmallShip();
 public:
 	Board();
 	BoardCellType getValueByIndex(Point p);

@@ -7,11 +7,11 @@ std::string static staticBoard = "1111111111111111111111111111111111111111111111
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
-"10000000000000000000000022000000000000000000000000011100000000000000000000000001"
+"10000000000000000000000000000000000000000000000000011100000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011100000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011100000000000000000000000001"
-"10000000000000000000000011000000000000000000000000022200000000000000000000000001"
-"10000000000000000000000011000000000000000000000000022200000000000000000000000000"
+"10000000000000000000000011000000000000000000000000000000000000000000000000000001"
+"10000000000000000000000011000000000000000000000000000000000000000000000000000000"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
@@ -27,10 +27,10 @@ std::string static staticBoard = "1111111111111111111111111111111111111111111111
 "11111111111111111111111111111111111111111111111111111111111111111111111111111001";
 
 
-Board::Board(): bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3))), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5))) {
+Board::Board(): bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3))), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5))), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7))), bigBlock(Block(BlockSize::Big, '~', Color::RED, Point(51, 10))) {
 	for (int x = 0; x < Bounderies::rows; x++) {
 		for (int y = 0; y < Bounderies::cols; y++) {
-			boardGame[x][y] = staticBoard[x * Bounderies::cols + y];
+			boardGame[x][y] = staticBoard[x * (int)Bounderies::cols + y];
 		}
 	}
 }
@@ -50,9 +50,6 @@ void Board::printBoard() {
 			if (currentCellType == BoardCellType::Wall) {
 				currentPoint.draw('#');
 			}
-			else if (currentCellType == BoardCellType::Block) {
-				currentPoint.draw('~');
-			}
 			else{
 				currentPoint.draw(' ');
 			}
@@ -61,13 +58,27 @@ void Board::printBoard() {
 }
 
 void Board::start() {
+	Point* curPoints;
 	bool isHittedOnce = false;
 	char key = 0;
 	bool isSmallShipMove = false;
 	this->printBoard();
+
 	this->bigShip.draw();
+	curPoints = this->bigShip.getCurrentBodyPoints();
+	this->updateValueByPoints(curPoints, 2, BoardCellType::BigShip);
+
 	this->smallShip.draw();
-	Point* curPoints;
+	curPoints = this->smallShip.getCurrentBodyPoints();
+	this->updateValueByPoints(curPoints, 2, BoardCellType::SmallShip);
+
+	this->bigBlock.draw();
+	curPoints = this->bigBlock.getCurrentBodyPoints();
+	this->updateValueByPoints(curPoints, 2, BoardCellType::BigBlock);
+
+	this->smallBlock.draw();
+	curPoints = this->smallBlock.getCurrentBodyPoints();
+	this->updateValueByPoints(curPoints, 2, BoardCellType::SmallBlock);
 
 	while (key != ESC){
 		if (_kbhit()){
@@ -91,7 +102,6 @@ void Board::start() {
 						curPoints = this->smallShip.getCurrentBodyPoints();
 						this->updateValueByPoints(curPoints, 2, BoardCellType::SmallShip);
 					}
-					
 				}
 				else {
 					this->bigShip.setDirection(nextDirection);
@@ -183,6 +193,44 @@ bool Board::isSmallShipValidMove() {
 			break;
 		}
 		return false;
+}
+
+bool Board::isBlockNextToSmallShip() {
+	Point curShipPoint = this->smallShip.getCurrentShipPoint();
+	int curShipPointY = curShipPoint.getYPoint();
+	int curShipPointX = curShipPoint.getXPoint();
+
+	Direction dir = this->smallShip.getDirection();
+
+	switch ((int)dir) {
+	case 0: // UP
+		if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == BoardCellType::SmallBlock
+			&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == BoardCellType::SmallBlock)) {
+			return true;
+		}
+
+		break;
+	case 1: // DOWN
+		if ((this->getValueByIndex(Point(curShipPointY + 1, curShipPointX)) == BoardCellType::SmallBlock
+			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1)) == BoardCellType::SmallBlock)) {
+			return true;
+		}
+
+		break;
+	case 2: // LEFT
+		if (this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == BoardCellType::SmallBlock) {
+			return true;
+		}
+
+		break;
+	case 3: // RIGHT
+		if (this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == BoardCellType::SmallBlock) {
+			return true;
+		}
+
+		break;
+	}
+	return false;
 }
 
 bool Board::isBigShipValidMove() {
