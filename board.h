@@ -8,10 +8,10 @@
 enum class BoardCellType {
 	Empty = '0',
 	Wall = '1',
-	SmallBlock = '2',
-	BigBlock = '3',
-	SmallShip = '4',
-	BigShip = '5',
+	SmallShip = '2',
+	BigShip = '3',
+	SmallBlock = '4',
+	BigBlock = '5',
 };
 
 enum Bounderies {
@@ -27,14 +27,23 @@ class Board{
 	char boardGame[Bounderies::rows][Bounderies::cols];
 private:
 	void setValueByIndex(Point p, BoardCellType boardCellType);
+	void smallShipMove();
+	void bigShipMove();
+
 	bool isSmallShipValidMove();
 	bool isBigShipValidMove();
-	bool isBlockNextToSmallShip();
+
+	bool isSmallBlockValidMove(Direction dir);
+	bool isBigBlockValidMove(Direction dir);
+
+	bool isSmallShipNextToBlock();
+	bool isBigShipNextToBlock(BoardCellType* blockType);
 public:
 	Board();
 	BoardCellType getValueByIndex(Point p);
 	void printBoard();
 	void updateValueByPoints(Point* points, int size, BoardCellType cellType);
-	bool isValidMove(ShipSize shipSize);
+	bool isShipValidMove(ShipSize shipSize);
+	bool isBlockValidMove(BlockSize blockSize, Direction dir);
 	void start();
 };
