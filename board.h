@@ -10,10 +10,9 @@ enum class BoardCellType {
 	Wall = '1',
 	SmallShip = '2',
 	BigShip = '3',
-	SmallExit = '4',
-	BigExit = '5',
-	SmallBlock = '6',
-	BigBlock = '7',
+	Exit = '4',
+	SmallBlock = '5',
+	BigBlock = '6',
 };
 
 enum Bounderies {
@@ -28,16 +27,20 @@ class Board{
 	Block smallBlock;
 	bool isVictory = false;
 	bool exitsStatus[2] = { false,false };
+	bool isSmallShipMove = false;
 	char boardGame[Bounderies::rows][Bounderies::cols];
+	int time = 500;
 private:
 	void setValueByIndex(Point p, BoardCellType boardCellType);
 	void smallShipMove();
 	void bigShipMove();
-	void smallBlockMove();
-	void bigBlockMove();
+	void smallBlockMove(Direction dir);
+	void bigBlockMove(Direction dir);
 
 	bool isSmallShipValidMove();
 	bool isBigShipValidMove();
+	bool isSmallShipVictoryMove();
+	bool isBigShipVictoryMove();
 
 	bool isSmallBlockValidMove(Direction dir);
 	bool isBigBlockValidMove(Direction dir);
@@ -46,16 +49,22 @@ private:
 	bool isBigShipNextToBlock(BoardCellType* blockType);
 
 	void updateExitsStatus(ShipSize shipSize);
+
+	bool isBigShipNextMoveEQCellType(BoardCellType cellType);
+	bool isSmallShipNextMoveEQCellType(BoardCellType cellType);
+
+	void initBoard();
+	void updateValueByPoints(Point* points, int size, BoardCellType cellType);
 public:
 	Board();
 	BoardCellType getValueByIndex(Point p);
 	void printBoard();
-	void updateValueByPoints(Point* points, int size, BoardCellType cellType);
+	void updateValueByCellType(BoardCellType cellType, bool shouldErase);
 	bool isShipValidMove(ShipSize shipSize);
 	bool isBlockValidMove(BlockSize blockSize, Direction dir);
 	void getFallingBlockTypes(BlockSize* results);
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
-	bool updateVictory();
-	void start();
+	void updateVictory();
+	bool play();
 };
 

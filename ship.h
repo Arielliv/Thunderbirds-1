@@ -22,6 +22,7 @@ public:
 	Point* getCurrentBodyPoints();
 	void move();
 	void draw();
+	void erase();
 	~Ship();
 };
 

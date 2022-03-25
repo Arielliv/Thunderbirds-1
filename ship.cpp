@@ -101,6 +101,24 @@ void Ship::draw() {
 	}
 }
 
+void Ship::erase() {
+	if (this->shipSize == ShipSize::Small) {
+		for (int i = 0; i < 2; i++)
+		{
+			this->body[0][i].draw(' ');
+		}
+	}
+	else {
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+			{
+				this->body[i][j].draw(' ');
+			}
+		}
+	}
+}
+
 Ship::~Ship() {
 	for (int i = 0; i < (int)shipSize; i++) {
 		delete this->body[i];
