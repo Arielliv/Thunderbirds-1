@@ -15,8 +15,9 @@ class Block
 
 public:
 	Block(BlockSize blockSize, char figure, Color color, Point startPoint);
+	Block& operator=(const Block& b);
 	Point getCurrentBlockPoint();
-	Point* getCurrentBodyPoints();
+	const Point* getCurrentBodyPoints() const;
 	void move(Direction direction);
 	void draw();
 	~Block();

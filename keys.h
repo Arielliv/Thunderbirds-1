@@ -3,7 +3,7 @@
 #include "point.h"
 #include "utils.h"
 
-enum { ESC = 27 };
+enum { ESC = 27, ESC_SECOND = '9' };
 
 enum class Keys
 {

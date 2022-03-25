@@ -1,5 +1,17 @@
 #include "block.h"
 
+Block& Block::operator=(const Block& b) {
+	this->blockSize = b.blockSize;
+	this->startPoint = b.startPoint;
+	this->figure = b.figure;
+	this->color = b.color;
+	
+	for (int i = 0; i < (int)b.blockSize; i++) {
+		body[i] = b.body[i];
+	}
+	return *this;
+}
+
 Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint) : blockSize(blockSize), figure(figure), color(color), startPoint(startPoint) {
 	if (blockSize == BlockSize::Small) {
 		this->body = new Point [(int)BlockSize::Small];
@@ -73,22 +85,8 @@ Point Block::getCurrentBlockPoint() {
 	return Point(this->body[0]);
 }
 
-Point* Block::getCurrentBodyPoints() {
-	Point* curPoints;
-	if (this->blockSize == BlockSize::Small) {
-		curPoints = new Point[2];
-		for (int i = 0; i < 2; i++) {
-			curPoints[i] = this->body[i];
-		}
-	}
-	else {
-		curPoints = new Point[6];
-		for (int i = 0; i < 6; i++)
-		{
-			curPoints[i] = this->body[i];
-		}
-	}
-	return curPoints;
+const Point* Block::getCurrentBodyPoints() const {
+	return this->body;
 }
 
 

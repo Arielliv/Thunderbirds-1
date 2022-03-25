@@ -27,6 +27,26 @@ std::string static staticBoard = "1111111111111111111111111111111111111111111111
 "11111111111111111111111111111111111111111111111111111111111111111111111111111441";
 
 
+Board& Board::operator=(const Board& b) {
+	this->bigShip = b.bigShip;
+	this->smallShip = b.smallShip;
+	this->bigBlock = b.bigBlock;
+	this->smallBlock = b.smallBlock;
+	this->isVictory = b.isVictory;
+	this->isSmallShipMove = b.isSmallShipMove;
+	this->time = b.time;
+
+	for (int i = 0; i < 2; i++) {
+		this->exitsStatus[i] = b.exitsStatus[i];
+	}
+	for (int x = 0; x < Bounderies::rows; x++) {
+		for (int y = 0; y < Bounderies::cols; y++) {
+			boardGame[x][y] = b.boardGame[x][y];
+		}
+	}
+	return *this;
+}
+
 Board::Board():bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3))), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5))), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7))), bigBlock(Block(BlockSize::Big, '~', Color::RED, Point(51, 10))) {
 	for (int x = 0; x < Bounderies::rows; x++) {
 		for (int y = 0; y < Bounderies::cols; y++) {
@@ -72,16 +92,15 @@ void Board::initBoard() {
 	this->updateValueByCellType(BoardCellType::SmallBlock, false);
 }
 
-bool Board::play() {
+bool Board::runTheGame() {
 	bool isHittedOnce = false;
 	char key = 0;
-
-	this->initBoard();
-
-	while (key != ESC && !this->isVictory && this->time >0){
-		if (_kbhit()){
-			isHittedOnce = true;
+	while (key != ESC && !this->isVictory && this->time > 0) {
+		if (_kbhit()) {
 			key = _getch();
+			if (key != ESC) {
+				isHittedOnce = true;
+			}
 			if (getKeyByChar(key) == Keys::SwitchSmall) {
 				this->isSmallShipMove = true;
 			}
@@ -89,29 +108,33 @@ bool Board::play() {
 				this->isSmallShipMove = false;
 			}
 			else {
-				Direction nextDirection = getDirectionByKey(key);
-				if (this->isSmallShipMove) {
-					this->smallShip.setDirection(nextDirection);
-					this->smallShipMove();
-					BlockSize curFallingBlocks[2];
-					getFallingBlockTypes(curFallingBlocks);
-					dropBlocks(curFallingBlocks);
-				}
-				else {
-					this->bigShip.setDirection(nextDirection);
-					this->bigShipMove();
-					BlockSize curFallingBlocks[2];
-					getFallingBlockTypes(curFallingBlocks);
-					dropBlocks(curFallingBlocks);
+				if (key != ESC) {
+					Direction nextDirection = getDirectionByKey(key);
+					if (this->isSmallShipMove) {
+						this->smallShip.setDirection(nextDirection);
+						this->smallShipMove();
+						BlockSize curFallingBlocks[2];
+						getFallingBlockTypes(curFallingBlocks);
+						dropBlocks(curFallingBlocks);
+					}
+					else {
+						this->bigShip.setDirection(nextDirection);
+						this->bigShipMove();
+						BlockSize curFallingBlocks[2];
+						getFallingBlockTypes(curFallingBlocks);
+						dropBlocks(curFallingBlocks);
+					}
 				}
 			}
-		} else if (isHittedOnce) {
+		}
+		else if (isHittedOnce) {
 			if (this->isSmallShipMove) {
 				this->smallShipMove();
 				BlockSize curFallingBlocks[2];
 				getFallingBlockTypes(curFallingBlocks);
 				dropBlocks(curFallingBlocks);
-			} else {
+			}
+			else {
 				this->bigShipMove();
 				BlockSize curFallingBlocks[2];
 				getFallingBlockTypes(curFallingBlocks);
@@ -119,8 +142,40 @@ bool Board::play() {
 			}
 		}
 		this->updateVictory();
-		this->time--;
+		if (isHittedOnce) {
+			this->time--;
+		}
 		Sleep(200);
+	}
+	if (key == ESC) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool Board::play(bool *isEsc) {
+	bool shouldExitLoop = false;
+	bool isFirstEsc = false;
+	char key = 0;
+	this->initBoard();
+	while (key != ESC_SECOND && !shouldExitLoop) {
+		isFirstEsc = this->runTheGame();
+		if (isFirstEsc) {
+			while (key != ESC_SECOND && key != ESC) {
+				if (_kbhit()) {
+					key = _getch();
+				}
+				Sleep(200);
+			}
+		}
+		else {
+			shouldExitLoop = true;
+		}
+	}
+	
+	if (!shouldExitLoop && key == ESC_SECOND) {
+		*isEsc = true;
 	}
 
 	setTextColor(Color::WHITE);
@@ -214,7 +269,7 @@ void Board::updateValueByCellType(BoardCellType cellType, bool shouldErase) {
 	SmallBlock = '5',
 	BigBlock = '6',
 	*/
-	Point* curPoints;
+	const Point* curPoints;
 	
 	switch ((char)cellType) {
 	case '2': // SmallShip
@@ -256,7 +311,7 @@ void Board::updateValueByCellType(BoardCellType cellType, bool shouldErase) {
 	}
 
 }
-void Board::updateValueByPoints(Point* points, int size, BoardCellType cellType) {
+void Board::updateValueByPoints(const Point* points, int size, BoardCellType cellType){
 	for (int i = 0; i < size; i++) {
 		this->setValueByIndex(points[i], cellType);
 	}

@@ -54,9 +54,10 @@ private:
 	bool isSmallShipNextMoveEQCellType(BoardCellType cellType);
 
 	void initBoard();
-	void updateValueByPoints(Point* points, int size, BoardCellType cellType);
+	void updateValueByPoints(const Point* points, int size, BoardCellType cellType);
 public:
 	Board();
+	Board& operator=(const Board& b);
 	BoardCellType getValueByIndex(Point p);
 	void printBoard();
 	void updateValueByCellType(BoardCellType cellType, bool shouldErase);
@@ -65,6 +66,7 @@ public:
 	void getFallingBlockTypes(BlockSize* results);
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
-	bool play();
+	bool runTheGame();
+	bool play(bool* isEsc);
 };
 
