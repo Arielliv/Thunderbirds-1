@@ -13,8 +13,9 @@ class Ship
 	Color color;
 	Direction direction = Direction::Right;
 	Point* body;
+	bool isWithColors = false;
 public:
-	Ship(ShipSize shipSize, char figure, Color color, Point startPoint);
+	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
 	void setDirection(Direction _direction);
 	Direction getDirection();
 	// get first left point of ship

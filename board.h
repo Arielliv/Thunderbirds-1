@@ -25,6 +25,7 @@ class Board{
 	Ship smallShip;
 	Block bigBlock;
 	Block smallBlock;
+	bool isWithColors = false;
 	bool isVictory = false;
 	bool isLoss = false;
 	bool exitsStatus[2] = { false,false };
@@ -58,7 +59,7 @@ private:
 	void initBoard();
 	void updateValueByPoints(const Point* points, int size, BoardCellType cellType);
 public:
-	Board();
+	Board(bool isWithColors = false);
 	Board& operator=(const Board& b);
 	BoardCellType getValueByIndex(Point p);
 	void printBoard();

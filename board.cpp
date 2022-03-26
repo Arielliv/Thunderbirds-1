@@ -1,6 +1,6 @@
 #include "board.h"
 
-std::string static staticBoard = "11111111111111111111111111111111111111111111111111111111111111111111111111111111"	
+std::string const staticBoard = "11111111111111111111111111111111111111111111111111111111111111111111111111111111"	
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
@@ -34,22 +34,25 @@ Board& Board::operator=(const Board& b) {
 	this->isSmallShipMove = b.isSmallShipMove;
 	this->time = b.time;
 	this->isLoss = b.isLoss;
+	this->isWithColors = b.isWithColors;
 
 	for (int i = 0; i < 2; i++) {
 		this->exitsStatus[i] = b.exitsStatus[i];
 	}
-	for (int x = 0; x < Bounderies::rows; x++) {
-		for (int y = 0; y < Bounderies::cols; y++) {
+	for (int x = 0; x < (int)Bounderies::rows; x++) {
+		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			boardGame[x][y] = b.boardGame[x][y];
 		}
 	}
 	return *this;
 }
 
-Board::Board():bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3))), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5))), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7))), bigBlock(Block(BlockSize::Big, '~', Color::RED, Point(51, 10))) {
-	for (int x = 0; x < Bounderies::rows; x++) {
-		for (int y = 0; y < Bounderies::cols; y++) {
-			boardGame[x][y] = staticBoard[x * (int)Bounderies::cols + y];
+Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7), isWithColors)), bigBlock(Block(BlockSize::Big, '~', Color::RED, Point(51, 10), isWithColors)), isWithColors(isWithColors) {
+	int cur;
+	for (int x = 0; x < (int)Bounderies::rows; x++) {
+		for (int y = 0; y < (int)Bounderies::cols; y++) {
+			cur = x * (int)Bounderies::cols + y;
+			boardGame[x][y] = staticBoard[cur];
 		}
 	}
 }

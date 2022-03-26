@@ -12,9 +12,10 @@ class Block
 	char figure;
 	Color color;
 	Point* body;
+	bool isWithColors = false;
 
 public:
-	Block(BlockSize blockSize, char figure, Color color, Point startPoint);
+	Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors);
 	Block& operator=(const Block& b);
 	Point getCurrentBlockPoint();
 	const Point* getCurrentBodyPoints() const;

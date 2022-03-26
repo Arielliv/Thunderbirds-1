@@ -4,10 +4,12 @@
 #include "board.h"
 #include <iostream>
 #include "ioUtils.h"
+#include "menu.h"
 
 class Game
 {
 	Board gameBoard;
+	Menu menu;
 	int lives = 3;
 public:
 	void start();

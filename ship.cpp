@@ -6,13 +6,14 @@ Ship& Ship::operator=(const Ship& s) {
 	this->figure = s.figure;
 	this->color = s.color;
 	this->direction = s.direction;
+	this->isWithColors = s.isWithColors;
 	for (int i = 0; i < (int)s.shipSize; i++) {
 		body[i] = s.body[i];
 	}
 	return *this;
 }
 
-Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint) {
+Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
 	if (shipSize == ShipSize::Small) {
 		this->body = new Point[(int)ShipSize::Small];
 		for (int i = 0; i < 2; i++) {
@@ -45,7 +46,9 @@ void Ship::move() {
 			this->body[i].move(direction);
 		}
 		for (int i = 0; i < 2; i++) {
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
 		}
 	}
@@ -58,7 +61,9 @@ void Ship::move() {
 
 		for (int i = 0; i < 4; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
 		}
 	}
@@ -69,17 +74,25 @@ void Ship::draw() {
 	if (this->shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 	else {
 		for (int i = 0; i < 4; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 }
@@ -88,17 +101,25 @@ void Ship::erase() {
 	if (this->shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(' ');
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 	else {
 		for (int i = 0; i < 4; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(' ');
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 }

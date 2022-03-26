@@ -5,6 +5,7 @@ Block& Block::operator=(const Block& b) {
 	this->startPoint = b.startPoint;
 	this->figure = b.figure;
 	this->color = b.color;
+	this->isWithColors = b.isWithColors;
 	
 	for (int i = 0; i < (int)b.blockSize; i++) {
 		body[i] = b.body[i];
@@ -12,7 +13,7 @@ Block& Block::operator=(const Block& b) {
 	return *this;
 }
 
-Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint) : blockSize(blockSize), figure(figure), color(color), startPoint(startPoint) {
+Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors) : blockSize(blockSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
 	if (blockSize == BlockSize::Small) {
 		this->body = new Point [(int)BlockSize::Small];
 		for (int i = 0; i < 2; i++) {
@@ -37,7 +38,9 @@ void Block::move(Direction direction) {
 				this->body[i].move(direction);
 			}
 			for (int i = 0; i < 2; i++) {
-				setTextColor(color);
+				if (this->isWithColors) {
+					setTextColor(color);
+				}
 				this->body[i].draw(figure);
 			}
 
@@ -51,7 +54,9 @@ void Block::move(Direction direction) {
 
 		for (int i = 0; i < 6; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
 		}
 	}
@@ -62,17 +67,25 @@ void Block::draw() {
 	if (this->blockSize == BlockSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 	else {
 		for (int i = 0; i < 6; i++)
 		{
-			setTextColor(color);
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
 			this->body[i].draw(figure);
-			setTextColor(Color::WHITE);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
 }
