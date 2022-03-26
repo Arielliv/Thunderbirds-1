@@ -24,7 +24,6 @@ std::string const staticBoard = "11111111111111111111111111111111111111111111111
 "10000000000000000000000011000000001100000000000000011000000000000000000000000001"
 "11111111111111111111111111111111111111111111111111111111111111111111111111111441";
 
-
 Board& Board::operator=(const Board& b) {
 	this->bigShip = b.bigShip;
 	this->smallShip = b.smallShip;
@@ -65,6 +64,7 @@ BoardCellType Board::getValueByIndex(const Point p) const {
 	return (BoardCellType)this->boardGame[p.getXPoint()][p.getYPoint()];
 }
 void Board::printBoard() const {
+	clear_screen();
 	for (int x = 0; x < Bounderies::rows; x++) {
 		for (int y = 0; y < Bounderies::cols; y++) {
 			BoardCellType currentCellType = this->getValueByIndex(Point(x, y));
@@ -706,7 +706,7 @@ void clearLine(const int lineNumber) {
 	}
 }
 void Board::printStatus(const int lives) const {
-	clearLine(24);
+	clearLine(23);
 	setTextColor(Color::WHITE);
 	this->printTimer();
 	this->printShipTurn();
@@ -714,18 +714,18 @@ void Board::printStatus(const int lives) const {
 
 }
 void Board::printTimer() const {
-	gotoxy(0, 24);
-	std::cout << "- " << "Time left: " << this->time  << std::endl;
+	gotoxy(8, 23);
+	std::cout << "| " << "Time left: " << this->time  << std::endl;
 }
 
 void Board::printShipTurn() const {
-	gotoxy(20, 24);
-	string activeShip = this->isSmallShipMove ? "Small Ship" : "Big Ship";
-	std::cout << "- " << "Active ship: " << activeShip  << std::endl;
+	gotoxy(28, 23);
+	string activeShip = this->isSmallShipMove ? "Small" : "Big";
+	std::cout << "| " << "Active ship: " << activeShip  << std::endl;
 }
 
 void Board::printRemainingLives(int lives) const {
-	gotoxy(47, 24);
+	gotoxy(50, 23);
 	
-	std::cout << "- " << "Remaining lives: " << lives  << std::endl;
+	std::cout << "| " << "Remaining lives: " << lives  << std::endl;
 }

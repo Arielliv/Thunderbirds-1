@@ -9,7 +9,9 @@ class Menu
 {
 public:
 	MenuChoice openMenu() const;
+	void printMenu() const;
 	void printInstructions() const;
+	void printSettings() const;
 	bool openSettings() const;
 };
 
