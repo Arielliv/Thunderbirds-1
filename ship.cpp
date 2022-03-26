@@ -31,11 +31,11 @@ Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool i
 	}
 }
 
-void Ship::setDirection(Direction direction) {
+void Ship::setDirection(const Direction direction) {
 	this->direction = direction;
 }
 
-Direction Ship::getDirection() {
+Direction Ship::getDirection() const{
 	return this->direction;
 }
 
@@ -70,7 +70,7 @@ void Ship::move() {
 }
                          
 
-void Ship::draw() {
+void Ship::draw() const{
 	if (this->shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
@@ -97,7 +97,7 @@ void Ship::draw() {
 	}
 }
 
-void Ship::erase() {
+void Ship::erase() const {
 	if (this->shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
@@ -128,7 +128,7 @@ Ship::~Ship() {
 	delete this->body;
 }
 
-Point Ship::getCurrentShipPoint() {
+Point Ship::getCurrentShipPoint() const{
 	return Point(this->body[0]);
 }
 

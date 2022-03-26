@@ -16,5 +16,5 @@ enum class Keys
 	None=6
 };
 
-Direction getDirectionByKey(char key);
-Keys getKeyByChar(char key);
+Direction getDirectionByKey(const char key);
+Keys getKeyByChar(const char key);

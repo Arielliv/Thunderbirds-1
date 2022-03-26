@@ -32,11 +32,11 @@ void Game::start() {
 	
 }
 
-void Game::printWin() {
+void Game::printWin() const {
 	clear_screen();
 	std::cout << "You won!!!" << std::endl;
 }
-void Game::printLoss() {
+void Game::printLoss() const {
 	clear_screen();
 	std::cout << "You loss :(" << std::endl;
 }

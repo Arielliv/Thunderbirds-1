@@ -16,14 +16,13 @@ class Ship
 	bool isWithColors = false;
 public:
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
-	void setDirection(Direction _direction);
-	Direction getDirection();
-	// get first left point of ship
-	Point getCurrentShipPoint();
+	void setDirection(const Direction _direction);
+	Direction getDirection() const;
+	Point getCurrentShipPoint() const;
 	const Point* getCurrentBodyPoints() const;
 	void move();
-	void draw();
-	void erase();
+	void draw() const;
+	void erase() const;
 	Ship& operator=(const Ship& s);
 	~Ship();
 };

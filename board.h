@@ -33,48 +33,48 @@ class Board{
 	char boardGame[Bounderies::rows][Bounderies::cols];
 	int time = 500;
 private:
-	void setValueByIndex(Point p, BoardCellType boardCellType);
+	void setValueByIndex(const Point p, const BoardCellType boardCellType);
 	void smallShipMove();
 	void bigShipMove();
-	void smallBlockMove(Direction dir);
-	void bigBlockMove(Direction dir);
+	void smallBlockMove(const Direction dir);
+	void bigBlockMove(const Direction dir);
 
-	bool isSmallShipValidMove();
-	bool isBigShipValidMove();
-	bool isSmallShipVictoryMove();
-	bool isBigShipVictoryMove();
-	bool shouldShipBeExploed();
+	bool isSmallShipValidMove() const;
+	bool isBigShipValidMove() const;
+	bool isSmallShipVictoryMove() const;
+	bool isBigShipVictoryMove() const;
+	bool shouldShipBeExploed() const;
 
-	bool isSmallBlockValidMove(Direction dir);
-	bool isBigBlockValidMove(Direction dir);
+	bool isSmallBlockValidMove(const Direction dir) const;
+	bool isBigBlockValidMove(const Direction dir) const;
 
-	bool isSmallShipNextToBlock();
-	bool isBigShipNextToBlock(BoardCellType* blockType);
+	bool isSmallShipNextToBlock() const;
+	bool isBigShipNextToBlock(BoardCellType* blockType) const;
 
-	void updateExitsStatus(ShipSize shipSize);
+	void updateExitsStatus(const ShipSize shipSize);
 
-	bool isBigShipNextMoveEQCellType(BoardCellType cellType);
-	bool isSmallShipNextMoveEQCellType(BoardCellType cellType);
+	bool isBigShipNextMoveEQCellType(const BoardCellType cellType) const;
+	bool isSmallShipNextMoveEQCellType(const BoardCellType cellType) const;
 
 	void initBoard();
-	void updateValueByPoints(const Point* points, int size, BoardCellType cellType);
+	void updateValueByPoints(const Point* points, const int size, const BoardCellType cellType);
 public:
 	Board(bool isWithColors = false);
 	Board& operator=(const Board& b);
-	BoardCellType getValueByIndex(Point p);
-	void printBoard();
-	void printStatus(int lives);
-	void printTimer();
-	void printShipTurn();
-	void printRemainingLives(int lives);
-	void updateValueByCellType(BoardCellType cellType, bool shouldErase);
-	bool isShipValidMove(ShipSize shipSize);
-	bool isBlockValidMove(BlockSize blockSize, Direction dir);
-	void getFallingBlockTypes(BlockSize* results);
+	BoardCellType getValueByIndex(const Point p) const;
+	void printBoard() const;
+	void printStatus(const int lives) const;
+	void printTimer() const;
+	void printShipTurn() const;
+	void printRemainingLives(const int lives) const;
+	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
+	bool isShipValidMove(const ShipSize shipSize) const;
+	bool isBlockValidMove(const BlockSize blockSize, const Direction dir) const;
+	void getFallingBlockTypes(BlockSize* results) const;
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
-	bool runTheGame(int lives);
-	bool play(bool* isEsc, int lives);
-	friend void clearLine(int lineNumber);
+	bool runTheGame(const int lives);
+	bool play(bool* isEsc, const int lives);
+	friend void clearLine(const int lineNumber);
 };
 

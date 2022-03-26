@@ -1,20 +1,20 @@
 #include "board.h"
 #include "point.h"
 
-void Point::draw(char ch) {
+void Point::draw(char ch) const{
 	gotoxy(this->x, this->y);
 	cout << ch << endl;
 }
 
-int Point::getXPoint() {
+int Point::getXPoint() const {
 	return this->x;
 }
 
-int Point::getYPoint() {
+int Point::getYPoint() const {
 	return this->y;
 }
 
-void Point::move(Direction direction) {
+void Point::move(const Direction direction) {
 	switch ((int)direction) {
 	case 0: // UP
 		--this->y;

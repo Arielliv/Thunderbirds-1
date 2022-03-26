@@ -150,7 +150,6 @@
     <ClInclude Include="point.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="utils.h" />
-    <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="block.cpp" />
@@ -163,7 +162,6 @@
     <ClCompile Include="point.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="utils.cpp" />
-    <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

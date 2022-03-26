@@ -8,7 +8,7 @@ enum class MenuChoice {WithColor = 1, WithoutColor = 2, Exit = 3, ShowSettings =
 class Menu
 {
 public:
-	MenuChoice openMenu();
+	MenuChoice openMenu() const;
 	void printInstructions() const;
 	bool openSettings() const;
 };

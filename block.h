@@ -17,9 +17,9 @@ class Block
 public:
 	Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors);
 	Block& operator=(const Block& b);
-	Point getCurrentBlockPoint();
+	Point getCurrentBlockPoint() const;
 	const Point* getCurrentBodyPoints() const;
-	void move(Direction direction);
-	void draw();
+	void move(const Direction direction);
+	void draw() const;
 	~Block();
 };

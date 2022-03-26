@@ -1,12 +1,12 @@
 #include "keys.h"
 
-char keyboardDirectionKeys[4] = { 'w','x','a','d'};
-int directionKeys[4] = { 0,1,2,3 };
+const char keyboardDirectionKeys[4] = { 'w','x','a','d'};
+const int directionKeys[4] = { 0,1,2,3 };
 
-char keyboardSwitchKeys[2] = { 's','b' };
-int switchKeys[2] = { 4,5 };
+const char keyboardSwitchKeys[2] = { 's','b' };
+const int switchKeys[2] = { 4,5 };
 
-Direction getDirectionByKey(char key) {
+Direction getDirectionByKey(const char key) {
     int n = sizeof(keyboardDirectionKeys) / sizeof(keyboardDirectionKeys[0]);
     int index = findInArray(keyboardDirectionKeys, n, tolower(key));
     if (index != -1) {
@@ -15,7 +15,7 @@ Direction getDirectionByKey(char key) {
     return Direction::Right;
 }
 
-Keys getKeyByChar(char key) {
+Keys getKeyByChar(const char key) {
     int n = sizeof(keyboardSwitchKeys) / sizeof(keyboardSwitchKeys[0]);
     int index = findInArray(keyboardSwitchKeys, n, tolower(key));
     if (index != -1) {

@@ -36,9 +36,6 @@
     <ClInclude Include="block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,9 +63,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="block.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">

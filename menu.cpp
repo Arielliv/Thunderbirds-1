@@ -1,6 +1,6 @@
 #include "menu.h"
 
-MenuChoice Menu::openMenu() {
+MenuChoice Menu::openMenu() const {
 	int input;
 	bool isWithColor = false;
 	std::string const menu = "Welcome to Thunderbirds game\n"
@@ -19,7 +19,7 @@ MenuChoice Menu::openMenu() {
 		this->printInstructions();
 		return MenuChoice::ShowSettings;
 	}
-	else if (input == 1) {
+	if (input == 1) {
 		isWithColor = this->openSettings();
 		if (isWithColor) {
 			return MenuChoice::WithColor;
@@ -28,6 +28,7 @@ MenuChoice Menu::openMenu() {
 			return MenuChoice::WithoutColor;
 		}
 	}
+	return MenuChoice::ShowSettings;
 }
 
 void Menu::printInstructions() const {

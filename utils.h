@@ -1,9 +1,7 @@
 #pragma once
-
 #include <iostream>
 #include "ioUtils.h"
 
-int binarySearch(char arr[], int l, int r, char x);
-int findInArray(char arr[], int n, char c);
+int findInArray(const char arr[], const int n, const char c);
 
 

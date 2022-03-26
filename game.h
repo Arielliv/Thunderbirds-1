@@ -13,7 +13,7 @@ class Game
 	int lives = 3;
 public:
 	void start();
-	void printWin();
-	void printLoss();
+	void printWin() const;
+	void printLoss() const;
 };
 

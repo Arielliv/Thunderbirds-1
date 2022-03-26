@@ -31,7 +31,7 @@ Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bo
 	}
 }
 
-void Block::move(Direction direction) {
+void Block::move(const Direction direction) {
 	if (this->blockSize == BlockSize::Small) {
 			for (int i = 0; i < 2; i++) {
 				this->body[i].draw(' ');
@@ -63,7 +63,7 @@ void Block::move(Direction direction) {
 }
 
 
-void Block::draw() {
+void Block::draw() const {
 	if (this->blockSize == BlockSize::Small) {
 		for (int i = 0; i < 2; i++)
 		{
@@ -94,7 +94,7 @@ Block::~Block() {
 	delete this->body;
 }
 
-Point Block::getCurrentBlockPoint() {
+Point Block::getCurrentBlockPoint() const{
 	return Point(this->body[0]);
 }
 
