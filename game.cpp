@@ -4,10 +4,12 @@ void Game::start() {
 	bool isEsc = false;
 	bool isWon = false;
 	while (this->lives > 0 && !isWon && !isEsc) {
-		isWon = this->gameBoard.play(&isEsc);
-		clear_screen();
-		this->lives--;
-		this->gameBoard = Board();
+		isWon = this->gameBoard.play(&isEsc, this->lives);
+		if (!isWon) {
+			clear_screen();
+			this->lives--;
+			this->gameBoard = Board();
+		}
 	}
 	if (!isEsc) {
 		if (isWon) {

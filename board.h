@@ -16,7 +16,7 @@ enum class BoardCellType {
 };
 
 enum Bounderies {
-	rows = 25,
+	rows = 23,
 	cols = 80
 };
 
@@ -26,6 +26,7 @@ class Board{
 	Block bigBlock;
 	Block smallBlock;
 	bool isVictory = false;
+	bool isLoss = false;
 	bool exitsStatus[2] = { false,false };
 	bool isSmallShipMove = false;
 	char boardGame[Bounderies::rows][Bounderies::cols];
@@ -41,6 +42,7 @@ private:
 	bool isBigShipValidMove();
 	bool isSmallShipVictoryMove();
 	bool isBigShipVictoryMove();
+	bool shouldShipBeExploed();
 
 	bool isSmallBlockValidMove(Direction dir);
 	bool isBigBlockValidMove(Direction dir);
@@ -60,13 +62,18 @@ public:
 	Board& operator=(const Board& b);
 	BoardCellType getValueByIndex(Point p);
 	void printBoard();
+	void printStatus(int lives);
+	void printTimer();
+	void printShipTurn();
+	void printRemainingLives(int lives);
 	void updateValueByCellType(BoardCellType cellType, bool shouldErase);
 	bool isShipValidMove(ShipSize shipSize);
 	bool isBlockValidMove(BlockSize blockSize, Direction dir);
 	void getFallingBlockTypes(BlockSize* results);
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
-	bool runTheGame();
-	bool play(bool* isEsc);
+	bool runTheGame(int lives);
+	bool play(bool* isEsc, int lives);
+	friend void clearLine(int lineNumber);
 };
 

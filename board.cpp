@@ -1,6 +1,6 @@
 #include "board.h"
 
-std::string static staticBoard = "11111111111111111111111111111111111111111111111111111111111111111111111111111111"
+std::string static staticBoard = "11111111111111111111111111111111111111111111111111111111111111111111111111111111"	
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
@@ -8,19 +8,17 @@ std::string static staticBoard = "1111111111111111111111111111111111111111111111
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000000000000000000000000000000011100000000000000000000000001"
-"10000000000000000000000011000000000000000000000000011100000000000000000000000001"
+"10000000000000000000000011111111111100000000000000011100000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011100000000000000000000000001"
 "10000000000000000000000011000000000000000000000000000000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000000000000000000000000000000001"
-"10000000000000000000000011000000000000000000000000011000000000000000000000000001"
-"10000000000000000000000011000000000000000000000000011000000000000000000000000001"
+"10000000000000000000000011000000000000000000000000000000000000000000000000000001"
+"10000000000000000000000011000000000000000000000000011111111111111000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
 "11111111111100000000000011000000000000000000000000011000000000000000000000000001"
 "11111111111100000000000011000000000000000000000000011000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011000000000000000000000000001"
-"10000000000000000000000011000000001100000000000000011000000000000000000000000001"
-"10000000000000000000000011000000001100000000000000011000000000000000000000000001"
 "10000000000000000000000011000000001100000000000000011000000000000000000000000001"
 "10000000000000000000000011000000001100000000000000011000000000000000000000000001"
 "10000000000000000000000011000000001100000000000000011000000000000000000000000001"
@@ -35,6 +33,7 @@ Board& Board::operator=(const Board& b) {
 	this->isVictory = b.isVictory;
 	this->isSmallShipMove = b.isSmallShipMove;
 	this->time = b.time;
+	this->isLoss = b.isLoss;
 
 	for (int i = 0; i < 2; i++) {
 		this->exitsStatus[i] = b.exitsStatus[i];
@@ -92,10 +91,10 @@ void Board::initBoard() {
 	this->updateValueByCellType(BoardCellType::SmallBlock, false);
 }
 
-bool Board::runTheGame() {
+bool Board::runTheGame(int lives) {
 	bool isHittedOnce = false;
 	char key = 0;
-	while (key != ESC && !this->isVictory && this->time > 0) {
+	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
 		if (_kbhit()) {
 			key = _getch();
 			if (key != ESC) {
@@ -127,7 +126,7 @@ bool Board::runTheGame() {
 				}
 			}
 		}
-		else if (isHittedOnce) {
+		else if (isHittedOnce && !this->isLoss) {
 			if (this->isSmallShipMove) {
 				this->smallShipMove();
 				BlockSize curFallingBlocks[2];
@@ -145,6 +144,7 @@ bool Board::runTheGame() {
 		if (isHittedOnce) {
 			this->time--;
 		}
+		this->printStatus(lives);
 		Sleep(200);
 	}
 	if (key == ESC) {
@@ -154,13 +154,13 @@ bool Board::runTheGame() {
 		return false;
 	}
 }
-bool Board::play(bool *isEsc) {
+bool Board::play(bool *isEsc,int lives) {
 	bool shouldExitLoop = false;
 	bool isFirstEsc = false;
 	char key = 0;
 	this->initBoard();
 	while (key != ESC_SECOND && !shouldExitLoop) {
-		isFirstEsc = this->runTheGame();
+		isFirstEsc = this->runTheGame(lives);
 		if (isFirstEsc) {
 			while (key != ESC_SECOND && key != ESC) {
 				if (_kbhit()) {
@@ -371,6 +371,21 @@ bool Board::isSmallBlockValidMove(Direction dir) {
 		break;
 	}
 	return false;
+}
+
+bool Board::shouldShipBeExploed() {
+	Point curBlockPoint = this->bigBlock.getCurrentBlockPoint();
+	int curBlockPointY = curBlockPoint.getYPoint();
+	int curBlockPointX = curBlockPoint.getXPoint();
+
+	if (this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::SmallShip
+		&& this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::SmallShip) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
 }
 
 bool Board::isBigBlockValidMove(Direction dir) {
@@ -634,8 +649,8 @@ void Board::getFallingBlockTypes(BlockSize* results) {
 	curBlockPointY = curBlockPoint.getYPoint();
 	curBlockPointX = curBlockPoint.getXPoint();
 
-	if (this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::Empty
-		&& this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::Empty) {
+	if ((this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::Empty
+		&& this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::Empty) || this->shouldShipBeExploed()) {
 		results[counter] = BlockSize::Big;
 		counter++;
 	}
@@ -651,6 +666,9 @@ void Board::dropBlocks(const BlockSize(&fallingBlocks)[2]) {
 		else if (curBlockSize == BlockSize::Big) {
 			if (this->isBlockValidMove(BlockSize::Big, Direction::Down)) {
 				this->bigBlockMove(Direction::Down);
+			}
+			if (this->shouldShipBeExploed()) {
+				this->isLoss = true;
 			}
 		}
 	}
@@ -678,4 +696,33 @@ void Board::updateVictory() {
 	this->isVictory = isVictory;
 }
 
+void clearLine(int lineNumber) {
+	gotoxy(0, lineNumber);
+	for (int i = 0; i < Bounderies::cols; i++) {
+		std::cout << ' ';
+	}
+}
+void Board::printStatus(int lives) {
+	clearLine(24);
+	setTextColor(Color::WHITE);
+	this->printTimer();
+	this->printShipTurn();
+	this->printRemainingLives(lives);
 
+}
+void Board::printTimer() {
+	gotoxy(0, 24);
+	std::cout << "- " << "Time left: " << this->time  << std::endl;
+}
+
+void Board::printShipTurn() {
+	gotoxy(20, 24);
+	string activeShip = this->isSmallShipMove ? "Small Ship" : "Big Ship";
+	std::cout << "- " << "Active ship: " << activeShip  << std::endl;
+}
+
+void Board::printRemainingLives(int lives) {
+	gotoxy(47, 24);
+	
+	std::cout << "- " << "Remaining lives: " << lives  << std::endl;
+}

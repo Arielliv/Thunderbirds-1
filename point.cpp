@@ -5,6 +5,7 @@ void Point::draw(char ch) {
 	gotoxy(this->x, this->y);
 	cout << ch << endl;
 }
+
 int Point::getXPoint() {
 	return this->x;
 }
