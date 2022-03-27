@@ -46,7 +46,7 @@ Board& Board::operator=(const Board& b) {
 	return *this;
 }
 
-Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7), isWithColors)), bigBlock(Block(BlockSize::Big, '~', Color::RED, Point(51, 10), isWithColors)), isWithColors(isWithColors) {
+Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7), isWithColors)), bigBlock(Block(BlockSize::Big, '~', Color::CYAN, Point(51, 10), isWithColors)), isWithColors(isWithColors) {
 	int cur;
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
@@ -165,6 +165,7 @@ bool Board::play(bool *isEsc, const int lives) {
 	while (key != ESC_SECOND && !shouldExitLoop) {
 		isFirstEsc = this->runTheGame(lives);
 		if (isFirstEsc) {
+			this->printEscOptions();
 			while (key != ESC_SECOND && key != ESC) {
 				if (_kbhit()) {
 					key = _getch();
@@ -707,7 +708,11 @@ void clearLine(const int lineNumber) {
 }
 void Board::printStatus(const int lives) const {
 	clearLine(23);
-	setTextColor(Color::WHITE);
+
+	if (this->isWithColors) {
+		setTextColor(Color::YELLOW);
+	}
+
 	this->printTimer();
 	this->printShipTurn();
 	this->printRemainingLives(lives);
@@ -726,6 +731,15 @@ void Board::printShipTurn() const {
 
 void Board::printRemainingLives(int lives) const {
 	gotoxy(50, 23);
-	
 	std::cout << "| " << "Remaining lives: " << lives  << std::endl;
+}
+
+void Board::printEscOptions() const {
+	clearLine(23);
+	gotoxy(13, 23);
+	if (this->isWithColors) {
+		setTextColor(Color::LIGHTRED);
+	}
+	std::string const escOptions = "--- To exit press 9, to unpause press ESC ---";
+	std::cout << escOptions << std::endl;
 }

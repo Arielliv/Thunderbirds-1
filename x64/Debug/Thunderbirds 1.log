@@ -1,3 +1,6 @@
-﻿  menu.cpp
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\menu.cpp(122,3): warning C4129: ' ': unrecognized character escape sequence
+﻿  board.cpp
+  game.cpp
+  main.cpp
+  point.cpp
+  Generating Code...
   Thunderbirds 1.vcxproj -> C:\Users\adi.veiszman\source\repos\Thunderbirds-1\x64\Debug\Thunderbirds 1.exe

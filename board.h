@@ -58,15 +58,17 @@ private:
 
 	void initBoard();
 	void updateValueByPoints(const Point* points, const int size, const BoardCellType cellType);
+
+	void printStatus(const int lives) const;
+	void printTimer() const;
+	void printShipTurn() const;
+	void printRemainingLives(const int lives) const;
+	void printEscOptions() const;
 public:
 	Board(bool isWithColors = false);
 	Board& operator=(const Board& b);
 	BoardCellType getValueByIndex(const Point p) const;
 	void printBoard() const;
-	void printStatus(const int lives) const;
-	void printTimer() const;
-	void printShipTurn() const;
-	void printRemainingLives(const int lives) const;
 	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
 	bool isShipValidMove(const ShipSize shipSize) const;
 	bool isBlockValidMove(const BlockSize blockSize, const Direction dir) const;

@@ -46,9 +46,9 @@ void Menu::printMenu() const {
 		"                         |___, ||__,_|_| |_| |_||___|                           \n"
 		"                           __/ |                                                \n"
 		"                          |___/                                                 \n\n\n\n"
-		"                      For starting a new game enter     1                       \n"
-		"                      For instructions and keys enter   8                       \n"
-		"                      For exit enter                    9                       \n\n\n\n\n"
+		"                      For starting a new game press     1                       \n"
+		"                      For instructions and keys press   8                       \n"
+		"                      For exit press                    9                       \n\n\n\n\n"
 		"--------------------------------------------------------------------------------";
 
 	clear_screen();
