@@ -11,10 +11,11 @@ class Game
 	Board gameBoard;
 	Menu menu;
 	int lives = 3;
-public:
-	void start();
+private:
 	void printExit() const;
 	void printWin() const;
 	void printLoss() const;
+public:
+	void start();
 };
 

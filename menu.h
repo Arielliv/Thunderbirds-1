@@ -7,11 +7,12 @@ enum class MenuChoice {WithColor = 1, WithoutColor = 2, Exit = 3, ShowSettings =
 
 class Menu
 {
-public:
-	MenuChoice openMenu() const;
+private:
 	void printMenu() const;
 	void printInstructions() const;
 	void printSettings() const;
 	bool openSettings() const;
+public:
+	MenuChoice openMenu() const;
 };
 

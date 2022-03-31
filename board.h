@@ -48,8 +48,8 @@ private:
 	bool isSmallBlockValidMove(const Direction dir) const;
 	bool isBigBlockValidMove(const Direction dir) const;
 
-	bool isSmallShipNextToBlock() const;
-	bool isBigShipNextToBlock(BoardCellType* blockType) const;
+	bool isSmallShipValidMoveBlock() const;
+	bool isBigShipValidBlockMove(BoardCellType* blockType) const;
 
 	void updateExitsStatus(const ShipSize shipSize);
 
@@ -64,18 +64,19 @@ private:
 	void printShipTurn() const;
 	void printRemainingLives(const int lives) const;
 	void printEscOptions() const;
-public:
-	Board(bool isWithColors = false);
-	Board& operator=(const Board& b);
-	BoardCellType getValueByIndex(const Point p) const;
 	void printBoard() const;
+
+	BoardCellType getValueByIndex(const Point p) const;
 	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
+	bool runTheGame(const int lives);
 	bool isShipValidMove(const ShipSize shipSize) const;
 	bool isBlockValidMove(const BlockSize blockSize, const Direction dir) const;
 	void getFallingBlockTypes(BlockSize* results) const;
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
-	bool runTheGame(const int lives);
+public:
+	Board(bool isWithColors = false);
+	Board& operator=(const Board& b);
 	bool play(bool* isEsc, const int lives);
 	friend void clearLine(const int lineNumber);
 };
