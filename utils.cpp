@@ -8,3 +8,7 @@ int findInArray(const char arr[], const int n, const char c){
     }
     return -1;
 }
+
+BoardCellType getValueByIndex(const Point p, const char(&boardGame)[Bounderies::rows][Bounderies::cols]) {
+    return (BoardCellType)boardGame[p.getXPoint()][p.getYPoint()];
+}

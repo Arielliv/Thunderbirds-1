@@ -135,4 +135,70 @@ Point Ship::getCurrentShipPoint() const{
 const Point* Ship::getCurrentBodyPoints() const {
 	return this->body;
 }
+
+bool Ship::isBigShipNextMoveEQCellType(const BoardCellType cellType, const char(&boardGame)[Bounderies::rows][Bounderies::cols]) const {
+	Point curShipPoint = this->getCurrentShipPoint();
+	int curShipPointY = curShipPoint.getYPoint();
+	int curShipPointX = curShipPoint.getXPoint();
+
+
+	switch ((int)this->direction) {
+	case 0: // UP
+		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == cellType)) {
+			return true;
+		}
+
+		break;
+	case 1: // DOWN
+		if ((getValueByIndex(Point(curShipPointY + 2, curShipPointX), boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), boardGame) == cellType)) {
+			return true;
+		}
+
+		break;
+	case 2: // LEFT
+		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), boardGame) == cellType) {
+			return true;
+		}
+
+		break;
+	case 3: // RIGHT
+		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), boardGame) == cellType) {
+			return true;
+		}
+
+		break;
+	}
+	return false;
+}
+
+//void Ship::smallShipMove(Board &board) {
+//	bool isBlockCanMove = true;
+//
+//	if ((this->isShipValidMove(ShipSize::Small) || this->isSmallShipValidMoveBlock()) && !this->exitsStatus[0]) {
+//		if (this->isSmallShipValidMoveBlock()) {
+//			if (this->isBlockValidMove(BlockSize::Small, this->direction)) {
+//				isBlockCanMove = true;
+//				this->smallBlockMove(this->direction);
+//			}
+//			else {
+//				isBlockCanMove = false;
+//			}
+//		}
+//		if (isBlockCanMove) {
+//			this->updateValueByCellType(BoardCellType::SmallShip, true);
+//			this->smallShip.move();
+//			this->updateValueByCellType(BoardCellType::SmallShip, false);
+//		}
+//	}
+//
+//	if (this->isSmallShipVictoryMove()) {
+//		this->updateExitsStatus(ShipSize::Small);
+//		this->smallShip.erase();
+//		this->updateValueByCellType(BoardCellType::SmallShip, true);
+//	}
+//}
 	

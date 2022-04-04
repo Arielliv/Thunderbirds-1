@@ -30,30 +30,33 @@ class Board{
 	bool isLoss = false;
 	bool exitsStatus[2] = { false,false };
 	bool isSmallShipMove = false;
-	char boardGame[Bounderies::rows][Bounderies::cols];
 	int time = 500;
 private:
 	void setValueByIndex(const Point p, const BoardCellType boardCellType);
+	
 	void smallShipMove();
 	void bigShipMove();
-	void smallBlockMove(const Direction dir);
-	void bigBlockMove(const Direction dir);
-
 	bool isSmallShipValidMove() const;
 	bool isBigShipValidMove() const;
-	bool isSmallShipVictoryMove() const;
-	bool isBigShipVictoryMove() const;
 	bool shouldShipBeExploed() const;
+	bool isShipValidMove(const ShipSize shipSize) const;
 
+	void smallBlockMove(const Direction dir);
+	void bigBlockMove(const Direction dir);
 	bool isSmallBlockValidMove(const Direction dir) const;
 	bool isBigBlockValidMove(const Direction dir) const;
+	bool isBlockValidMove(const BlockSize blockSize, const Direction dir) const;
+	void getFallingBlockTypes(BlockSize* results) const;
+	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 
 	bool isSmallShipValidMoveBlock() const;
 	bool isBigShipValidBlockMove(BoardCellType* blockType) const;
 
 	void updateExitsStatus(const ShipSize shipSize);
 
-	bool isBigShipNextMoveEQCellType(const BoardCellType cellType) const;
+	bool isSmallShipVictoryMove() const;
+	bool isBigShipVictoryMove() const;
+	//bool isBigShipNextMoveEQCellType(const BoardCellType cellType) const;
 	bool isSmallShipNextMoveEQCellType(const BoardCellType cellType) const;
 
 	void initBoard();
@@ -66,18 +69,16 @@ private:
 	void printEscOptions() const;
 	void printBoard() const;
 
-	BoardCellType getValueByIndex(const Point p) const;
 	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
 	bool runTheGame(const int lives);
-	bool isShipValidMove(const ShipSize shipSize) const;
-	bool isBlockValidMove(const BlockSize blockSize, const Direction dir) const;
-	void getFallingBlockTypes(BlockSize* results) const;
-	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
 public:
+	char boardGame[Bounderies::rows][Bounderies::cols];
+
 	Board(bool isWithColors = false);
 	Board& operator=(const Board& b);
 	bool play(bool* isEsc, const int lives);
 	friend void clearLine(const int lineNumber);
+	//friend BoardCellType getValueByIndex(const Point p, const char (&boardGame)[Bounderies::rows][Bounderies::cols]);
 };
 

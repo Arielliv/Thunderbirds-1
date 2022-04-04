@@ -2,8 +2,11 @@
 
 #include "color.h"
 #include "point.h"
+#include "board.h"
+#include "utils.h"
 
 enum class ShipSize{ Small = 2, Big=4 };
+class Board {};
 
 class Ship
 {
@@ -25,5 +28,8 @@ public:
 	void erase() const;
 	Ship& operator=(const Ship& s);
 	~Ship();
+
+	bool isBigShipNextMoveEQCellType(const BoardCellType cellType, const char(&boardGame)[Bounderies::rows][Bounderies::cols]) const;
+	//void smallShipMove(Board& board);
 };
 

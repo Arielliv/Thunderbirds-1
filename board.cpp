@@ -60,14 +60,15 @@ void Board::setValueByIndex(const Point p, const BoardCellType boardCellType) {
 	this->boardGame[p.getYPoint()][p.getXPoint()] = (char)boardCellType;
 }
 
-BoardCellType Board::getValueByIndex(const Point p) const {
-	return (BoardCellType)this->boardGame[p.getXPoint()][p.getYPoint()];
-}
+//BoardCellType getValueByIndex(const Point p, const char (&boardGame)[Bounderies::rows][Bounderies::cols]) {
+//	return (BoardCellType)boardGame[p.getXPoint()][p.getYPoint()];
+//}
+
 void Board::printBoard() const {
 	clear_screen();
 	for (int x = 0; x < Bounderies::rows; x++) {
 		for (int y = 0; y < Bounderies::cols; y++) {
-			BoardCellType currentCellType = this->getValueByIndex(Point(x, y));
+			BoardCellType currentCellType = getValueByIndex(Point(x, y), this->boardGame);
 			Point currentPoint = Point(y, x);
 			if (currentCellType == BoardCellType::Wall) {
 				currentPoint.draw('#');
@@ -360,27 +361,27 @@ bool Board::isSmallBlockValidMove(const Direction dir) const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if ((this->getValueByIndex(Point(curBlockPointY - 1, curBlockPointX)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1)) == BoardCellType::Empty)) {
+		if ((getValueByIndex(Point(curBlockPointY - 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty)) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if ((this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1)) == BoardCellType::Empty)) {
+		if ((getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty)) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (this->getValueByIndex(Point(curBlockPointY, curBlockPointX - 1)) == BoardCellType::Empty) {
+		if (getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), this->boardGame) == BoardCellType::Empty) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (this->getValueByIndex(Point(curBlockPointY, curBlockPointX + 2)) == BoardCellType::Empty) {
+		if (getValueByIndex(Point(curBlockPointY, curBlockPointX + 2), this->boardGame) == BoardCellType::Empty) {
 			return true;
 		}
 
@@ -394,8 +395,8 @@ bool Board::shouldShipBeExploed() const {
 	int curBlockPointY = curBlockPoint.getYPoint();
 	int curBlockPointX = curBlockPoint.getXPoint();
 
-	if (this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::SmallShip
-		|| this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::SmallShip) {
+	if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::SmallShip
+		|| getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::SmallShip) {
 		return true;
 	}
 	else {
@@ -411,31 +412,31 @@ bool Board::isBigBlockValidMove(const Direction dir) const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if (this->getValueByIndex(Point(curBlockPointY - 1, curBlockPointX)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1)) == BoardCellType::Empty) {
+		if (getValueByIndex(Point(curBlockPointY - 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if (this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::Empty) {
+		if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (this->getValueByIndex(Point(curBlockPointY, curBlockPointX - 1)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX - 1)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 2, curBlockPointX - 1)) == BoardCellType::Empty) {
+		if (getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX - 1), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 2, curBlockPointX - 1), this->boardGame) == BoardCellType::Empty) {
 			return true;
 		}
 		
 		break;
 	case 3: // RIGHT
-		if (this->getValueByIndex(Point(curBlockPointY, curBlockPointX + 2)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 2)) == BoardCellType::Empty
-			&& this->getValueByIndex(Point(curBlockPointY + 2, curBlockPointX + 2)) == BoardCellType::Empty){
+		if (getValueByIndex(Point(curBlockPointY, curBlockPointX + 2), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 2), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 2, curBlockPointX + 2), this->boardGame) == BoardCellType::Empty){
 			return true;
 		}
 
@@ -449,7 +450,7 @@ bool Board::isSmallShipVictoryMove() const {
 }
 
 bool Board::isBigShipVictoryMove() const {
-	return this->isBigShipNextMoveEQCellType(BoardCellType::Exit);
+	return this->bigShip.isBigShipNextMoveEQCellType(BoardCellType::Exit, this->boardGame);
 }
 
 bool Board::isSmallShipValidMove() const {
@@ -457,7 +458,7 @@ bool Board::isSmallShipValidMove() const {
 }
 
 bool Board::isBigShipValidMove() const {
-	return this->isBigShipNextMoveEQCellType(BoardCellType::Empty);
+	return this->bigShip.isBigShipNextMoveEQCellType(BoardCellType::Empty, this->boardGame);
 }
 
 bool Board::isSmallShipNextMoveEQCellType(const BoardCellType cellType) const {
@@ -469,67 +470,27 @@ bool Board::isSmallShipNextMoveEQCellType(const BoardCellType cellType) const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), this->boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), this->boardGame) == cellType)) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if ((this->getValueByIndex(Point(curShipPointY + 1, curShipPointX)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1)) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY + 1, curShipPointX), this->boardGame) == cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), this->boardGame) == cellType)) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), this->boardGame) == cellType) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == cellType) {
-			return true;
-		}
-
-		break;
-	}
-	return false;
-}
-
-bool Board::isBigShipNextMoveEQCellType(const BoardCellType cellType) const {
-	Point curShipPoint = this->bigShip.getCurrentShipPoint();
-	int curShipPointY = curShipPoint.getYPoint();
-	int curShipPointX = curShipPoint.getXPoint();
-
-	Direction dir = this->bigShip.getDirection();
-
-	switch ((int)dir) {
-	case 0: // UP
-		if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == cellType)) {
-			return true;
-		}
-
-		break;
-	case 1: // DOWN
-		if ((this->getValueByIndex(Point(curShipPointY + 2, curShipPointX)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1)) == cellType)) {
-			return true;
-		}
-
-		break;
-	case 2: // LEFT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1)) == cellType) {
-			return true;
-		}
-
-		break;
-	case 3: // RIGHT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == cellType
-			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2)) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), this->boardGame) == cellType) {
 			return true;
 		}
 
@@ -546,31 +507,31 @@ bool Board::isSmallShipValidMoveBlock() const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if ((this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) == BoardCellType::SmallBlock
-			|| this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) == BoardCellType::SmallBlock)
-			&& (this->getValueByIndex(Point(curShipPointY - 1, curShipPointX)) != BoardCellType::Wall
-			&& this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1)) != BoardCellType::Wall)) {
+		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), this->boardGame) == BoardCellType::SmallBlock
+			|| getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), this->boardGame) == BoardCellType::SmallBlock)
+			&& (getValueByIndex(Point(curShipPointY - 1, curShipPointX), this->boardGame) != BoardCellType::Wall
+			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), this->boardGame) != BoardCellType::Wall)) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if ((this->getValueByIndex(Point(curShipPointY + 1, curShipPointX)) == BoardCellType::SmallBlock
-			|| this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1)) == BoardCellType::SmallBlock)
-			&& (this->getValueByIndex(Point(curShipPointY + 1, curShipPointX)) != BoardCellType::Wall
-			&& this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1)) != BoardCellType::Wall)) {
+		if ((getValueByIndex(Point(curShipPointY + 1, curShipPointX), this->boardGame) == BoardCellType::SmallBlock
+			|| getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), this->boardGame) == BoardCellType::SmallBlock)
+			&& (getValueByIndex(Point(curShipPointY + 1, curShipPointX), this->boardGame) != BoardCellType::Wall
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), this->boardGame) != BoardCellType::Wall)) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX - 1)) == BoardCellType::SmallBlock) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), this->boardGame) == BoardCellType::SmallBlock) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (this->getValueByIndex(Point(curShipPointY, curShipPointX + 2)) == BoardCellType::SmallBlock) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), this->boardGame) == BoardCellType::SmallBlock) {
 			return true;
 		}
 
@@ -588,8 +549,8 @@ bool Board::isBigShipValidBlockMove(BoardCellType* blockType) const {
 	BoardCellType curCellType1, curCellType2;
 	switch ((int)dir) {
 	case 0: // UP
-		 curCellType1 = this->getValueByIndex(Point(curShipPointY - 1, curShipPointX));
-		 curCellType2 = this->getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1));
+		 curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX), this->boardGame);
+		 curCellType2 = getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), this->boardGame);
 
 		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
 			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
@@ -604,8 +565,8 @@ bool Board::isBigShipValidBlockMove(BoardCellType* blockType) const {
 
 		break;
 	case 1: // DOWN
-		 curCellType1 = this->getValueByIndex(Point(curShipPointY + 2, curShipPointX));
-		 curCellType2 = this->getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1));
+		 curCellType1 = getValueByIndex(Point(curShipPointY + 2, curShipPointX), this->boardGame);
+		 curCellType2 = getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), this->boardGame);
 
 		if ((curCellType1>= BoardCellType::SmallBlock|| curCellType2 >= BoardCellType::SmallBlock)
 			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
@@ -620,8 +581,8 @@ bool Board::isBigShipValidBlockMove(BoardCellType* blockType) const {
 
 		break;
 	case 2: // LEFT
-		 curCellType1 = this->getValueByIndex(Point(curShipPointY, curShipPointX - 1));
-		 curCellType2 = this->getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1));
+		 curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX - 1), this->boardGame);
+		 curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), this->boardGame);
 
 		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
 			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
@@ -636,8 +597,8 @@ bool Board::isBigShipValidBlockMove(BoardCellType* blockType) const {
 
 		break;
 	case 3: // RIGHT
-		 curCellType1 = this->getValueByIndex(Point(curShipPointY, curShipPointX + 2));
-		 curCellType2 = this->getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2));
+		 curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX + 2), this->boardGame);
+		 curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), this->boardGame);
 
 		if ((curCellType1 >= BoardCellType::SmallBlock|| curCellType2 >= BoardCellType::SmallBlock)
 			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
@@ -663,8 +624,8 @@ void Board::getFallingBlockTypes(BlockSize* results) const {
 	curBlockPointY = curBlockPoint.getYPoint();
 	curBlockPointX = curBlockPoint.getXPoint();
 
-	if (this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX)) == BoardCellType::Empty
-		&& this->getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1)) == BoardCellType::Empty) {
+	if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
+		&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) {
 		results[counter] = BlockSize::Small;
 		counter++;
 	}
@@ -673,8 +634,8 @@ void Board::getFallingBlockTypes(BlockSize* results) const {
 	curBlockPointY = curBlockPoint.getYPoint();
 	curBlockPointX = curBlockPoint.getXPoint();
 
-	if ((this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX)) == BoardCellType::Empty
-		&& this->getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1)) == BoardCellType::Empty) || this->shouldShipBeExploed()) {
+	if ((getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::Empty
+		&& getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) || this->shouldShipBeExploed()) {
 		results[counter] = BlockSize::Big;
 		counter++;
 	}
