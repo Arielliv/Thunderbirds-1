@@ -4,6 +4,7 @@
 #include "keys.h"
 #include "point.h"
 #include "block.h"
+#include <vector>
 
 enum class BoardCellType {
 	Empty = '0',
@@ -28,9 +29,9 @@ class Board{
 	bool isWithColors = false;
 	bool isVictory = false;
 	bool isLoss = false;
-	bool exitsStatus[2] = { false,false };
+	vector<bool> exitsStatus = { false,false };
 	bool isSmallShipMove = false;
-	char boardGame[Bounderies::rows][Bounderies::cols];
+	vector<vector<char>> boardGame;
 	int time = 500;
 private:
 	void setValueByIndex(const Point p, const BoardCellType boardCellType);
@@ -57,7 +58,7 @@ private:
 	bool isSmallShipNextMoveEQCellType(const BoardCellType cellType) const;
 
 	void initBoard();
-	void updateValueByPoints(const Point* points, const int size, const BoardCellType cellType);
+	void updateValueByPoints(const vector<Point> points, const int size, const BoardCellType cellType);
 
 	void printStatus(const int lives) const;
 	void printTimer() const;

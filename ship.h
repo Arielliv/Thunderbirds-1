@@ -2,6 +2,7 @@
 
 #include "color.h"
 #include "point.h"
+#include <vector>
 
 enum class ShipSize{ Small = 2, Big=4 };
 
@@ -12,14 +13,14 @@ class Ship
 	char figure;
 	Color color;
 	Direction direction = Direction::Right;
-	Point* body;
+	vector<Point> body;
 	bool isWithColors = false;
 public:
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
 	void setDirection(const Direction _direction);
 	Direction getDirection() const;
 	Point getCurrentShipPoint() const;
-	const Point* getCurrentBodyPoints() const;
+	const vector<Point> getCurrentBodyPoints() const;
 	void move();
 	void draw() const;
 	void erase() const;

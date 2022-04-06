@@ -38,6 +38,7 @@ Board& Board::operator=(const Board& b) {
 	for (int i = 0; i < 2; i++) {
 		this->exitsStatus[i] = b.exitsStatus[i];
 	}
+	
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			boardGame[x][y] = b.boardGame[x][y];
@@ -49,10 +50,12 @@ Board& Board::operator=(const Board& b) {
 Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7), isWithColors)), bigBlock(Block(BlockSize::Big, '~', Color::CYAN, Point(51, 10), isWithColors)), isWithColors(isWithColors) {
 	int cur;
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
+		vector <char> row;
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			cur = x * (int)Bounderies::cols + y;
-			boardGame[x][y] = staticBoard[cur];
+			row.push_back(staticBoard[cur]);
 		}
+		this->boardGame.push_back(row);
 	}
 }
 
@@ -78,6 +81,7 @@ void Board::printBoard() const {
 		}
 	}
 }
+
 void Board::initBoard() {
 	this->printBoard();
 
@@ -278,6 +282,7 @@ void Board::bigBlockMove(const Direction dir) {
 	this->bigBlock.move(dir);
 	this->updateValueByCellType(BoardCellType::BigBlock, false);
 }
+
 void Board::updateValueByCellType(const BoardCellType cellType, const bool shouldErase) {
 	/*
 	SmallShip = '2',
@@ -285,7 +290,7 @@ void Board::updateValueByCellType(const BoardCellType cellType, const bool shoul
 	SmallBlock = '5',
 	BigBlock = '6',
 	*/
-	const Point* curPoints;
+	vector<Point> curPoints;
 	
 	switch ((char)cellType) {
 	case '2': // SmallShip
@@ -327,7 +332,7 @@ void Board::updateValueByCellType(const BoardCellType cellType, const bool shoul
 	}
 
 }
-void Board::updateValueByPoints(const Point* points, const int size, const BoardCellType cellType){
+void Board::updateValueByPoints(const vector<Point> points, const int size, const BoardCellType cellType){
 	for (int i = 0; i < size; i++) {
 		this->setValueByIndex(points[i], cellType);
 	}
