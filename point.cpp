@@ -42,3 +42,8 @@ void Point::move(const Direction direction) {
 		break;
 	}
 }
+
+Point::~Point() {
+	this->x = NULL;
+	this->y = NULL;
+}

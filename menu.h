@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "ioUtils.h"
+#include "point.h"
 
 enum class MenuChoice {WithColor = 1, WithoutColor = 2, Exit = 3, ShowSettings = 4};
 

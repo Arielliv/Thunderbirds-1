@@ -1,5 +1,4 @@
 ﻿#include "menu.h"
-#include "point.h"
 
 MenuChoice Menu::openMenu() const {
 	char input = '0';

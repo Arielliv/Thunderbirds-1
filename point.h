@@ -17,6 +17,7 @@ public:
 	void move(const Direction direction);
 	int getXPoint() const;
 	int getYPoint() const;
+	~Point();
 };
 
 

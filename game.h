@@ -1,7 +1,7 @@
 #pragma once
+#include "board.h"
 #include "ship.h"
 #include "keys.h"
-#include "board.h"
 #include <iostream>
 #include "ioUtils.h"
 #include "menu.h"

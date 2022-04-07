@@ -141,8 +141,10 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="boardUtils.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="constants.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="ioUtils.h" />
     <ClInclude Include="keys.h" />
@@ -154,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="boardUtils.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="keys.cpp" />
