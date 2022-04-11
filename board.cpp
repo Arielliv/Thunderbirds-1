@@ -10,7 +10,7 @@ std::string const staticBoard = "11111111111111111111111111111111111111111111111
 "10000000000000000000000000000000000000000000000000011100000000000000000000000001"
 "10000000000000000000000011111111111100000000000000011100000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011100000000000000000000000001"
-"10000000000000000000000011000000000000000000000000000000000000000000000000000001"
+"10000000007000000000000011000000000000000000000000000000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000000000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000000000000000000000000000000001"
 "10000000000000000000000011000000000000000000000000011111111111111000000000000001"
@@ -42,6 +42,10 @@ Board& Board::operator=(const Board& b) {
 	for (int i = 0; i < 2; i++) {
 		this->exitsStatus[i] = b.exitsStatus[i];
 	}
+
+	for (int i = 0; i < b.ghosts.size(); i++) {
+		this->ghosts[i] = b.ghosts[i];
+	}
 	
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
@@ -58,6 +62,9 @@ Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYA
 		vector <char> row;
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			cur = x * (int)Bounderies::cols + y;
+			if (staticBoard[cur] == (int)BoardCellType::Ghost) {
+				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
+			}
 			row.push_back(staticBoard[cur]);
 		}
 		this->boardGame.push_back(row);
@@ -86,6 +93,9 @@ void Board::initBoard() {
 	this->smallShip.draw(this->boardGame);
 	this->bigBlock.draw(this->boardGame);
 	this->smallBlock.draw(this->boardGame);
+	for (int i = 0; i < this->ghosts.size(); i++) {
+		this->ghosts[i].draw(this->boardGame);
+	}
 }
 
 bool Board::runTheGame(const  int lives) {
@@ -134,6 +144,7 @@ bool Board::runTheGame(const  int lives) {
 			}
 		}
 		else if (isHittedOnce && !this->isLoss) {
+			this->moveGhosts();
 			if (this->isSmallShipMove && !isSwitched) {
 					this->smallShipMove();
 					BlockSize curFallingBlocks[2];
@@ -162,6 +173,30 @@ bool Board::runTheGame(const  int lives) {
 		return false;
 	}
 }
+
+void Board::moveGhosts() {
+	for (int i = 0; i < this->ghosts.size(); i++) {
+		if (this->ghosts[i].isValidMove(this->boardGame)){
+			this->ghosts[i].move(this->boardGame);
+			if (this->ghosts[i].isHitShip(this->boardGame)) {
+				this->isLoss = true;
+			}
+		}
+		else {
+			if (this->ghosts[i].getDirection() == Direction::Left) {
+				this->ghosts[i].setDirection(Direction::Right);
+			}
+			else {
+				this->ghosts[i].setDirection(Direction::Left);
+			}
+			this->ghosts[i].move(this->boardGame);
+			if (this->ghosts[i].isHitShip(this->boardGame)) {
+				this->isLoss = true;
+			}
+		}
+	}
+};
+
 bool Board::play(bool *isEsc, const int lives) {
 	bool shouldExitLoop = false;
 	bool isFirstEsc = false;

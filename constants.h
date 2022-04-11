@@ -7,4 +7,5 @@ enum class BoardCellType {
 	Exit = '4',
 	SmallBlock = '5',
 	BigBlock = '6',
+	Ghost = '7'
 };

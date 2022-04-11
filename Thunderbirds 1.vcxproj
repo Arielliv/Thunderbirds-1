@@ -146,6 +146,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="ghost.h" />
     <ClInclude Include="ioUtils.h" />
     <ClInclude Include="keys.h" />
     <ClInclude Include="menu.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="board.cpp" />
     <ClCompile Include="boardUtils.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="ghost.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="keys.cpp" />
     <ClCompile Include="main.cpp" />

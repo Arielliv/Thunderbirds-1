@@ -5,6 +5,7 @@
 #include "point.h"
 #include "block.h"
 #include <vector>
+#include "ghost.h"
 
 enum Bounderies {
 	rows = 23,
@@ -16,6 +17,7 @@ class Board{
 	Ship smallShip;
 	Block bigBlock;
 	Block smallBlock;
+	vector<Ghost> ghosts;
 	bool isWithColors = false;
 	bool isVictory = false;
 	bool isLoss = false;
@@ -52,6 +54,8 @@ private:
 	void getFallingBlockTypes(BlockSize* results) const;
 	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
 	void updateVictory();
+
+	void moveGhosts();
 public:
 	Board(bool isWithColors = false);
 	Board& operator=(const Board& b);

@@ -141,7 +141,6 @@ bool Ship::isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vec
 		break;
 	}
 	return false;
-
 }
 
 bool Ship::isBigShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const {
