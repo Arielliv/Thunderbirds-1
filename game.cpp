@@ -14,10 +14,14 @@ void Game::start() {
 		return;
 	}
 
-	this->handleFileGame(false);
+	if (userChoice == MenuChoice::OpenFileByNameWithColor || userChoice == MenuChoice::OpenFileByNameWithoutColor) {
+		this->handleFileGameWithName(userChoice == MenuChoice::OpenFileByNameWithColor);
+	}
 
 	while (this->lives > 0 && !isWon && !isEsc) {
-		this->gameBoard = Board(userChoice == MenuChoice::WithColor);
+		this->handleFileGameWithoutName(userChoice == MenuChoice::WithColor);
+		//this->gameBoard = Board(userChoice == MenuChoice::WithColor);
+		this->gameBoard = this->presetBoard;
 		isWon = this->gameBoard.play(&isEsc, this->lives);
 		if (!isWon) {
 			clear_screen();
@@ -46,18 +50,29 @@ std::string Game::getFileName() {
 	return name;
 }
 
-void Game::handleFileGame(bool isByFileName) {
-	std::string lives, time, controlledShip, boardGame = "";
+Board Game::handleFileGameWithName(bool isWithColor) {
+	int time;
+	GameFile fileGame;
 	int legendLocation;
+	int controlledShip;
+	std::string boardGame = "";
+	int legendLocation;
+	this->fileGame.openFile(this->getFileName());
+	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation);
+	this->presetBoard = Board(isWithColor);
+}
 
-	if (isByFileName) {
-		this->fileGame.openFile(this->getFileName());
-	}
-	else {
-		this->fileGame.openFile("");
-	}
+Board Game::handleFileGameWithoutName(bool isWithColor) {
+	int time;
+	GameFile fileGame;
+	int legendLocation;
+	int controlledShip;
+	std::string boardGame = "";
+	int legendLocation;
+	this->fileGame.openFile("");
 
-	this->fileGame.readFile(lives, time, controlledShip, boardGame, legendLocation);
+	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation);
+	this->presetBoard = Board(isWithColor);
 }
 
 void Game::printExit() const {

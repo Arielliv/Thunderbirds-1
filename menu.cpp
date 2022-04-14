@@ -29,7 +29,13 @@ MenuChoice Menu::openMenu() const {
 		}
 	}
 	if (input == '2') {
-		return MenuChoice::OpenFileByName;
+		isWithColor = this->openSettings();
+		if (isWithColor) {
+			return MenuChoice::OpenFileByNameWithColor;
+		}
+		else {
+			return MenuChoice::OpenFileByNameWithoutColor;
+		}
 	}
 
 	return MenuChoice::ShowSettings;

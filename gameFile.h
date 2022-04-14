@@ -11,6 +11,6 @@ private:
 public:
 	
 	bool openFile(std::string fileName);
-	void readFile(std::string& lives, std::string& time, std::string& controlledShip, std::string& boardGame, int& legendLocation);
+	void readFile(int& lives, int& time, int& controlledShip, std::string& boardGame, int& legendLocation);
 };
 

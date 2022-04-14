@@ -1,7 +1,11 @@
 #include "ship.h"
 
+Ship::Ship() {
+	this->isEmpty = true;
+};
 
 Ship& Ship::operator=(const Ship& s) {
+	this->isEmpty = false;
 	this->shipSize = s.shipSize;
 	this->startPoint = s.startPoint;
 	this->figure = s.figure;
@@ -15,6 +19,7 @@ Ship& Ship::operator=(const Ship& s) {
 }
 
 Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+	this->isEmpty = false;
 	if (shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++) {
 			this->body.push_back(Point(this->startPoint.getXPoint() + i, this->startPoint.getYPoint()));
@@ -307,4 +312,8 @@ bool Ship::isSmallShipValidMoveBlock(const vector<vector<char>>& boardGame) cons
 		break;
 	}
 	return false;
+}
+
+bool Ship::isShipEmpty() {
+	return this->isEmpty;
 }

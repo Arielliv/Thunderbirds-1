@@ -62,10 +62,38 @@ Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYA
 		vector <char> row;
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			cur = x * (int)Bounderies::cols + y;
+			if (staticBoard[cur] == (int)BoardCellType::BigShip) {
+			}
 			if (staticBoard[cur] == (int)BoardCellType::Ghost) {
 				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
 			}
 			row.push_back(staticBoard[cur]);
+		}
+		this->boardGame.push_back(row);
+	}
+}
+
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string boardGame, int legendLocation):isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time) {
+
+	//smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23, 7), isWithColors))
+	//bigBlock(Block(BlockSize::Big, '~', Color::CYAN, Point(51, 10), isWithColors)), 
+
+
+	int cur;
+	for (int x = 0; x < (int)Bounderies::rows; x++) {
+		vector <char> row;
+		for (int y = 0; y < (int)Bounderies::cols; y++) {
+			cur = x * (int)Bounderies::cols + y;
+			if (boardGame[cur] == (int)BoardCellType::BigShip && this->bigShip.isShipEmpty()) {
+				this->bigShip = Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(x, y), isWithColors);
+			}
+			if (boardGame[cur] == (int)BoardCellType::SmallShip && this->smallShip.isShipEmpty()) {
+				this->smallShip = Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(x, y), isWithColors);
+			}
+			if (boardGame[cur] == (int)BoardCellType::Ghost) {
+				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
+			}
+			row.push_back(boardGame[cur]);
 		}
 		this->boardGame.push_back(row);
 	}

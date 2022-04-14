@@ -33,15 +33,15 @@ bool GameFile::openFile(std::string name) {
 	return true;
 }
 
-void GameFile::readFile(std::string &lives, std::string &time, std::string &controlledShip, std::string &boardGame, int &legendLocation) {
+void GameFile::readFile(int& lives, int& time, int& controlledShip, std::string& boardGame, int& legendLocation) {
 	std::string boardLine;
 	int i = 0;
 	
 	if (this->inFile.is_open()) {
 		bool a = this->inFile.peek() == std::ifstream::traits_type::eof();
-		getline(this->inFile, lives);
-		getline(this->inFile, time);
-		getline(this->inFile, controlledShip);
+		this->inFile >> lives;
+		this->inFile >> time;
+		this->inFile >> controlledShip;
 
 		while (i < Bounderies::rows) {
 			getline(this->inFile, boardLine);

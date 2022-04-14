@@ -9,6 +9,7 @@
 
 class Game
 {
+	Board presetBoard;
 	Board gameBoard;
 	Menu menu;
 	int lives = 3;
@@ -17,7 +18,8 @@ private:
 	void printExit() const;
 	void printWin() const;
 	void printLoss() const;
-	void handleFileGame(bool isByFileName);
+	Board handleFileGameWithName(bool isWithColor);
+	Board handleFileGameWithoutName(bool isWithColor);
 	std::string getFileName();
 public:
 	void start();
