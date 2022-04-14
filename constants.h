@@ -9,3 +9,8 @@ enum class BoardCellType {
 	BigBlock = '6',
 	Ghost = '7'
 };
+
+enum Bounderies {
+	rows = 23,
+	cols = 80
+};

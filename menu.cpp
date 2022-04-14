@@ -28,6 +28,10 @@ MenuChoice Menu::openMenu() const {
 			return MenuChoice::WithoutColor;
 		}
 	}
+	if (input == '2') {
+		return MenuChoice::OpenFileByName;
+	}
+
 	return MenuChoice::ShowSettings;
 }
 
@@ -46,9 +50,10 @@ void Menu::printMenu() const {
 		"                         |___, ||__,_|_| |_| |_||___|                           \n"
 		"                           __/ |                                                \n"
 		"                          |___/                                                 \n\n\n\n"
-		"                      For starting a new game press     1                       \n"
-		"                      For instructions and keys press   8                       \n"
-		"                      For exit press                    9                       \n\n\n\n\n"
+		"                      For starting a new game press                1            \n"
+		"                      For starting a new game by file name press   2            \n"
+		"                      For instructions and keys press              8            \n"
+		"                      For exit press                               9            \n\n\n\n\n"
 		"--------------------------------------------------------------------------------";
 
 	clear_screen();

@@ -14,6 +14,8 @@ void Game::start() {
 		return;
 	}
 
+	this->handleFileGame(false);
+
 	while (this->lives > 0 && !isWon && !isEsc) {
 		this->gameBoard = Board(userChoice == MenuChoice::WithColor);
 		isWon = this->gameBoard.play(&isEsc, this->lives);
@@ -33,6 +35,29 @@ void Game::start() {
 	else {
 		this->printExit();
 	}
+}
+
+std::string Game::getFileName() {
+	string name;
+
+	std::cout << "Please enter file name: ";
+	std::cin >> name;
+
+	return name;
+}
+
+void Game::handleFileGame(bool isByFileName) {
+	std::string lives, time, controlledShip, boardGame = "";
+	int legendLocation;
+
+	if (isByFileName) {
+		this->fileGame.openFile(this->getFileName());
+	}
+	else {
+		this->fileGame.openFile("");
+	}
+
+	this->fileGame.readFile(lives, time, controlledShip, boardGame, legendLocation);
 }
 
 void Game::printExit() const {
@@ -78,3 +103,4 @@ void Game::printLoss() const {
 	clear_screen();
 	std::cout << loss << std::endl;
 }
+

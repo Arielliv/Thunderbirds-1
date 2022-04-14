@@ -4,7 +4,7 @@
 #include "ioUtils.h"
 #include "point.h"
 
-enum class MenuChoice {WithColor = 1, WithoutColor = 2, Exit = 3, ShowSettings = 4};
+enum class MenuChoice {WithColor = 1, WithoutColor = 2, Exit = 3, ShowSettings = 4, OpenFileByName = 5};
 
 class Menu
 {

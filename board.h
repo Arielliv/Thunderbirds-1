@@ -6,11 +6,7 @@
 #include "block.h"
 #include <vector>
 #include "ghost.h"
-
-enum Bounderies {
-	rows = 23,
-	cols = 80
-};
+#include "constants.h"
 
 class Board{
 	Ship bigShip;
