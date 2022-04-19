@@ -33,7 +33,7 @@ bool GameFile::openFile(std::string name) {
 	return true;
 }
 
-void GameFile::readFile(int& lives, int& time, int& controlledShip, std::string& boardGame, int& legendLocation) {
+void GameFile::readFile(int& lives, int& time, int& controlledShip, std::string& boardGame, int& legendLocation, int& numOfBlocks) {
 	std::string boardLine;
 	int i = 0;
 	
@@ -42,14 +42,15 @@ void GameFile::readFile(int& lives, int& time, int& controlledShip, std::string&
 		this->inFile >> lives;
 		this->inFile >> time;
 		this->inFile >> controlledShip;
+		this->inFile >> numOfBlocks;
 
-		while (i < Bounderies::rows) {
+		while (i < Bounderies::rows +1) {
 			getline(this->inFile, boardLine);
 			boardGame += boardLine;
 			i++;
 		}
 	}
 
-	legendLocation = i + 3;
+	legendLocation = i + 4;
 	//this->inFile.close();
 }

@@ -31,71 +31,71 @@ Board::~Board() {
 Board& Board::operator=(const Board& b) {
 	this->bigShip = b.bigShip;
 	this->smallShip = b.smallShip;
-	this->bigBlock = b.bigBlock;
-	this->smallBlock = b.smallBlock;
 	this->isVictory = b.isVictory;
 	this->isSmallShipMove = b.isSmallShipMove;
 	this->time = b.time;
 	this->isLoss = b.isLoss;
 	this->isWithColors = b.isWithColors;
-
-	for (int i = 0; i < 2; i++) {
-		this->exitsStatus[i] = b.exitsStatus[i];
-	}
-
-	for (int i = 0; i < b.ghosts.size(); i++) {
-		this->ghosts[i] = b.ghosts[i];
-	}
-	
-	for (int x = 0; x < (int)Bounderies::rows; x++) {
-		for (int y = 0; y < (int)Bounderies::cols; y++) {
-			boardGame[x][y] = b.boardGame[x][y];
-		}
-	}
+	this->exitsStatus = b.exitsStatus;
+	this->ghosts = b.ghosts;
+	this->blocks = b.blocks;
+	this->boardGame = b.boardGame;
 	return *this;
 }
 
-Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23,7), isWithColors)), bigBlock(Block(BlockSize::Big, '~', Color::CYAN, Point(51, 10), isWithColors)), isWithColors(isWithColors) {
+//Board::Board(bool isWithColors):bigShip(Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(34, 3), isWithColors)), smallShip(Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(5, 5), isWithColors)), isWithColors(isWithColors) {
+//	int cur;
+//	
+//	for (int x = 0; x < (int)Bounderies::rows; x++) {
+//		vector <char> row;
+//		for (int y = 0; y < (int)Bounderies::cols; y++) {
+//			cur = x * (int)Bounderies::cols + y;
+//			if (staticBoard[cur] == (int)BoardCellType::BigShip) {
+//			}
+//			if (staticBoard[cur] == (int)BoardCellType::Ghost) {
+//				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
+//			}
+//			row.push_back(staticBoard[cur]);
+//		}
+//		this->boardGame.push_back(row);
+//	}
+//}
+
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks):isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks) { 
+	vector<bool> blocksExists(numOfBlocks);
+	int counterNumOfBlocks;
+	bool isBigShipExists = false;
+	bool isSmallShipExists = false;
 	int cur;
-	
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		vector <char> row;
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			cur = x * (int)Bounderies::cols + y;
-			if (staticBoard[cur] == (int)BoardCellType::BigShip) {
-			}
-			if (staticBoard[cur] == (int)BoardCellType::Ghost) {
-				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
-			}
-			row.push_back(staticBoard[cur]);
+			row.push_back(_boardGame[cur]);
 		}
 		this->boardGame.push_back(row);
 	}
-}
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string boardGame, int legendLocation):isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time) {
-
-	//smallBlock(Block(BlockSize::Small, '^', Color::LIGHTGREEN, Point(23, 7), isWithColors))
-	//bigBlock(Block(BlockSize::Big, '~', Color::CYAN, Point(51, 10), isWithColors)), 
-
-
-	int cur;
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
-		vector <char> row;
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
-			cur = x * (int)Bounderies::cols + y;
-			if (boardGame[cur] == (int)BoardCellType::BigShip && this->bigShip.isShipEmpty()) {
+			if (this->boardGame[x][y] == (char)BoardCellType::BigShip && !isBigShipExists) {
 				this->bigShip = Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(x, y), isWithColors);
+				isBigShipExists = true;
 			}
-			if (boardGame[cur] == (int)BoardCellType::SmallShip && this->smallShip.isShipEmpty()) {
+			if (this->boardGame[x][y] == (char)BoardCellType::SmallShip && !isSmallShipExists) {
 				this->smallShip = Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(x, y), isWithColors);
+				isSmallShipExists = true;
 			}
-			if (boardGame[cur] == (int)BoardCellType::Ghost) {
+			if (this->boardGame[x][y] == (char)BoardCellType::Ghost) {
 				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right));
 			}
-			row.push_back(boardGame[cur]);
+			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {
+				if (!blocksExists[parseCharToInt(this->boardGame[x][y])-1] ) {
+					this->blocks.push_back(Block(this->boardGame, x,  y, numOfBlocks, '*'+x+y, Color::LIGHTGREEN, Point(x,y), isWithColors));
+					blocksExists[parseCharToInt(this->boardGame[x][y])-1] = true;
+				}
+			}
 		}
-		this->boardGame.push_back(row);
 	}
 }
 
@@ -119,10 +119,11 @@ void Board::initBoard() {
 	this->printBoard();
 	this->bigShip.draw(this->boardGame);
 	this->smallShip.draw(this->boardGame);
-	this->bigBlock.draw(this->boardGame);
-	this->smallBlock.draw(this->boardGame);
 	for (int i = 0; i < this->ghosts.size(); i++) {
 		this->ghosts[i].draw(this->boardGame);
+	}
+	for (int i = 0; i < this->blocks.size(); i++) {
+		this->blocks[i].draw(this->boardGame);
 	}
 }
 
@@ -263,12 +264,15 @@ void Board::smallShipMove() {
 
 	if ((this->isShipValidMove(ShipSize::Small) || this->smallShip.isShipValidBlockMove(&curBoardCellType, this->boardGame)) && !this->exitsStatus[0]) {
 		if (this->smallShip.isShipValidBlockMove(&curBoardCellType, this->boardGame)) {
-			if (this->smallBlock.isValidMove(dir, this->boardGame)) {
-				isBlockCanMove = true;
-				this->smallBlockMove(dir);
-			}
-			else {
-				isBlockCanMove = false;
+			for (int i = 0; i < numOfBlocks; i++) {
+				//small block valid move
+				if (this->blocks[i].isValidMove(dir, this->boardGame)) {
+					isBlockCanMove = true;
+					this->blocks[i].move(dir,this->boardGame);
+				}
+				else {
+					isBlockCanMove = false;
+				}
 			}
 		}
 		if (isBlockCanMove) {
@@ -290,21 +294,27 @@ void Board::bigShipMove() {
 	if ((this->isShipValidMove(ShipSize::Big) || this->bigShip.isShipValidBlockMove(&curBoardCellType, this->boardGame)) && !this->exitsStatus[1]) {
 		if (this->bigShip.isShipValidBlockMove(&curBoardCellType, this->boardGame)) {
 			if (curBoardCellType == BoardCellType::SmallBlock) {
-				if (this->smallBlock.isValidMove(dir, this->boardGame)) {
-					isBlockCanMove = true;
-					this->smallBlockMove(dir);
-				}
-				else {
-					isBlockCanMove = false;
+				for (int i = 0; i < numOfBlocks; i++) {
+					// smallBlockValidMove
+					if (this->blocks[i].isValidMove(dir, this->boardGame)) {
+						isBlockCanMove = true;
+						this->blocks[i].move(dir, this->boardGame);
+					}
+					else {
+						isBlockCanMove = false;
+					}
 				}
 			}
 			else if (curBoardCellType == BoardCellType::BigBlock) {
-				if (this->bigBlock.isValidMove(dir, this->boardGame)) {
-					isBlockCanMove = true;
-					this->bigBlockMove(dir);
-				}
-				else {
-					isBlockCanMove = false;
+				for (int i = 0; i < numOfBlocks; i++) {
+					// bigBlockValidMove
+					if (this->blocks[i].isValidMove(dir, this->boardGame)) {
+						isBlockCanMove = true;
+						this->blocks[i].move(dir, this->boardGame);
+					}
+					else {
+						isBlockCanMove = false;
+					}
 				}
 			}
 		}
@@ -319,14 +329,6 @@ void Board::bigShipMove() {
 	}
 }
 
-void Board::smallBlockMove(const Direction dir) {
-	this->smallBlock.move(dir,this->boardGame);
-}
-
-void Board::bigBlockMove(const Direction dir) {
-	this->bigBlock.move(dir,this->boardGame);
-}
-
 bool Board::isShipValidMove(const ShipSize shipSize) const {
 	if (shipSize == ShipSize::Small) {
 		return this->isSmallShipValidMove();
@@ -337,18 +339,22 @@ bool Board::isShipValidMove(const ShipSize shipSize) const {
 }
 
 bool Board::shouldShipBeExploed() const {
-	Point curBlockPoint = this->bigBlock.getCurrentBlockPoint();
-	int curBlockPointY = curBlockPoint.getYPoint();
-	int curBlockPointX = curBlockPoint.getXPoint();
+	for (int i = 0; i < numOfBlocks; i++) {
+		if (this->blocks[i].getBlockSize() == BlockSize::Big) {
+			Point curBlockPoint = this->blocks[i].getCurrentBlockPoint();
+			int curBlockPointY = curBlockPoint.getYPoint();
+			int curBlockPointX = curBlockPoint.getXPoint();
 
-	if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::SmallShip
-		|| getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::SmallShip) {
-		return true;
+			if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::SmallShip
+				|| getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::SmallShip) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 	}
-	else {
-		return false;
-	}
-
+	return false;
 }
 
 bool Board::isSmallShipVictoryMove() const {
@@ -371,40 +377,29 @@ void Board::getFallingBlockTypes(BlockSize* results) const {
 	Point curBlockPoint;
 	int curBlockPointY, curBlockPointX, counter = 0;
 
-	curBlockPoint = this->smallBlock.getCurrentBlockPoint();
-	curBlockPointY = curBlockPoint.getYPoint();
-	curBlockPointX = curBlockPoint.getXPoint();
+	for (int i = 0; i < numOfBlocks; i++) {
+		this->blocks[i].getCurrentBlockPoint();
+		curBlockPointY = curBlockPoint.getYPoint();
+		curBlockPointX = curBlockPoint.getXPoint();
+		if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
+			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) {
+			results[counter] = BlockSize::Small;
+			counter++;
+		}
 
-	if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), this->boardGame) == BoardCellType::Empty
-		&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) {
-		results[counter] = BlockSize::Small;
-		counter++;
-	}
-
-	curBlockPoint = this->bigBlock.getCurrentBlockPoint();
-	curBlockPointY = curBlockPoint.getYPoint();
-	curBlockPointX = curBlockPoint.getXPoint();
-
-	if ((getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == BoardCellType::Empty
-		&& getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == BoardCellType::Empty) || this->shouldShipBeExploed()) {
-		results[counter] = BlockSize::Big;
-		counter++;
 	}
 }
 
 void Board::dropBlocks(const BlockSize(&fallingBlocks)[2]) {
 	for (BlockSize curBlockSize : fallingBlocks) {
 		if (curBlockSize == BlockSize::Small) {
-			if (this->smallBlock.isValidMove(Direction::Down, this->boardGame)) {
-				this->smallBlockMove(Direction::Down);
-			}
-		}
-		else if (curBlockSize == BlockSize::Big) {
-			if (this->bigBlock.isValidMove(Direction::Down, this->boardGame)) {
-				this->bigBlockMove(Direction::Down);
-			}
-			if (this->shouldShipBeExploed()) {
-				this->isLoss = true;
+			for (int i = 0; i < numOfBlocks; i++) {
+				if (this->blocks[i].isValidMove(Direction::Down, this->boardGame)) {
+					this->blocks[i].move(Direction::Down, this->boardGame);
+				}
+				if (this->shouldShipBeExploed()) {
+					this->isLoss = true;
+				}
 			}
 		}
 	}

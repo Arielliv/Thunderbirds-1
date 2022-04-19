@@ -1,6 +1,7 @@
 #include "ghost.h"
 
 Ghost::Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction):figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors),body(startPoint), direction(direction), type(type) {};
+
 Ghost& Ghost::operator=(const Ghost& b) {
 	this->figure = b.figure;
 	this->color = b.color;

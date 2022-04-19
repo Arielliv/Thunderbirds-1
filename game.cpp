@@ -20,7 +20,6 @@ void Game::start() {
 
 	while (this->lives > 0 && !isWon && !isEsc) {
 		this->handleFileGameWithoutName(userChoice == MenuChoice::WithColor);
-		//this->gameBoard = Board(userChoice == MenuChoice::WithColor);
 		this->gameBoard = this->presetBoard;
 		isWon = this->gameBoard.play(&isEsc, this->lives);
 		if (!isWon) {
@@ -50,29 +49,29 @@ std::string Game::getFileName() {
 	return name;
 }
 
-Board Game::handleFileGameWithName(bool isWithColor) {
+void Game::handleFileGameWithName(bool isWithColor) {
 	int time;
 	GameFile fileGame;
 	int legendLocation;
 	int controlledShip;
+	int numOfBlocks;
 	std::string boardGame = "";
-	int legendLocation;
 	this->fileGame.openFile(this->getFileName());
-	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation);
-	this->presetBoard = Board(isWithColor);
+	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation, numOfBlocks);
+	this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks);
 }
 
-Board Game::handleFileGameWithoutName(bool isWithColor) {
+void Game::handleFileGameWithoutName(bool isWithColor) {
 	int time;
 	GameFile fileGame;
 	int legendLocation;
 	int controlledShip;
+	int numOfBlocks;
 	std::string boardGame = "";
-	int legendLocation;
 	this->fileGame.openFile("");
 
-	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation);
-	this->presetBoard = Board(isWithColor);
+	this->fileGame.readFile(this->lives, time, controlledShip, boardGame, legendLocation, numOfBlocks);
+	this->presetBoard = Board(isWithColor,time,(BoardCellType)controlledShip,boardGame, legendLocation,numOfBlocks);
 }
 
 void Game::printExit() const {

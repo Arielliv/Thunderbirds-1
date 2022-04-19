@@ -1,20 +1,15 @@
 #include "ship.h"
 
-Ship::Ship() {
-	this->isEmpty = true;
-};
-
 Ship& Ship::operator=(const Ship& s) {
-	this->isEmpty = false;
+	this->body.reserve((int)s.shipSize);
+	this->isEmpty = s.isEmpty;
 	this->shipSize = s.shipSize;
 	this->startPoint = s.startPoint;
 	this->figure = s.figure;
 	this->color = s.color;
 	this->direction = s.direction;
 	this->isWithColors = s.isWithColors;
-	for (int i = 0; i < s.body.size();i++) {
-		body[i] = s.body[i];
-	}
+	this->body = s.body;
 	return *this;
 }
 
@@ -22,14 +17,14 @@ Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool i
 	this->isEmpty = false;
 	if (shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++) {
-			this->body.push_back(Point(this->startPoint.getXPoint() + i, this->startPoint.getYPoint()));
+			this->body.push_back(Point(this->startPoint.getYPoint() +i, this->startPoint.getXPoint()));
 		}
 	}
 	else {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++)
 			{
-				this->body.push_back(Point(this->startPoint.getXPoint() + j, this->startPoint.getYPoint() + i));
+				this->body.push_back(Point( this->startPoint.getYPoint() + j, this->startPoint.getXPoint() + i));
 			}
 		}
 	}
@@ -312,8 +307,4 @@ bool Ship::isSmallShipValidMoveBlock(const vector<vector<char>>& boardGame) cons
 		break;
 	}
 	return false;
-}
-
-bool Ship::isShipEmpty() {
-	return this->isEmpty;
 }

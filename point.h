@@ -18,6 +18,8 @@ public:
 	int getXPoint() const;
 	int getYPoint() const;
 	~Point();
+	bool operator==(const Point& p) const;
+	Point& operator=(const Point& p);
 };
 
 

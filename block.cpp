@@ -6,11 +6,32 @@ Block& Block::operator=(const Block& b) {
 	this->figure = b.figure;
 	this->color = b.color;
 	this->isWithColors = b.isWithColors;
-	
-	for (int i = 0; i < b.body.size(); i++) {
-		body[i] = b.body[i];
-	}
+	this->body = b.body;
 	return *this;
+}
+
+Block::Block(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors):figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+	this->createBlockRec(boardGame, x, y, numOfBlocks);
+	if (this->body.size() == (int)BlockSize::Small) {
+		this->blockSize = BlockSize::Small;
+	}
+	else {
+		this->blockSize = BlockSize::Big;
+	}
+}
+
+void Block::createBlockRec(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks) {
+	if (boardGame[x][y] >= '1' && boardGame[x][y] <= parseIntToChar(numOfBlocks)) {
+		Point newP = Point(y, x);
+		if (this->isPointInsideBody(newP)) {
+			return;
+		}
+		this->body.push_back(newP);
+		this->createBlockRec(boardGame, x + 1, y, numOfBlocks);
+		this->createBlockRec(boardGame, x -1, y, numOfBlocks);
+		this->createBlockRec(boardGame, x , y+1, numOfBlocks);
+		this->createBlockRec(boardGame, x, y-1, numOfBlocks);
+	}
 }
 
 Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors) : blockSize(blockSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
@@ -27,6 +48,15 @@ Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bo
 			}
 		}
 	}
+}
+
+bool Block::isPointInsideBody(Point p) {
+	for (int i = 0; i < this->body.size(); i++) {
+		if (this->body[i] == p) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Block::move(const Direction direction, vector<vector<char>>& boardGame) {
@@ -155,4 +185,8 @@ bool Block::isBigBlockValidMove(const Direction dir, const vector<vector<char>>&
 		break;
 	}
 	return false;
+}
+
+BlockSize Block::getBlockSize() const {
+	return this->blockSize;
 }

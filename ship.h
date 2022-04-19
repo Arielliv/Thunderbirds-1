@@ -26,7 +26,7 @@ private:
 	bool isBigShipValidBlockMove(BoardCellType* blockType, const vector<vector<char>>& boardGame) const;
 	bool isSmallShipValidMoveBlock(const vector<vector<char>>& boardGame) const;
 public:
-	Ship();
+	Ship() {};
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
 	void setDirection(const Direction _direction);
 	Direction getDirection() const;
@@ -36,7 +36,6 @@ public:
 	void draw(vector<vector<char>>& boardGame) const;
 	void erase(vector<vector<char>>& boardGame) const;
 	Ship& operator=(const Ship& s);
-	bool isShipEmpty();
 	~Ship();
 
 

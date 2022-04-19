@@ -11,8 +11,7 @@
 class Board{
 	Ship bigShip;
 	Ship smallShip;
-	Block bigBlock;
-	Block smallBlock;
+	vector<Block> blocks;
 	vector<Ghost> ghosts;
 	bool isWithColors = false;
 	bool isVictory = false;
@@ -21,11 +20,10 @@ class Board{
 	bool isSmallShipMove = false;
 	vector<vector<char>> boardGame;
 	int time = 500;
+	int numOfBlocks;
 private:
 	void smallShipMove();
 	void bigShipMove();
-	void smallBlockMove(const Direction dir);
-	void bigBlockMove(const Direction dir);
 
 	bool isSmallShipValidMove() const;
 	bool isBigShipValidMove() const;
@@ -53,9 +51,10 @@ private:
 
 	void moveGhosts();
 public:
-	Board(bool isWithColors = false);
+	//Board(bool isWithColors = false);
+	Board() {};
 	Board& operator=(const Board& b);
-	Board(bool isWithColors, int time, BoardCellType controlledShip, string boardGame, int legendLocation);
+	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks);
 	bool play(bool* isEsc, const int lives);
 	friend void clearLine(const int lineNumber);
 	~Board();

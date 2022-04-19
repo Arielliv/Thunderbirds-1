@@ -47,3 +47,13 @@ Point::~Point() {
 	this->x = NULL;
 	this->y = NULL;
 }
+
+bool Point::operator==(const Point& p) const {
+	return this->x == p.getXPoint() && this->y == p.getYPoint();
+}
+
+Point& Point::operator=(const Point& p) {
+	this->x = p.getXPoint();
+	this->y = p.getYPoint();
+	return *this;
+}

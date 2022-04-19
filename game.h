@@ -18,8 +18,8 @@ private:
 	void printExit() const;
 	void printWin() const;
 	void printLoss() const;
-	Board handleFileGameWithName(bool isWithColor);
-	Board handleFileGameWithoutName(bool isWithColor);
+	void handleFileGameWithName(bool isWithColor);
+	void handleFileGameWithoutName(bool isWithColor);
 	std::string getFileName();
 public:
 	void start();
