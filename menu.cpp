@@ -6,7 +6,7 @@ MenuChoice Menu::openMenu() const {
 	
 	this->printMenu();
 
-	while (input != '1' && input != '8' && input != '9') {
+	while (input != '1' && input != '2' && input != '8' && input != '9') {
 		if (_kbhit()) {
 			input = _getch();
 		}

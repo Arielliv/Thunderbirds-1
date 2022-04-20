@@ -3,6 +3,8 @@
 void Game::start() {
 	bool isEsc = false;
 	bool isWon = false;
+	bool isByFileName = false;
+	int winningCounter = 0;
 	MenuChoice userChoice = MenuChoice::ShowSettings;
 
 	while (userChoice == MenuChoice::ShowSettings) {
@@ -16,15 +18,24 @@ void Game::start() {
 
 	if (userChoice == MenuChoice::OpenFileByNameWithColor || userChoice == MenuChoice::OpenFileByNameWithoutColor) {
 		this->handleFileGameWithName(userChoice == MenuChoice::OpenFileByNameWithColor);
+		isByFileName = true;
 	}
 
-	while (this->lives > 0 && !isWon && !isEsc) {
-		this->handleFileGameWithoutName(userChoice == MenuChoice::WithColor);
+	while (this->lives > 0 && winningCounter < 3 && !isEsc) {
+		if (!isByFileName) {
+			this->handleFileGameWithoutName(userChoice == MenuChoice::WithColor, winningCounter);
+		}
+		else {
+			winningCounter = 2;
+		}
 		this->gameBoard = this->presetBoard;
 		isWon = this->gameBoard.play(&isEsc, this->lives);
-		if (!isWon) {
+		if (!isWon && !isEsc) {
 			clear_screen();
 			this->lives--;
+		}
+		else if(!isEsc) {
+			winningCounter++;
 		}
 	}
 	if (!isEsc) {
@@ -42,6 +53,7 @@ void Game::start() {
 
 std::string Game::getFileName() {
 	string name;
+	gotoxy(15, 12);
 
 	std::cout << "Please enter file name: ";
 	std::cin >> name;
@@ -56,20 +68,20 @@ void Game::handleFileGameWithName(bool isWithColor) {
 	int controlledShip;
 	int numOfBlocks;
 	std::string boardGame = "";
-	this->fileGame.openFile(this->getFileName());
+	this->fileGame.openFile(this->getFileName(), -1);
 	this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks);
 	this->fileGame.closeFile();
 	this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks);
 }
 
-void Game::handleFileGameWithoutName(bool isWithColor) {
+void Game::handleFileGameWithoutName(bool isWithColor, int fileNumber) {
 	int time;
 	GameFile fileGame;
 	int legendLocation;
 	int controlledShip;
 	int numOfBlocks;
 	std::string boardGame = "";
-	this->fileGame.openFile("");
+	this->fileGame.openFile("", fileNumber);
 
 	this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks);
 	this->fileGame.closeFile();

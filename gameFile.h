@@ -10,7 +10,7 @@ private:
 	std::ifstream inFile;
 public:
 	
-	bool openFile(std::string fileName);
+	bool openFile(std::string fileName, int fileNumber);
 	void readFile(int& time, int& controlledShip, std::string& boardGame, int& legendLocation, int& numOfBlocks);
 	void closeFile();
 };

@@ -1,8 +1,8 @@
 #include "gameFile.h"
 
-bool GameFile::openFile(std::string name) {
+bool GameFile::openFile(std::string name, int fileNumber) {
 	bool isFileOpen = false;
-	int fileCounter = 1;
+	int fileCounter = fileNumber + 1;
 	std::string fileName = "";
 	std::stringstream ss;
 
