@@ -21,6 +21,7 @@ class Board{
 	vector<vector<char>> boardGame;
 	int time = 500;
 	int numOfBlocks;
+	int legendLocation;
 private:
 	void smallShipMove();
 	void bigShipMove();
@@ -45,8 +46,8 @@ private:
 	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
 	bool runTheGame(const int lives);
 	bool isShipValidMove(const ShipSize shipSize) const;
-	void getFallingBlockTypes(BlockSize* results) const;
-	void dropBlocks(const BlockSize(&fallingBlocks)[2]);
+	vector<int> getFallingBlockIndexes() const;
+	void dropBlocks(const vector<int> blockIndexes);
 	void updateVictory();
 
 	void moveGhosts();

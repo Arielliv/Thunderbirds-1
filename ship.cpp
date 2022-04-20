@@ -309,3 +309,27 @@ bool Ship::isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<
 	}
 	return false;
 }
+
+ShipSize Ship::getShipSize()const {
+	return this->shipSize;
+};
+
+char Ship::getFigure()const {
+	return this->figure;
+};
+
+bool Ship::shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block) const {
+	if ((int)this->shipSize < (int)block.getBlockSize()) {
+		vector<Point> blockBody = block.getCurrentBodyPoints();
+		for (int i = 0; i < (int)block.getBlockSize(); i++) {
+			Point curBlockPoint = blockBody[i];
+			int curBlockPointY = curBlockPoint.getYPoint();
+			int curBlockPointX = curBlockPoint.getXPoint();
+
+			if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) == this->figure) {
+				return true;
+			}
+		}
+	}
+	return false;
+}

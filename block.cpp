@@ -151,3 +151,19 @@ char Block::getFigure()const {
 bool Block::getIsEmpty()const {
 	return this->isEmpty;
 }
+
+bool Block::shouldBlockFall(const vector<vector<char>>& boardGame) const {
+	for (int i = 0; i < this->body.size(); i++) {
+		Point curBlockPoint = this->body[i];
+		int curBlockPointY = curBlockPoint.getYPoint();
+		int curBlockPointX = curBlockPoint.getXPoint();
+
+		if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) != (char)BoardCellType::Empty &&
+			getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) != this->figure &&
+			getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) != (char)BoardCellType::SmallShip
+			) {
+			return false;
+		}
+	}
+	return true;
+};

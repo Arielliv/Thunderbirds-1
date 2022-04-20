@@ -42,4 +42,7 @@ public:
 	bool isNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
 	bool isShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
 	bool shouldShipBeExploed(const vector<vector<char>>& boardGame, const Block bigBlock) const;
+	ShipSize getShipSize()const ;
+	char getFigure()const;
+	bool shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block)const;
 };

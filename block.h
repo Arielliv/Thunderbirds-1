@@ -36,4 +36,5 @@ public:
 	bool isValidMove(const Direction dir, const vector<vector<char>>& boardGame) const;
 	char getFigure()const;
 	bool getIsEmpty()const;
+	bool shouldBlockFall(const vector<vector<char>>& boardGame)const;
 };

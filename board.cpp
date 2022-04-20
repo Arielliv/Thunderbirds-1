@@ -40,10 +40,11 @@ Board& Board::operator=(const Board& b) {
 	this->ghosts = b.ghosts;
 	this->blocks = b.blocks;
 	this->boardGame = b.boardGame;
+	this->legendLocation = b.legendLocation;
 	return *this;
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks):isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks) { 
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks):legendLocation(legendLocation),isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks) {
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
@@ -115,6 +116,7 @@ bool Board::runTheGame(const  int lives) {
 	char key = 0;
 
 	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
+		vector<int> dropBlockIndexes;
 		if (_kbhit()) {
 			key = _getch();
 			if (key != ESC) {
@@ -137,9 +139,8 @@ bool Board::runTheGame(const  int lives) {
 						}
 						this->smallShip.setDirection(nextDirection);
 						this->smallShipMove();
-						BlockSize curFallingBlocks[2];
-						getFallingBlockTypes(curFallingBlocks);
-						dropBlocks(curFallingBlocks);
+						dropBlockIndexes = getFallingBlockIndexes();
+						dropBlocks(dropBlockIndexes);
 					}
 					else {
 						if (isSwitched) {
@@ -147,9 +148,8 @@ bool Board::runTheGame(const  int lives) {
 						}
 						this->bigShip.setDirection(nextDirection);
 						this->bigShipMove();
-						BlockSize curFallingBlocks[2];
-						getFallingBlockTypes(curFallingBlocks);
-						dropBlocks(curFallingBlocks);
+						dropBlockIndexes = getFallingBlockIndexes();
+						dropBlocks(dropBlockIndexes);
 					}
 				}
 			}
@@ -158,15 +158,13 @@ bool Board::runTheGame(const  int lives) {
 			this->moveGhosts();
 			if (this->isSmallShipMove && !isSwitched) {
 					this->smallShipMove();
-					BlockSize curFallingBlocks[2];
-					getFallingBlockTypes(curFallingBlocks);
-					dropBlocks(curFallingBlocks);
+					dropBlockIndexes = getFallingBlockIndexes();
+					dropBlocks(dropBlockIndexes);
 			}
 			else if (!isSwitched) {
 				this->bigShipMove();
-				BlockSize curFallingBlocks[2];
-				getFallingBlockTypes(curFallingBlocks);
-				dropBlocks(curFallingBlocks);
+				dropBlockIndexes = getFallingBlockIndexes();
+				dropBlocks(dropBlockIndexes);
 
 			}
 		}
@@ -306,19 +304,12 @@ bool Board::isShipValidMove(const ShipSize shipSize) const {
 }
 
 bool Board::shouldShipBeExploed() const {
-	for (int i = 0; i < numOfBlocks; i++) {
-		if (this->blocks[i].getBlockSize() == BlockSize::Big) {
-			Point curBlockPoint = this->blocks[i].getCurrentBlockPoint();
-			int curBlockPointY = curBlockPoint.getYPoint();
-			int curBlockPointX = curBlockPoint.getXPoint();
-
-			if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX), this->boardGame) == (char)BoardCellType::SmallShip
-				|| getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1), this->boardGame) == (char)BoardCellType::SmallShip) {
-				return true;
-			}
-			else {
-				return false;
-			}
+	for (int i = 0; i < this->blocks.size(); i++) {
+		if (this->bigShip.shouldBlockExplodeShip(this->boardGame, this->blocks[i])) {
+			return true;
+		}
+		if (this->smallShip.shouldBlockExplodeShip(this->boardGame, this->blocks[i])) {
+			return true;
 		}
 	}
 	return false;
@@ -340,34 +331,26 @@ bool Board::isBigShipValidMove() const {
 	return this->bigShip.isNextMoveEQCellType(BoardCellType::Empty, this->boardGame);
 }
 
-void Board::getFallingBlockTypes(BlockSize* results) const {
+vector<int> Board::getFallingBlockIndexes() const {
+	vector<int> blockIndexes;
 	Point curBlockPoint;
-	int curBlockPointY, curBlockPointX, counter = 0;
+	int curBlockPointY, curBlockPointX;
 
-	for (int i = 0; i < numOfBlocks; i++) {
-		this->blocks[i].getCurrentBlockPoint();
-		curBlockPointY = curBlockPoint.getYPoint();
-		curBlockPointX = curBlockPoint.getXPoint();
-		if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), this->boardGame) == (char)BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), this->boardGame) == (char)BoardCellType::Empty) {
-			results[counter] = BlockSize::Small;
-			counter++;
+	for (int i = 0; i < this->blocks.size(); i++) {
+		if (this->blocks[i].shouldBlockFall(this->boardGame)) {
+			blockIndexes.push_back(i);
 		}
-
 	}
+	return blockIndexes;
 }
 
-void Board::dropBlocks(const BlockSize(&fallingBlocks)[2]) {
-	for (BlockSize curBlockSize : fallingBlocks) {
-		if (curBlockSize == BlockSize::Small) {
-			for (int i = 0; i < numOfBlocks; i++) {
-				if (this->blocks[i].isValidMove(Direction::Down, this->boardGame)) {
-					this->blocks[i].move(Direction::Down, this->boardGame);
-				}
-				if (this->shouldShipBeExploed()) {
-					this->isLoss = true;
-				}
-			}
+void Board::dropBlocks(const vector<int> blockIndexes) {
+	for (int i = 0; i < blockIndexes.size(); i++) {
+		if (this->blocks[blockIndexes[i]].isValidMove(Direction::Down, this->boardGame)) {
+			this->blocks[blockIndexes[i]].move(Direction::Down, this->boardGame);
+		}
+		if (this->shouldShipBeExploed()) {
+			this->isLoss = true;
 		}
 	}
 }
@@ -402,7 +385,7 @@ void clearLine(const int lineNumber) {
 }
 
 void Board::printStatus(const int lives) const {
-	clearLine(23);
+	clearLine(this->legendLocation);
 
 	if (this->isWithColors) {
 		setTextColor(Color::YELLOW);
@@ -414,24 +397,24 @@ void Board::printStatus(const int lives) const {
 
 }
 void Board::printTimer() const {
-	gotoxy(8, 23);
+	gotoxy(8, this->legendLocation);
 	std::cout << "| " << "Time left: " << this->time  << std::endl;
 }
 
 void Board::printShipTurn() const {
-	gotoxy(28, 23);
+	gotoxy(28, this->legendLocation);
 	string activeShip = this->isSmallShipMove ? "Small" : "Big";
 	std::cout << "| " << "Active ship: " << activeShip  << std::endl;
 }
 
 void Board::printRemainingLives(int lives) const {
-	gotoxy(50, 23);
+	gotoxy(50, this->legendLocation);
 	std::cout << "| " << "Remaining lives: " << lives  << std::endl;
 }
 
 void Board::printEscOptions() const {
-	clearLine(23);
-	gotoxy(13, 23);
+	clearLine(this->legendLocation);
+	gotoxy(13, this->legendLocation);
 	if (this->isWithColors) {
 		setTextColor(Color::LIGHTRED);
 	}
