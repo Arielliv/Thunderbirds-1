@@ -23,8 +23,8 @@ class Ship
 private:
 	bool isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
 	bool isBigShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
-	bool isBigShipValidBlockMove(BoardCellType* blockType, const vector<vector<char>>& boardGame) const;
-	bool isSmallShipValidMoveBlock(const vector<vector<char>>& boardGame) const;
+	bool isBigShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
+	bool isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
 public:
 	Ship() {};
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
@@ -40,6 +40,6 @@ public:
 
 
 	bool isNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
-	bool isShipValidBlockMove(BoardCellType* blockType, const vector<vector<char>>& boardGame) const;
+	bool isShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
 	bool shouldShipBeExploed(const vector<vector<char>>& boardGame, const Block bigBlock) const;
 };

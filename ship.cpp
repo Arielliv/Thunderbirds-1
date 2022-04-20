@@ -39,7 +39,7 @@ Direction Ship::getDirection() const{
 }
 
 void Ship::move(vector<vector<char>>& boardGame) {
-		updateValueByPoints(this->body, (int)this->shipSize, BoardCellType::Empty, boardGame);
+		updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
 	
 		for (std::size_t i = 0; i < this->body.size(); i++) {
 			this->body[i].draw(' ');
@@ -53,7 +53,7 @@ void Ship::move(vector<vector<char>>& boardGame) {
 			this->body[i].draw(figure);
 		}
 
-		updateValueByPoints(this->body, (int)this->shipSize, this->shipSize == ShipSize::Small?  BoardCellType::SmallShip : BoardCellType::BigShip, boardGame);
+		updateValueByPoints(this->body, (int)this->shipSize, this->shipSize == ShipSize::Small? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
 }
                          
 
@@ -67,7 +67,7 @@ void Ship::draw(vector<vector<char>>& boardGame) const{
 				setTextColor(Color::WHITE);
 			}
 		}
-		updateValueByPoints(this->body,(int)this->shipSize, this->shipSize == ShipSize::Small ? BoardCellType::SmallShip : BoardCellType::BigShip, boardGame);
+		updateValueByPoints(this->body,(int)this->shipSize, this->shipSize == ShipSize::Small ? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
 }
 
 void Ship::erase(vector<vector<char>>& boardGame) const {
@@ -81,7 +81,7 @@ void Ship::erase(vector<vector<char>>& boardGame) const {
 		}
 	}
 
-	updateValueByPoints(this->body, (int)this->shipSize, BoardCellType::Empty, boardGame);
+	updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
 }
 
 Ship::~Ship() {
@@ -114,27 +114,27 @@ bool Ship::isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vec
 
 	switch ((int)dir) {
 	case 0: // UP
-		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX),boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX),boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == (char)cellType)) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if ((getValueByIndex(Point(curShipPointY + 1, curShipPointX), boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), boardGame) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY + 1, curShipPointX), boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), boardGame) == (char)cellType)) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == (char)cellType) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == (char)cellType) {
 			return true;
 		}
 
@@ -152,29 +152,29 @@ bool Ship::isBigShipNextMoveEQCellType(const BoardCellType cellType, const vecto
 
 	switch ((int)dir) {
 	case 0: // UP
-		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == (char)cellType)) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if ((getValueByIndex(Point(curShipPointY + 2, curShipPointX), boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), boardGame) == cellType)) {
+		if ((getValueByIndex(Point(curShipPointY + 2, curShipPointX), boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), boardGame) == (char)cellType)) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), boardGame) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), boardGame) == (char)cellType) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == cellType
-			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), boardGame) == cellType) {
+		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == (char)cellType
+			&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), boardGame) == (char)cellType) {
 			return true;
 		}
 
@@ -183,128 +183,129 @@ bool Ship::isBigShipNextMoveEQCellType(const BoardCellType cellType, const vecto
 	return false;
 }
 
-bool Ship::isShipValidBlockMove(BoardCellType* blockType, const vector<vector<char>>& boardGame) const {
+bool Ship::isShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const {
 	if (this->shipSize == ShipSize::Big) {
-		return this->isBigShipValidBlockMove(blockType, boardGame);
+		return this->isBigShipValidBlockMove(blockIndexToMove, boardGame, blocks);
 	}
 	else {
-		return this->isSmallShipValidMoveBlock(boardGame);
+		return this->isSmallShipValidMoveBlock(blockIndexToMove, boardGame, blocks);
 	}
 }
 
-bool Ship::isBigShipValidBlockMove(BoardCellType* blockType, const vector<vector<char>>& boardGame) const {
+bool Ship::isBigShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const {
 	Point curShipPoint = this->getCurrentShipPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 	Direction dir = this->getDirection();
+	
+	char curCellType1, curCellType2;
+	for (int i = 0; i < blocks.size(); i++) {
+		switch ((int)dir) {
+		case 0: // UP
+			curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame);
+			curCellType2 = getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame);
 
-	BoardCellType curCellType1, curCellType2;
-	switch ((int)dir) {
-	case 0: // UP
-		curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX),boardGame);
-		curCellType2 = getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame);
+			if ((curCellType1 == blocks[i].getFigure() || curCellType2 == blocks[i].getFigure())
+				&& (curCellType1 != (char)BoardCellType::Wall && curCellType2 != (char)BoardCellType::Wall)) {
+				blockIndexToMove = i;
+				return true;
+			}
 
-		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
-			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
-			if (curCellType1 > curCellType2) {
-				*blockType = curCellType1;
+			break;
+		case 1: // DOWN
+			curCellType1 = getValueByIndex(Point(curShipPointY + 2, curShipPointX), boardGame);
+			curCellType2 = getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), boardGame);
+
+			if ((curCellType1 == blocks[i].getFigure() || curCellType2 == blocks[i].getFigure())
+				&& (curCellType1 != (char)BoardCellType::Wall && curCellType2 != (char)BoardCellType::Wall)) {
+				blockIndexToMove = i;
+				return true;
 			}
-			else {
-				*blockType = curCellType2;
+
+			break;
+		case 2: // LEFT
+			curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame);
+			curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), boardGame);
+
+			if ((curCellType1 == blocks[i].getFigure() || curCellType2 == blocks[i].getFigure())
+				&& (curCellType1 != (char)BoardCellType::Wall && curCellType2 != (char)BoardCellType::Wall)) {
+				blockIndexToMove = i;
+				return true;
 			}
-			return true;
+
+			break;
+		case 3: // RIGHT
+			curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame);
+			curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), boardGame);
+
+			if ((curCellType1 == blocks[i].getFigure() || curCellType2 == blocks[i].getFigure())
+				&& (curCellType1 != (char)BoardCellType::Wall && curCellType2 != (char)BoardCellType::Wall)) {
+				blockIndexToMove = i;
+				return true;
+			}
+
+			break;
 		}
-
-		break;
-	case 1: // DOWN
-		curCellType1 = getValueByIndex(Point(curShipPointY + 2, curShipPointX), boardGame);
-		curCellType2 = getValueByIndex(Point(curShipPointY + 2, curShipPointX + 1), boardGame);
-
-		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
-			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
-			if (curCellType1 > curCellType2) {
-				*blockType = curCellType1;
-			}
-			else {
-				*blockType = curCellType2;
-			}
-			return true;
-		}
-
-		break;
-	case 2: // LEFT
-		curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame);
-		curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX - 1), boardGame);
-
-		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
-			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
-			if (curCellType1 > curCellType2) {
-				*blockType = curCellType1;
-			}
-			else {
-				*blockType = curCellType2;
-			}
-			return true;
-		}
-
-		break;
-	case 3: // RIGHT
-		curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame);
-		curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX + 2), boardGame);
-
-		if ((curCellType1 >= BoardCellType::SmallBlock || curCellType2 >= BoardCellType::SmallBlock)
-			&& (curCellType1 != BoardCellType::Wall && curCellType2 != BoardCellType::Wall)) {
-			if (curCellType1 > curCellType2) {
-				*blockType = curCellType1;
-			}
-			else {
-				*blockType = curCellType2;
-			}
-			return true;
-		}
-
-		break;
 	}
 	return false;
 }
 
-bool Ship::isSmallShipValidMoveBlock(const vector<vector<char>>& boardGame) const {
+bool Ship::isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const {
 	Point curShipPoint = this->getCurrentShipPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 	Direction dir = this->getDirection();
+	char curCellType1, curCellType2;
 
-	switch ((int)dir) {
-	case 0: // UP
-		if ((getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame) == BoardCellType::SmallBlock
-			|| getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) == BoardCellType::SmallBlock)
-			&& (getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame) != BoardCellType::Wall
-				&& getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame) != BoardCellType::Wall)) {
-			return true;
+	for (int i = 0; i < blocks.size(); i++) {
+		if (blocks[i].getBlockSize() == BlockSize::Small) {
+			switch ((int)dir) {
+			case 0: // UP
+				curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame);
+				curCellType2 = getValueByIndex(Point(curShipPointY - 1, curShipPointX + 1), boardGame);
+
+				if ((curCellType1 == blocks[i].getFigure()
+					|| curCellType2 == blocks[i].getFigure())
+					&& (curCellType1 != (char)BoardCellType::Wall
+						&& curCellType2 != (char)BoardCellType::Wall)) {
+					blockIndexToMove = i;
+					return true;
+				}
+
+				break;
+			case 1: // DOWN
+				curCellType1 = getValueByIndex(Point(curShipPointY + 1, curShipPointX), boardGame);
+				curCellType2 = getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), boardGame);
+
+				if ((curCellType1 == blocks[i].getFigure()
+					|| curCellType2 == blocks[i].getFigure())
+					&& (curCellType1 != (char)BoardCellType::Wall
+						&& curCellType2 != (char)BoardCellType::Wall)) {
+					blockIndexToMove = i;
+					return true;
+				}
+
+				break;
+			case 2: // LEFT
+				curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame);
+					
+				if (curCellType1 == blocks[i].getFigure()) {
+					blockIndexToMove = i;
+					return true;
+				}
+
+				break;
+			case 3: // RIGHT
+				curCellType1 = getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame);
+
+				if (curCellType1 == blocks[i].getFigure()) {
+					blockIndexToMove = i;
+					return true;
+				}
+
+				break;
+			}
 		}
-
-		break;
-	case 1: // DOWN
-		if ((getValueByIndex(Point(curShipPointY + 1, curShipPointX), boardGame) == BoardCellType::SmallBlock
-			|| getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), boardGame) == BoardCellType::SmallBlock)
-			&& (getValueByIndex(Point(curShipPointY + 1, curShipPointX), boardGame) != BoardCellType::Wall
-				&& getValueByIndex(Point(curShipPointY + 1, curShipPointX + 1), boardGame) != BoardCellType::Wall)) {
-			return true;
-		}
-
-		break;
-	case 2: // LEFT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX - 1), boardGame) == BoardCellType::SmallBlock) {
-			return true;
-		}
-
-		break;
-	case 3: // RIGHT
-		if (getValueByIndex(Point(curShipPointY, curShipPointX + 2), boardGame) == BoardCellType::SmallBlock) {
-			return true;
-		}
-
-		break;
 	}
 	return false;
 }

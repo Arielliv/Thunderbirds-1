@@ -5,12 +5,13 @@ Block& Block::operator=(const Block& b) {
 	this->startPoint = b.startPoint;
 	this->figure = b.figure;
 	this->color = b.color;
+	this->isEmpty = b.isEmpty;
 	this->isWithColors = b.isWithColors;
 	this->body = b.body;
 	return *this;
 }
 
-Block::Block(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors):figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+Block::Block(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors):isEmpty(false),figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
 	this->createBlockRec(boardGame, x, y, numOfBlocks);
 	if (this->body.size() == (int)BlockSize::Small) {
 		this->blockSize = BlockSize::Small;
@@ -34,7 +35,7 @@ void Block::createBlockRec(vector<vector<char>>& boardGame, int x, int y, int nu
 	}
 }
 
-Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors) : blockSize(blockSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+Block::Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors):isEmpty(false), blockSize(blockSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
 	if (blockSize == BlockSize::Small) {
 		for (int i = 0; i < 2; i++) {
 			this->body.push_back(Point(this->startPoint.getXPoint() + i, this->startPoint.getYPoint()));
@@ -60,7 +61,7 @@ bool Block::isPointInsideBody(Point p) {
 }
 
 void Block::move(const Direction direction, vector<vector<char>>& boardGame) {
-	updateValueByPoints(this->body, (int)this->blockSize, BoardCellType::Empty, boardGame);
+	updateValueByPoints(this->body, this->body.size(), (char)BoardCellType::Empty, boardGame);
 		for (std::size_t i = 0; i< this->body.size(); i++) {
 			
 			this->body[i].draw(' ');
@@ -72,7 +73,7 @@ void Block::move(const Direction direction, vector<vector<char>>& boardGame) {
 			}
 			this->body[i].draw(figure);
 		}
-		updateValueByPoints(this->body, (int)this->blockSize, this->blockSize == BlockSize::Small ? BoardCellType::SmallBlock : BoardCellType::BigBlock, boardGame);
+		updateValueByPoints(this->body, this->body.size(), this->figure, boardGame);
 }
 
 
@@ -87,7 +88,7 @@ void Block::draw(vector<vector<char>>& boardGame) const {
 		}
 	}
 
-	updateValueByPoints(this->body, (int)this->blockSize, this->blockSize == BlockSize::Small ? BoardCellType::SmallBlock : BoardCellType::BigBlock, boardGame);
+	updateValueByPoints(this->body, (int)this->blockSize, this->figure, boardGame);
 }
 
 Block::~Block() {
@@ -103,90 +104,50 @@ const vector<Point> Block::getCurrentBodyPoints() const {
 }
 
 bool Block::isValidMove(const Direction dir, const vector<vector<char>>& boardGame) const {
-	if (this->blockSize == BlockSize::Big) {
-		return this->isBigBlockValidMove(dir, boardGame);
+	for (int i = 0; i < this->body.size(); i++) {
+		Point curBlockPoint = this->body[i];
+		int curBlockPointY = curBlockPoint.getYPoint();
+		int curBlockPointX = curBlockPoint.getXPoint();
+		switch ((int)dir) {
+		case 0: // UP
+			if (getValueByIndex(Point(curBlockPointY -1, curBlockPointX), boardGame) != (char)BoardCellType::Empty &&
+				getValueByIndex(Point(curBlockPointY - 1, curBlockPointX), boardGame) != this->figure) {
+				return false;
+			}
+			break;
+		case 1: // DOWN
+			if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) != (char)BoardCellType::Empty &&
+				getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) != this->figure) {
+				return false;
+			}
+
+			break;
+		case 2: // LEFT
+			if (getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), boardGame) != (char)BoardCellType::Empty &&
+				getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), boardGame) != this->figure) {
+				return false;
+			}
+
+			break;
+		case 3: // RIGHT
+			if (getValueByIndex(Point(curBlockPointY, curBlockPointX + 1), boardGame) != (char)BoardCellType::Empty &&
+				getValueByIndex(Point(curBlockPointY, curBlockPointX + 1), boardGame) != this->figure) {
+				return false;
+			}
+
+			break;
+		}
 	}
-	else {
-		return this->isSmallBlockValidMove(dir, boardGame);
-	}
-}
-
-bool Block::isSmallBlockValidMove(const Direction dir, const vector<vector<char>>& boardGame) const {
-	Point curBlockPoint = this->getCurrentBlockPoint();
-	int curBlockPointY = curBlockPoint.getYPoint();
-	int curBlockPointX = curBlockPoint.getXPoint();
-
-	switch ((int)dir) {
-	case 0: // UP
-		if ((getValueByIndex(Point(curBlockPointY - 1, curBlockPointX),boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1), boardGame) == BoardCellType::Empty)) {
-			return true;
-		}
-
-		break;
-	case 1: // DOWN
-		if ((getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 1), boardGame) == BoardCellType::Empty)) {
-			return true;
-		}
-
-		break;
-	case 2: // LEFT
-		if (getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	case 3: // RIGHT
-		if (getValueByIndex(Point(curBlockPointY, curBlockPointX + 2), boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	}
-	return false;
-}
-
-bool Block::isBigBlockValidMove(const Direction dir, const vector<vector<char>>& boardGame) const {
-	Point curBlockPoint = this->getCurrentBlockPoint();
-	int curBlockPointY = curBlockPoint.getYPoint();
-	int curBlockPointX = curBlockPoint.getXPoint();
-
-	switch ((int)dir) {
-	case 0: // UP
-		if (getValueByIndex(Point(curBlockPointY - 1, curBlockPointX),boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY - 1, curBlockPointX + 1),boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	case 1: // DOWN
-		if (getValueByIndex(Point(curBlockPointY + 3, curBlockPointX),boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 3, curBlockPointX + 1),boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	case 2: // LEFT
-		if (getValueByIndex(Point(curBlockPointY, curBlockPointX - 1), boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX - 1), boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 2, curBlockPointX - 1), boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	case 3: // RIGHT
-		if (getValueByIndex(Point(curBlockPointY, curBlockPointX + 2), boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 1, curBlockPointX + 2), boardGame) == BoardCellType::Empty
-			&& getValueByIndex(Point(curBlockPointY + 2, curBlockPointX + 2), boardGame) == BoardCellType::Empty) {
-			return true;
-		}
-
-		break;
-	}
-	return false;
+	return true;
 }
 
 BlockSize Block::getBlockSize() const {
 	return this->blockSize;
+}
+char Block::getFigure()const {
+	return this->figure;
+}
+
+bool Block::getIsEmpty()const {
+	return this->isEmpty;
 }

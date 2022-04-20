@@ -18,7 +18,7 @@ Point Ghost::getCurrentGhostPoint() const {
 }
 
 void Ghost::move(vector<vector<char>>& boardGame) {
-	updateValueByPoints({ this->body }, 1, BoardCellType::Empty, boardGame);
+	updateValueByPoints({ this->body }, 1, (char)BoardCellType::Empty, boardGame);
 
 	this->body.draw(' ');
 	this->body.move(this->direction);
@@ -27,7 +27,7 @@ void Ghost::move(vector<vector<char>>& boardGame) {
 	}
 	this->body.draw(this->figure);
 
-	updateValueByPoints({ this->body }, 1,  BoardCellType::Ghost, boardGame);
+	updateValueByPoints({ this->body }, 1, (char)BoardCellType::Ghost, boardGame);
 }
 
 void Ghost::draw(vector<vector<char>>& boardGame) const {
@@ -40,7 +40,7 @@ void Ghost::draw(vector<vector<char>>& boardGame) const {
 			setTextColor(Color::WHITE);
 		}
 	
-		updateValueByPoints({ this->body }, 1, BoardCellType::Ghost, boardGame);
+		updateValueByPoints({ this->body }, 1, (char)BoardCellType::Ghost, boardGame);
 }
 
 bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
@@ -52,29 +52,29 @@ bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
@@ -92,33 +92,33 @@ bool Ghost::isValidMove(const vector<vector<char>>& boardGame) const {
 
 	switch ((int)dir) {
 	case 0: // UP
-		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == BoardCellType::Empty || 
-			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::Empty ||
+			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 1: // DOWN
-		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == BoardCellType::Empty ||
-			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::Empty ||
+			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 2: // LEFT
-		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == BoardCellType::Empty ||
-			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == BoardCellType::SmallShip || 
-			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::Empty ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
 	case 3: // RIGHT
-		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == BoardCellType::Empty ||
-			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == BoardCellType::SmallShip ||
-			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == BoardCellType::BigShip) {
+		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::Empty ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::SmallShip ||
+			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 

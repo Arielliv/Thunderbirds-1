@@ -17,13 +17,13 @@ class Block
 	Color color;
 	vector<Point> body;
 	bool isWithColors = false;
+	bool isEmpty = true;
 
 private:
-	bool isBigBlockValidMove(const Direction dir, const vector<vector<char>>& boardGame) const;
-	bool isSmallBlockValidMove(const Direction dir, const vector<vector<char>>& boardGame) const;
 	void createBlockRec(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks);
 	bool isPointInsideBody(Point p);
 public:
+	Block() {};
 	Block(BlockSize blockSize, char figure, Color color, Point startPoint, bool isWithColors);
 	Block(vector<vector<char>>& boardGame, int x, int y, int numOfBlocks,char figure, Color color, Point startPoint, bool isWithColors);
 	Block& operator=(const Block& b);
@@ -34,4 +34,6 @@ public:
 	~Block();
 	BlockSize getBlockSize() const;
 	bool isValidMove(const Direction dir, const vector<vector<char>>& boardGame) const;
+	char getFigure()const;
+	bool getIsEmpty()const;
 };
