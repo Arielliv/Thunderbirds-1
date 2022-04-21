@@ -60,6 +60,9 @@
     <ClInclude Include="gameFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="legened.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="io_utils.cpp">
@@ -99,6 +102,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gameFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="legened.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,5 +15,9 @@ private:
 	bool openSettings() const;
 public:
 	MenuChoice openMenu() const;
+	void printExit() const;
+	void printWin() const;
+	void printLoss() const;
+	std::string getFileName() const;
 };
 

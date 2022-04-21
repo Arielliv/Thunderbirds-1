@@ -13,7 +13,7 @@ Ghost& Ghost::operator=(const Ghost& b) {
 	return *this;
 }
 
-Point Ghost::getCurrentGhostPoint() const {
+const Point& Ghost::getCurrentGhostPoint() const {
 	return this->body;
 }
 
@@ -50,29 +50,29 @@ bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
 
 	Direction dir = this->direction;
 
-	switch ((int)dir) {
-	case 0: // UP
+	switch (dir) {
+	case Direction::Up: 
 		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
-	case 1: // DOWN
+	case Direction::Down: 
 		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
-	case 2: // LEFT
+	case Direction::Left: 
 		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
 		}
 
 		break;
-	case 3: // RIGHT
+	case Direction::Right: 
 		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::BigShip) {
 			return true;
@@ -90,8 +90,8 @@ bool Ghost::isValidMove(const vector<vector<char>>& boardGame) const {
 
 	Direction dir = this->direction;
 
-	switch ((int)dir) {
-	case 0: // UP
+	switch (dir) {
+	case Direction::Up:
 		if (getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::Empty ||
 			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY - 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
@@ -99,7 +99,7 @@ bool Ghost::isValidMove(const vector<vector<char>>& boardGame) const {
 		}
 
 		break;
-	case 1: // DOWN
+	case Direction::Down:
 		if (getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::Empty ||
 			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY + 1, curGhostPointX), boardGame) == (char)BoardCellType::BigShip) {
@@ -107,7 +107,7 @@ bool Ghost::isValidMove(const vector<vector<char>>& boardGame) const {
 		}
 
 		break;
-	case 2: // LEFT
+	case Direction::Left:
 		if (getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::Empty ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX - 1), boardGame) == (char)BoardCellType::BigShip) {
@@ -115,7 +115,7 @@ bool Ghost::isValidMove(const vector<vector<char>>& boardGame) const {
 		}
 
 		break;
-	case 3: // RIGHT
+	case Direction::Right: 
 		if (getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::Empty ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::SmallShip ||
 			getValueByIndex(Point(curGhostPointY, curGhostPointX + 2), boardGame) == (char)BoardCellType::BigShip) {

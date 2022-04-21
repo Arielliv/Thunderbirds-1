@@ -9,7 +9,7 @@
 
 
 enum class ShipSize{ Small = 2, Big=4 };
-
+enum class MaxSizeOfBlockToMove{ Small = 2, Big = 6 };
 class Ship
 {
 	ShipSize shipSize;
@@ -30,19 +30,19 @@ public:
 	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
 	void setDirection(const Direction _direction);
 	Direction getDirection() const;
-	Point getCurrentShipPoint() const;
-	const vector<Point> getCurrentBodyPoints() const;
+	const Point& getCurrentShipPoint() const;
+	const vector<Point>& getCurrentBodyPoints() const;
 	void move(vector<vector<char>>& boardGame);
 	void draw(vector<vector<char>>& boardGame) const;
 	void erase(vector<vector<char>>& boardGame) const;
 	Ship& operator=(const Ship& s);
 	~Ship();
-
-
 	bool isNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
 	bool isShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
 	bool shouldShipBeExploed(const vector<vector<char>>& boardGame, const Block bigBlock) const;
 	ShipSize getShipSize()const ;
 	char getFigure()const;
 	bool shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block)const;
+	bool isShipValidMove(const vector<vector<char>>& boardGame) const;
+	bool isShipVictoryMove(const vector<vector<char>>& boardGame) const;
 };

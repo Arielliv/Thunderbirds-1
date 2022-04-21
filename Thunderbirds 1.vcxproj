@@ -150,6 +150,7 @@
     <ClInclude Include="ghost.h" />
     <ClInclude Include="ioUtils.h" />
     <ClInclude Include="keys.h" />
+    <ClInclude Include="legened.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="ship.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="keys.cpp" />
+    <ClCompile Include="legened.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="point.cpp" />

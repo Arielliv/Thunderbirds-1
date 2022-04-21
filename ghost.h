@@ -17,7 +17,7 @@ class Ghost
 public:
 	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction);
 	Ghost& operator=(const Ghost& b);
-	Point getCurrentGhostPoint() const;
+	const Point& getCurrentGhostPoint() const;
 	void move(vector<vector<char>>& boardGame);
 	void draw(vector<vector<char>>& boardGame) const;
 	bool isValidMove(const vector<vector<char>>& boardGame) const;
