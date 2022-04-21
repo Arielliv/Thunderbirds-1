@@ -182,7 +182,7 @@ void Board::moveGhosts() {
 	}
 };
 
-bool Board::play(bool *isEsc, const int lives) {
+bool Board::play(bool &isEsc, const int lives) {
 	bool shouldExitLoop = false;
 	bool isFirstEsc = false;
 	char key = 0;
@@ -205,7 +205,7 @@ bool Board::play(bool *isEsc, const int lives) {
 	}
 	
 	if (!shouldExitLoop && key == ESC_SECOND) {
-		*isEsc = true;
+		isEsc = true;
 	}
 
 	setTextColor(Color::WHITE);

@@ -56,7 +56,7 @@ public:
 	Board() {};
 	Board& operator=(const Board& b);
 	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks);
-	bool play(bool* isEsc, const int lives);
+	bool play(bool& isEsc, const int lives);
 	friend void clearLine(const int lineNumber);
 	~Board();
 };

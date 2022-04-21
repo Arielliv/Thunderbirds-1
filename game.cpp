@@ -29,7 +29,7 @@ void Game::start() {
 			winningCounter = 2;
 		}
 		this->gameBoard = this->presetBoard;
-		isWon = this->gameBoard.play(&isEsc, this->lives);
+		isWon = this->gameBoard.play(isEsc, this->lives);
 		if (!isWon && !isEsc) {
 			clear_screen();
 			this->lives--;
