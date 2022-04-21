@@ -55,12 +55,12 @@ bool Block::isPointInsideBody(Point p) {
 
 void Block::move(const Direction direction, vector<vector<char>>& boardGame) {
 	updateValueByPoints(this->body, this->body.size(), (char)BoardCellType::Empty, boardGame);
-		for (std::size_t i = 0; i< this->body.size(); i++) {
+		for (int i = 0; i< this->body.size(); i++) {
 			
 			this->body[i].draw(' ');
 			this->body[i].move(direction);
 		}
-		for (std::size_t i = 0; i < this->body.size(); i++) {
+		for (int i = 0; i < this->body.size(); i++) {
 			if (this->isWithColors) {
 				setTextColor(color);
 			}

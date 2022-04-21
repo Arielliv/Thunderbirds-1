@@ -41,12 +41,12 @@ Direction Ship::getDirection() const{
 void Ship::move(vector<vector<char>>& boardGame) {
 		updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
 	
-		for (std::size_t i = 0; i < this->body.size(); i++) {
+		for (int i = 0; i < this->body.size(); i++) {
 			this->body[i].draw(' ');
 			this->body[i].move(direction);
 		}
 
-		for (std::size_t i = 0; i < this->body.size(); i++) {
+		for (int i = 0; i < this->body.size(); i++) {
 			if (this->isWithColors) {
 				setTextColor(color);
 			}
@@ -58,7 +58,7 @@ void Ship::move(vector<vector<char>>& boardGame) {
                          
 
 void Ship::draw( vector<vector<char>>& boardGame) const{
-		for (std::size_t i = 0; i < this->body.size(); i++) {
+		for (int i = 0; i < this->body.size(); i++) {
 			if (this->isWithColors) {
 				setTextColor(color);
 			}
@@ -71,7 +71,7 @@ void Ship::draw( vector<vector<char>>& boardGame) const{
 }
 
 void Ship::erase(vector<vector<char>>& boardGame) const {
-	for (std::size_t i = 0; i < this->body.size(); i++) {
+	for (int i = 0; i < this->body.size(); i++) {
 		if (this->isWithColors) {
 			setTextColor(color);
 		}
