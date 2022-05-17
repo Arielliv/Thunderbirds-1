@@ -15,8 +15,7 @@ class Game
 	int lives = 3;
 	GameFile fileGame;
 private:
-	void handleFileGameWithName(bool isWithColor);
-	void handleFileGameWithoutName(bool isWithColor, int fileNumber);
+	bool handleFileGame(bool isWithColor, int fileNumber);
 public:
 	void start();
 };

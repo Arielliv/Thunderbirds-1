@@ -8,6 +8,9 @@ bool GameFile::openFile(std::string name, int fileNumber) {
 
 	if (name.size() > 0) {
 		this->inFile.open(name, std::ios::in);
+		if (this->inFile.is_open()) {
+			isFileOpen = true;
+		}
 	}
 
 	else {
@@ -30,7 +33,7 @@ bool GameFile::openFile(std::string name, int fileNumber) {
 		}
 	}
 
-	return true;
+	return isFileOpen;
 }
 
 void GameFile::readFile(int& time, int& controlledShip, std::string& boardGame, int& legendLocation, int& numOfBlocks) {

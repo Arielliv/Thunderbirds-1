@@ -63,7 +63,7 @@ void Menu::printMenu() const {
 		"--------------------------------------------------------------------------------";
 
 	clear_screen();
-	std::cout << menu << std::endl;
+	std::cout << menu;
 }
 
 void Menu::printInstructions() const {
