@@ -1,29 +1,24 @@
 #pragma once
+#pragma once
 #include "point.h"
 #include "boardUtils.h"
+#include "boardGameTool.h"
 #include <vector>
 
-enum class GhostType { Vertical = 1, Horizontal = 2, Wondering=3 };
+enum class GhostType { Vertical = 1, Horizontal = 2, Wondering = 3 };
 
-class Ghost
-{
+class Ghost : public BoardGameTool {
 	GhostType type;
 	Direction direction;
-	Point startPoint = Point(1, 1);
-	char figure;
-	Color color;
-	Point body;
-	bool isWithColors = false;
 public:
-	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction);
-	Ghost& operator=(const Ghost& b);
-	const Point& getCurrentGhostPoint() const;
-	void move(vector<vector<char>>& boardGame);
-	void draw(vector<vector<char>>& boardGame) const;
-	bool isValidMove(const vector<vector<char>>& boardGame) const;
-	bool isHitShip(const vector<vector<char>>& boardGame) const;
-	void setDirection(const Direction _direction);
+	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction) : BoardGameTool(figure, color, startPoint, isWithColors), type(type), direction(direction) {
+		this->pushToBody(startPoint);
+	};
+	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame) const;
+	virtual bool isHitShip(const vector<vector<char>>& boardGame) const;
 	Direction getDirection() const;
+	void setDirection(Direction direction) ;
 	GhostType getGhostType() const;
+	void moveAuto(vector<vector<char>>& boardGame);
 };
 

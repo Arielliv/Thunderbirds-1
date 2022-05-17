@@ -200,7 +200,7 @@ bool Ship::isBigShipValidBlockMove(int& blockIndexToMove, const vector<vector<ch
 	
 	char curCellType1, curCellType2;
 	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i].getBlockSize() <= (int)MaxSizeOfBlockToMove::Big) {
+		if (blocks[i].getSize() <= (int)MaxSizeOfBlockToMove::Big) {
 			switch (dir) {
 			case Direction::Up:
 				curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame);
@@ -260,7 +260,7 @@ bool Ship::isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<
 	char curCellType1, curCellType2;
 
 	for (int i = 0; i < blocks.size(); i++) {
-		if (blocks[i].getBlockSize() <=(int)MaxSizeOfBlockToMove::Small) {
+		if (blocks[i].getSize() <=(int)MaxSizeOfBlockToMove::Small) {
 			switch (dir) {
 			case Direction::Up: 
 				curCellType1 = getValueByIndex(Point(curShipPointY - 1, curShipPointX), boardGame);
@@ -321,9 +321,9 @@ char Ship::getFigure()const {
 };
 
 bool Ship::shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block) const {
-	if ((int)this->shipSize < (int)block.getBlockSize()) {
+	if ((int)this->shipSize < (int)block.getSize()) {
 		vector<Point> blockBody = block.getCurrentBodyPoints();
-		for (int i = 0; i < (int)block.getBlockSize(); i++) {
+		for (int i = 0; i < (int)block.getSize(); i++) {
 			Point curBlockPoint = blockBody[i];
 			int curBlockPointY = curBlockPoint.getYPoint();
 			int curBlockPointX = curBlockPoint.getXPoint();

@@ -5,7 +5,8 @@ enum class BoardCellType {
 	SmallShip = '@',
 	BigShip = '#',
 	Exit = '^',
-	Ghost = '$'
+	HorizontalGhost = '$',
+	VerticalGhost = '!'
 };
 
 enum Bounderies {

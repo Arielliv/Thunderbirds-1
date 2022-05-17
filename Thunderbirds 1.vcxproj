@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="boardGameTool.h" />
     <ClInclude Include="boardUtils.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="config.h" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="BoardGameTool.cpp" />
     <ClCompile Include="boardUtils.cpp" />
     <ClCompile Include="gameFile.cpp" />
     <ClCompile Include="game.cpp" />

@@ -32,8 +32,11 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 				this->smallShip = Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(x, y), isWithColors);
 				isSmallShipExists = true;
 			}
-			if (this->boardGame[x][y] == (char)BoardCellType::Ghost) {
+			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
 				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right));
+			}
+			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
+				this->ghosts.push_back(Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Up));
 			}
 			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {
 				if (!blocksExists[parseCharToInt(this->boardGame[x][y])-1] ) {
@@ -180,8 +183,8 @@ bool Board::runTheGame(const  int lives) {
 
 void Board::moveGhosts() {
 	for (int i = 0; i < this->ghosts.size(); i++) {
-		if (this->ghosts[i].isValidMove(this->boardGame)) {
-			this->ghosts[i].move(this->boardGame);
+		if (this->ghosts[i].isValidMoveAuto(this->boardGame)) {
+			this->ghosts[i].moveAuto(this->boardGame);
 			if (this->ghosts[i].isHitShip(this->boardGame)) {
 				this->isLoss = true;
 			}
@@ -189,11 +192,15 @@ void Board::moveGhosts() {
 		else {
 			if (this->ghosts[i].getDirection() == Direction::Left) {
 				this->ghosts[i].setDirection(Direction::Right);
-			}
-			else {
+			} else if(this->ghosts[i].getDirection() == Direction::Right) {
 				this->ghosts[i].setDirection(Direction::Left);
+			} else if (this->ghosts[i].getDirection() == Direction::Up) {
+				this->ghosts[i].setDirection(Direction::Down);
+			} else if (this->ghosts[i].getDirection() == Direction::Down) {
+				this->ghosts[i].setDirection(Direction::Up);
 			}
-			this->ghosts[i].move(this->boardGame);
+		
+			this->ghosts[i].moveAuto(this->boardGame);
 			if (this->ghosts[i].isHitShip(this->boardGame)) {
 				this->isLoss = true;
 			}

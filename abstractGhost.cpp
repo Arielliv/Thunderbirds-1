@@ -1,9 +1,6 @@
-#include "ghost.h"
-void Ghost::moveAuto(vector<vector<char>>& boardGame) {
-	this->move(this->direction, boardGame);
-}
+#include "abstractGhost.h"
 
-bool Ghost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
+bool AbstractGhost::isValidMove(const Direction dir, const vector<vector<char>>& boardGame) const {
 	Point curGhostPoint = this->getCurrentPoint();
 	int curGhostPointY = curGhostPoint.getYPoint();
 	int curGhostPointX = curGhostPoint.getXPoint();
@@ -47,7 +44,7 @@ bool Ghost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
 	return false;
 }
 
-bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
+bool AbstractGhost::isHitShip(const vector<vector<char>>& boardGame) const {
 	Point curGhostPoint = this->getCurrentPoint();
 	int curGhostPointY = curGhostPoint.getYPoint();
 	int curGhostPointX = curGhostPoint.getXPoint();
@@ -87,13 +84,9 @@ bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
 	return false;
 }
 
-Direction Ghost::getDirection() const {
+Direction AbstractGhost::getDirection() const {
 	return this->direction;
 };
-GhostType Ghost::getGhostType() const {
+GhostType AbstractGhost::getGhostType() const {
 	return this->type;
 };
-
-void Ghost::setDirection(const Direction direction) {
-	this->direction = direction;
-}
