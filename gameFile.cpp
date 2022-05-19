@@ -36,7 +36,7 @@ bool GameFile::openFile(std::string name, int fileNumber) {
 	return isFileOpen;
 }
 
-void GameFile::readFile(int& time, int& controlledShip, std::string& boardGame, int& legendLocation, int& numOfBlocks) {
+void GameFile::readFile(int& time, int& controlledShip, std::string& boardGame, int& legendLocation, int& numOfBlocks, int& numOfGhosts) {
 	std::string boardLine;
 	int i = 0;
 	
@@ -44,6 +44,7 @@ void GameFile::readFile(int& time, int& controlledShip, std::string& boardGame, 
 		this->inFile >> time;
 		this->inFile >> controlledShip;
 		this->inFile >> numOfBlocks;
+		this->inFile >> numOfGhosts;
 
 		while (i < Bounderies::rows +1) {
 			getline(this->inFile, boardLine);

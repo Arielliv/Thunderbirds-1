@@ -1,4 +1,11 @@
 #include "ghost.h"
+
+Ghost& Ghost::operator=(const Ghost& b)  {
+	this->type = b.type;
+	this->direction = b.direction;
+	return *this;
+}
+
 void Ghost::moveAuto(vector<vector<char>>& boardGame) {
 	this->move(this->direction, boardGame);
 }

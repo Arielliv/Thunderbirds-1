@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum class Direction { Up = 0, Down = 1, Left = 2, Right = 3};
+enum class Direction { Up = 0, Down = 1, Left = 2, Right = 3, None=4};
 
 class Point {
 	int x = 1, y = 1;

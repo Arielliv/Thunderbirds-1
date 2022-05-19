@@ -6,7 +6,8 @@ enum class BoardCellType {
 	BigShip = '#',
 	Exit = '^',
 	HorizontalGhost = '$',
-	VerticalGhost = '!'
+	VerticalGhost = '!',
+	WonderGhost = '%'
 };
 
 enum Bounderies {

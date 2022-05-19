@@ -27,6 +27,9 @@ public:
 	virtual bool isValidMove(const Direction dir, const vector<vector<char>>& boardGame) const;
 	virtual char getFigure() const;
 	virtual int getSize() const;
+	bool getIsWithColors() const;
+	Color getColor() const;
 	void pushToBody(Point p);
 	const vector<Point>& getBody() const;
+	void setBodyAt(Point p, int index);
 };

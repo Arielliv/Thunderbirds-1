@@ -9,12 +9,13 @@
 #include "constants.h"
 #include "boardUtils.h"
 #include "legened.h"
+#include "wonderGhost.h"
 
 class Board{
 	Ship bigShip;
 	Ship smallShip;
 	vector<Block> blocks;
-	vector<Ghost> ghosts;
+	vector<Ghost*> ghosts;
 	bool isWithColors = false;
 	bool isVictory = false;
 	bool isLoss = false;
@@ -23,6 +24,7 @@ class Board{
 	vector<vector<char>> boardGame;
 	int time = 500;
 	int numOfBlocks;
+	int numOfGhosts;
 	Legened legened;
 private:
 	void smallShipMove();
@@ -45,7 +47,7 @@ private:
 	void moveGhosts();
 public:
 	Board() {};
-	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks);
+	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts);
 	bool play(bool& isEsc, const int lives);
 	~Board();
 };

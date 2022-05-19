@@ -156,6 +156,7 @@
     <ClInclude Include="point.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="wonderGhost.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="block.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="point.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="wonderGhost.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

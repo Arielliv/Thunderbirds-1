@@ -10,8 +10,9 @@ enum class GhostType { Vertical = 1, Horizontal = 2, Wondering = 3 };
 class Ghost : public BoardGameTool {
 	GhostType type;
 	Direction direction;
-public:
-	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction) : BoardGameTool(figure, color, startPoint, isWithColors), type(type), direction(direction) {
+public:	
+	Ghost() {};
+	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction = Direction::None) : BoardGameTool(figure, color, startPoint, isWithColors), type(type), direction(direction) {
 		this->pushToBody(startPoint);
 	};
 	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame) const;
@@ -19,6 +20,7 @@ public:
 	Direction getDirection() const;
 	void setDirection(Direction direction) ;
 	GhostType getGhostType() const;
-	void moveAuto(vector<vector<char>>& boardGame);
+	virtual void moveAuto(vector<vector<char>>& boardGame);
+	virtual Ghost& operator=(const Ghost& b);
 };
 

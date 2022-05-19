@@ -16,3 +16,11 @@ int parseCharToInt(char c) {
 char parseIntToChar(int i) {
     return i + '0';
 }
+
+void initRandomize() {
+    srand(time(NULL));
+}
+
+int getRandomNum(int min, int max) {
+    return (min + rand() % (max));
+}

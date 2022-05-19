@@ -63,6 +63,7 @@ bool Game::handleFileGame(bool isWithColor, int fileNumber) {
 	int legendLocation;
 	int controlledShip;
 	int numOfBlocks;
+	int numOfGhosts;
 	std::string boardGame = "";
 	std::string fileName = "";
 
@@ -71,9 +72,9 @@ bool Game::handleFileGame(bool isWithColor, int fileNumber) {
 	}
 
 	if (this->fileGame.openFile(fileName, fileNumber)) {
-		this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks);
+		this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
 		this->fileGame.closeFile();
-		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks);
+		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
 		return true;
 	}
 	else {

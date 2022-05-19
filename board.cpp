@@ -2,16 +2,20 @@
 
 Board::~Board() {
 	this->boardGame.clear();
+	for (int i = 0; i < this->ghosts.size(); i++) {
+		delete this->ghosts[i];
+	}
 	this->ghosts.clear();
 	this->blocks.clear();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks) {
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), ghosts(vector<Ghost*> (numOfGhosts, new Ghost())){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
 	bool isSmallShipExists = false;
 	int cur;
+	int ghostCounter = 0;
 
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		vector <char> row;
@@ -33,10 +37,16 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 				isSmallShipExists = true;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
-				this->ghosts.push_back(Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right));
+				*this->ghosts[ghostCounter] = (Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right));
+				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
-				this->ghosts.push_back(Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Up));
+				*this->ghosts[ghostCounter] = (Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up));
+				ghostCounter++;
+			}
+			if (this->boardGame[x][y] == (char)BoardCellType::WonderGhost) {
+				*this->ghosts[ghostCounter] = (WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors));
+				ghostCounter++;
 			}
 			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {
 				if (!blocksExists[parseCharToInt(this->boardGame[x][y])-1] ) {
@@ -100,7 +110,7 @@ void Board::initBoard() {
 	this->bigShip.draw(this->boardGame);
 	this->smallShip.draw(this->boardGame);
 	for (int i = 0; i < this->ghosts.size(); i++) {
-		this->ghosts[i].draw(this->boardGame);
+		this->ghosts[i]->draw(this->boardGame);
 	}
 	for (int i = 0; i < this->blocks.size(); i++) {
 		this->blocks[i].draw(this->boardGame);
@@ -183,25 +193,25 @@ bool Board::runTheGame(const  int lives) {
 
 void Board::moveGhosts() {
 	for (int i = 0; i < this->ghosts.size(); i++) {
-		if (this->ghosts[i].isValidMoveAuto(this->boardGame)) {
-			this->ghosts[i].moveAuto(this->boardGame);
-			if (this->ghosts[i].isHitShip(this->boardGame)) {
+		if (this->ghosts[i]->isValidMoveAuto(this->boardGame)) {
+			this->ghosts[i]->moveAuto(this->boardGame);
+			if (this->ghosts[i]->isHitShip(this->boardGame)) {
 				this->isLoss = true;
 			}
 		}
 		else {
-			if (this->ghosts[i].getDirection() == Direction::Left) {
-				this->ghosts[i].setDirection(Direction::Right);
-			} else if(this->ghosts[i].getDirection() == Direction::Right) {
-				this->ghosts[i].setDirection(Direction::Left);
-			} else if (this->ghosts[i].getDirection() == Direction::Up) {
-				this->ghosts[i].setDirection(Direction::Down);
-			} else if (this->ghosts[i].getDirection() == Direction::Down) {
-				this->ghosts[i].setDirection(Direction::Up);
+			if (this->ghosts[i]->getDirection() == Direction::Left) {
+				this->ghosts[i]->setDirection(Direction::Right);
+			} else if(this->ghosts[i]->getDirection() == Direction::Right) {
+				this->ghosts[i]->setDirection(Direction::Left);
+			} else if (this->ghosts[i]->getDirection() == Direction::Up) {
+				this->ghosts[i]->setDirection(Direction::Down);
+			} else if (this->ghosts[i]->getDirection() == Direction::Down) {
+				this->ghosts[i]->setDirection(Direction::Up);
 			}
 		
-			this->ghosts[i].moveAuto(this->boardGame);
-			if (this->ghosts[i].isHitShip(this->boardGame)) {
+			this->ghosts[i]->moveAuto(this->boardGame);
+			if (this->ghosts[i]->isHitShip(this->boardGame)) {
 				this->isLoss = true;
 			}
 		}

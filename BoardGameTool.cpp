@@ -107,3 +107,15 @@ void BoardGameTool::pushToBody(Point p) {
 const vector<Point>& BoardGameTool::getBody() const{
 	return this->body;
 }
+
+bool BoardGameTool::getIsWithColors() const {
+	return this->isWithColors;
+}
+
+Color BoardGameTool::getColor() const {
+	return this->color;
+}
+
+void BoardGameTool::setBodyAt(Point p, int index) {
+	this->body[index] = p;
+}
