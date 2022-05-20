@@ -1,5 +1,14 @@
 #include "wonderGhost.h"
 
+WonderGhost& WonderGhost::operator=(const WonderGhost& b) {
+	this->nextPoint = b.getNextPoint();
+	return *this;
+}
+
+Point WonderGhost::getNextPoint() const{
+	return this->nextPoint;
+}
+
 bool WonderGhost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
 	return true;
 }
@@ -36,7 +45,7 @@ Point WonderGhost::generateNextPoint(const vector<vector<char>>& boardGame) {
 	Point newPoint;
 	BoardCellType currBoardCellType;
 	while (!isValidPoint) {
-		newPoint = Point(getRandomNum(1, Bounderies::cols-1), getRandomNum(1, Bounderies::rows - 1));
+		newPoint = Point(getRandomNum(1, Bounderies::rows - 1), getRandomNum(1, Bounderies::cols - 1));
 		currBoardCellType = (BoardCellType)getValueByIndex(newPoint, boardGame);
 		if (currBoardCellType == BoardCellType::Empty 
 			|| currBoardCellType == BoardCellType::BigShip 

@@ -2,14 +2,14 @@
 
 Board::~Board() {
 	this->boardGame.clear();
-	for (int i = 0; i < this->ghosts.size(); i++) {
-		delete this->ghosts[i];
-	}
+	//for (int i = 0; i < this->ghosts.size(); i++) {
+	//	delete this->ghosts[i];
+	//}
 	this->ghosts.clear();
 	this->blocks.clear();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), ghosts(vector<Ghost*> (numOfGhosts, new Ghost())){
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
@@ -37,15 +37,18 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 				isSmallShipExists = true;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
-				*this->ghosts[ghostCounter] = (Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right));
+				//Ghost g = Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right);
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
-				*this->ghosts[ghostCounter] = (Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up));
+				//Ghost g = Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up);
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::WonderGhost) {
-				*this->ghosts[ghostCounter] = (WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors));
+				//Ghost g = WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors);
+				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {

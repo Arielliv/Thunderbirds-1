@@ -16,5 +16,7 @@ public:
 	bool isValidMoveAuto(const vector<vector<char>>& boardGame) const override;
 	bool isHitShip(const vector<vector<char>>& boardGame) const override;
 	void moveAuto(vector<vector<char>>& boardGame) override;
+	Point getNextPoint() const;
+	WonderGhost& operator=(const WonderGhost& b);
 };
 

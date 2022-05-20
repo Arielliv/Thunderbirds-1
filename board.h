@@ -15,7 +15,7 @@ class Board{
 	Ship bigShip;
 	Ship smallShip;
 	vector<Block> blocks;
-	vector<Ghost*> ghosts;
+	vector<shared_ptr<Ghost>> ghosts;
 	bool isWithColors = false;
 	bool isVictory = false;
 	bool isLoss = false;
