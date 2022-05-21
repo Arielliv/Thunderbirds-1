@@ -13,7 +13,7 @@ class Ghost : public BoardGameTool {
 public:	
 	Ghost() {};
 	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction = Direction::None) : BoardGameTool(figure, color, startPoint, isWithColors), type(type), direction(direction) {
-		this->pushToBody(startPoint);
+		this->pushToBody(Point(startPoint.getYPoint(), startPoint.getXPoint()));
 	};
 	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame) const;
 	virtual bool isHitShip(const vector<vector<char>>& boardGame) const;

@@ -38,17 +38,17 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
 				//Ghost g = Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right);
-				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right)));
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
 				//Ghost g = Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up);
-				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up)));
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(x, y), isWithColors, GhostType::Vertical, Direction::Up)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::WonderGhost) {
 				//Ghost g = WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors);
-				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors)));
+				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(x, y), isWithColors)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {

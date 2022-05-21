@@ -13,8 +13,8 @@ bool WonderGhost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
 	return true;
 }
 
-bool WonderGhost::isHitShip(const vector<vector<char>>& boardGame) const {
-	BoardCellType currBoardCellType = (BoardCellType)getValueByIndex(this->getBody()[0], boardGame);
+bool WonderGhost::isHitShip(const vector<vector<char>>& boardGame) {
+	BoardCellType currBoardCellType = (BoardCellType)getValueByIndex(this->nextPoint, boardGame);
 
 	if (currBoardCellType == BoardCellType::BigShip
 		|| currBoardCellType == BoardCellType::SmallShip) {
@@ -34,8 +34,8 @@ void WonderGhost::moveAuto(vector<vector<char>>& boardGame) {
 	if (this->getIsWithColors()) {
 		setTextColor(this->getColor());
 	}
-    
-	this->setBodyAt(this->nextPoint, 0);
+
+	this->setBodyAt(Point(this->nextPoint.getYPoint(), this->nextPoint.getXPoint()), 0);
 	this->getBody()[0].draw(this->getFigure());
 	updateValueByPoints(this->getBody(), this->getSize(), this->getFigure(), boardGame);
 }

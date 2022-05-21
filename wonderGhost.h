@@ -14,7 +14,8 @@ private:
 public:
 	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors) : Ghost(figure, color, startPoint, isWithColors, GhostType::Wondering) {};
 	bool isValidMoveAuto(const vector<vector<char>>& boardGame) const override;
-	bool isHitShip(const vector<vector<char>>& boardGame) const override;
+	//bool isHitShip(const vector<vector<char>>& boardGame) const override;
+	bool isHitShip(const vector<vector<char>>& boardGame);
 	void moveAuto(vector<vector<char>>& boardGame) override;
 	Point getNextPoint() const;
 	WonderGhost& operator=(const WonderGhost& b);
