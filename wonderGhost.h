@@ -10,12 +10,12 @@
 class WonderGhost : public Ghost {
 private:
 	Point nextPoint;
-	Point generateNextPoint(const vector<vector<char>>& boardGame);
+	Point generateNextPoint(const vector<vector<char>>& boardGame, bool isFirst);
 public:
-	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors) : Ghost(figure, color, startPoint, isWithColors, GhostType::Wondering) {};
+	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, const vector<vector<char>>& boardGame);
 	bool isValidMoveAuto(const vector<vector<char>>& boardGame) const override;
 	//bool isHitShip(const vector<vector<char>>& boardGame) const override;
-	bool isHitShip(const vector<vector<char>>& boardGame);
+	bool isHitShip(const vector<vector<char>>& boardGame) override;
 	void moveAuto(vector<vector<char>>& boardGame) override;
 	Point getNextPoint() const;
 	WonderGhost& operator=(const WonderGhost& b);

@@ -16,7 +16,7 @@ public:
 		this->pushToBody(Point(startPoint.getYPoint(), startPoint.getXPoint()));
 	};
 	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame) const;
-	virtual bool isHitShip(const vector<vector<char>>& boardGame) const;
+	virtual bool isHitShip(const vector<vector<char>>& boardGame);
 	Direction getDirection() const;
 	void setDirection(Direction direction) ;
 	GhostType getGhostType() const;

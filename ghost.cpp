@@ -54,7 +54,7 @@ bool Ghost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
 	return false;
 }
 
-bool Ghost::isHitShip(const vector<vector<char>>& boardGame) const {
+bool Ghost::isHitShip(const vector<vector<char>>& boardGame) {
 	Point curGhostPoint = this->getCurrentPoint();
 	int curGhostPointY = curGhostPoint.getYPoint();
 	int curGhostPointX = curGhostPoint.getXPoint();
