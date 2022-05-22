@@ -5,7 +5,7 @@
 #include <iostream>
 #include "ioUtils.h"
 #include "menu.h"
-#include "gameFile.h"
+#include "boardFile.h"
 
 class Game
 {
@@ -13,10 +13,10 @@ class Game
 	Board gameBoard;
 	Menu menu;
 	int lives = 3;
-	GameFile fileGame;
+	BoardFile fileGame;
 private:
 	bool handleFileGame(bool isWithColor, int fileNumber);
 public:
-	void start();
+	void start(bool isLoadMode = false, bool isSaveMode = false,bool isSilnet = false);
 };
 

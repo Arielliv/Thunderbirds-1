@@ -57,7 +57,7 @@
     <ClInclude Include="ghost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gameFile.h">
+    <ClInclude Include="boardFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="legened.h">
@@ -67,6 +67,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wonderGhost.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +110,7 @@
     <ClCompile Include="ghost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameFile.cpp">
+    <ClCompile Include="boardFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="legened.cpp">
@@ -117,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wonderGhost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

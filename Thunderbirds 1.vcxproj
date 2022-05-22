@@ -146,8 +146,9 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="constants.h" />
-    <ClInclude Include="gameFile.h" />
+    <ClInclude Include="boardFile.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="gameFile.h" />
     <ClInclude Include="ghost.h" />
     <ClInclude Include="ioUtils.h" />
     <ClInclude Include="keys.h" />
@@ -163,8 +164,9 @@
     <ClCompile Include="board.cpp" />
     <ClCompile Include="boardGameTool.cpp" />
     <ClCompile Include="boardUtils.cpp" />
-    <ClCompile Include="gameFile.cpp" />
+    <ClCompile Include="boardFile.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="gameFile.cpp" />
     <ClCompile Include="ghost.cpp" />
     <ClCompile Include="io_utils.cpp" />
     <ClCompile Include="keys.cpp" />

@@ -1,20 +1,21 @@
 ﻿#include "game.h"
 
-void Game::start() {
+void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
 	bool isEsc = false;
 	bool isWon = false;
 	bool isByFileName = false;
 	bool didReadFile = false;
 	int winningCounter = 0;
 	MenuChoice userChoice = MenuChoice::ShowSettings;
+	if (!isLoadMode) {
+		while (userChoice == MenuChoice::ShowSettings) {
+			userChoice = this->menu.openMenu();
+		}
 
-	while (userChoice == MenuChoice::ShowSettings) {
-		userChoice = this->menu.openMenu();
-	}
-
-	if (userChoice == MenuChoice::Exit) {
-		this->menu.printExit();
-		return;
+		if (userChoice == MenuChoice::Exit) {
+			this->menu.printExit();
+			return;
+		}
 	}
 
 	while (this->lives > 0 && winningCounter < 3 && !isEsc) {
@@ -59,7 +60,7 @@ void Game::start() {
 
 bool Game::handleFileGame(bool isWithColor, int fileNumber) {
 	int time;
-	GameFile fileGame;
+	BoardFile fileGame;
 	int legendLocation;
 	int controlledShip;
 	int numOfBlocks;

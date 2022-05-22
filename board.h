@@ -26,6 +26,7 @@ class Board{
 	int numOfBlocks;
 	int numOfGhosts;
 	Legened legened;
+	bool isSaveMode;
 private:
 	void smallShipMove();
 	void bigShipMove();
@@ -47,7 +48,7 @@ private:
 	void moveGhosts();
 public:
 	Board() {};
-	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts);
+	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, bool isSaveMode = false);
 	bool play(bool& isEsc, const int lives);
 	~Board();
 };

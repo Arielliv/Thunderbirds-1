@@ -6,7 +6,7 @@ Board::~Board() {
 	this->blocks.clear();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts){
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), isSaveMode(isSaveMode){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
