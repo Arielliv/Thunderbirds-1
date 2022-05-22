@@ -1,15 +1,10 @@
 #include "ship.h"
 
 Ship& Ship::operator=(const Ship& s) {
-	//this->body.reserve((int)s.shipSize);
+	BoardGameTool::operator=(s);
 	this->isEmpty = s.isEmpty;
 	this->shipSize = s.shipSize;
-	//this->startPoint = s.startPoint;
-	//this->figure = s.figure;
-	//this->color = s.color;
 	this->direction = s.direction;
-	//this->isWithColors = s.isWithColors;
-	//this->body = s.body;
 	return *this;
 }
 
@@ -37,38 +32,6 @@ Direction Ship::getDirection() const{
 	return this->direction;
 }
 
-//void Ship::move(vector<vector<char>>& boardGame) {
-//		updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
-//	
-//		for (int i = 0; i < this->body.size(); i++) {
-//			this->body[i].draw(' ');
-//			this->body[i].move(direction);
-//		}
-//
-//		for (int i = 0; i < this->body.size(); i++) {
-//			if (this->isWithColors) {
-//				setTextColor(color);
-//			}
-//			this->body[i].draw(figure);
-//		}
-//
-//		updateValueByPoints(this->body, (int)this->shipSize, this->shipSize == ShipSize::Small? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
-//}
-                         
-
-//void Ship::draw( vector<vector<char>>& boardGame) const{
-//		for (int i = 0; i < this->getSize(); i++) {
-//			if (this->getIsWithColors()) {
-//				setTextColor(this->getColor());
-//			}
-//			this->getBody()[i].draw(this->getFigure());
-//			if (this->getIsWithColors()) {
-//				setTextColor(Color::WHITE);
-//			}
-//		}
-//		updateValueByPoints(this->getBody(),(int)this->shipSize, this->shipSize == ShipSize::Small ? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
-//}
-
 void Ship::erase(vector<vector<char>>& boardGame) const {
 	for (int i = 0; i < this->getSize(); i++) {
 		if (this->getIsWithColors()) {
@@ -82,18 +45,6 @@ void Ship::erase(vector<vector<char>>& boardGame) const {
 
 	updateValueByPoints(this->getBody(), (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
 }
-
-//Ship::~Ship() {
-//	this->body.clear();
-//}
-
-//const Point& Ship::getCurrentShipPoint() const{
-//	return this->body[0];
-//}
-//
-//const vector<Point>& Ship::getCurrentBodyPoints() const {
-//	return this->body;
-//}
 
 bool Ship::isNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const {
 	if (this->shipSize == ShipSize::Big) {
@@ -314,10 +265,6 @@ bool Ship::isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<
 ShipSize Ship::getShipSize()const {
 	return this->shipSize;
 };
-
-//char Ship::getFigure()const {
-//	return this->figure;
-//};
 
 bool Ship::shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block) const {
 	if ((int)this->shipSize < (int)block.getSize()) {
