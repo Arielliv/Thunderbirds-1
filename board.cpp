@@ -2,9 +2,6 @@
 
 Board::~Board() {
 	this->boardGame.clear();
-	//for (int i = 0; i < this->ghosts.size(); i++) {
-	//	delete this->ghosts[i];
-	//}
 	this->ghosts.clear();
 	this->blocks.clear();
 }
@@ -238,7 +235,7 @@ void Board::smallShipMove() {
 			}
 		}
 		if (isBlockCanMove) {
-			this->smallShip.move(this->boardGame);	
+			this->smallShip.move(dir, this->boardGame);
 		}
 	}
 
@@ -268,7 +265,7 @@ void Board::bigShipMove() {
 			}
 		}
 		if (isBlockCanMove) {
-			this->bigShip.move(this->boardGame);
+			this->bigShip.move(dir, this->boardGame);
 		}
 	}
 

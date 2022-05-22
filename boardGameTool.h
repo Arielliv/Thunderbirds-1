@@ -31,5 +31,6 @@ public:
 	Color getColor() const;
 	void pushToBody(Point p);
 	const vector<Point>& getBody() const;
+	Point getStartPoint() const;
 	void setBodyAt(Point p, int index);
 };

@@ -161,7 +161,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
-    <ClCompile Include="BoardGameTool.cpp" />
+    <ClCompile Include="boardGameTool.cpp" />
     <ClCompile Include="boardUtils.cpp" />
     <ClCompile Include="gameFile.cpp" />
     <ClCompile Include="game.cpp" />

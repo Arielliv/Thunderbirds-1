@@ -1,30 +1,29 @@
 #include "ship.h"
 
 Ship& Ship::operator=(const Ship& s) {
-	this->body.reserve((int)s.shipSize);
+	//this->body.reserve((int)s.shipSize);
 	this->isEmpty = s.isEmpty;
 	this->shipSize = s.shipSize;
-	this->startPoint = s.startPoint;
-	this->figure = s.figure;
-	this->color = s.color;
+	//this->startPoint = s.startPoint;
+	//this->figure = s.figure;
+	//this->color = s.color;
 	this->direction = s.direction;
-	this->isWithColors = s.isWithColors;
-	this->body = s.body;
+	//this->isWithColors = s.isWithColors;
+	//this->body = s.body;
 	return *this;
 }
 
-Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors) : shipSize(shipSize), figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
-	this->isEmpty = false;
+Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors) : BoardGameTool(figure, color, startPoint, isWithColors), shipSize(shipSize), isEmpty(false) {
 	if (shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++) {
-			this->body.push_back(Point(this->startPoint.getYPoint() +i, this->startPoint.getXPoint()));
+			this->pushToBody(Point(this->getStartPoint().getYPoint() +i, this->getStartPoint().getXPoint()));
 		}
 	}
 	else {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++)
 			{
-				this->body.push_back(Point( this->startPoint.getYPoint() + j, this->startPoint.getXPoint() + i));
+				this->pushToBody(Point( this->getStartPoint().getYPoint() + j, this->getStartPoint().getXPoint() + i));
 			}
 		}
 	}
@@ -38,63 +37,63 @@ Direction Ship::getDirection() const{
 	return this->direction;
 }
 
-void Ship::move(vector<vector<char>>& boardGame) {
-		updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
-	
-		for (int i = 0; i < this->body.size(); i++) {
-			this->body[i].draw(' ');
-			this->body[i].move(direction);
-		}
-
-		for (int i = 0; i < this->body.size(); i++) {
-			if (this->isWithColors) {
-				setTextColor(color);
-			}
-			this->body[i].draw(figure);
-		}
-
-		updateValueByPoints(this->body, (int)this->shipSize, this->shipSize == ShipSize::Small? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
-}
+//void Ship::move(vector<vector<char>>& boardGame) {
+//		updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
+//	
+//		for (int i = 0; i < this->body.size(); i++) {
+//			this->body[i].draw(' ');
+//			this->body[i].move(direction);
+//		}
+//
+//		for (int i = 0; i < this->body.size(); i++) {
+//			if (this->isWithColors) {
+//				setTextColor(color);
+//			}
+//			this->body[i].draw(figure);
+//		}
+//
+//		updateValueByPoints(this->body, (int)this->shipSize, this->shipSize == ShipSize::Small? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
+//}
                          
 
-void Ship::draw( vector<vector<char>>& boardGame) const{
-		for (int i = 0; i < this->body.size(); i++) {
-			if (this->isWithColors) {
-				setTextColor(color);
-			}
-			this->body[i].draw(figure);
-			if (this->isWithColors) {
-				setTextColor(Color::WHITE);
-			}
-		}
-		updateValueByPoints(this->body,(int)this->shipSize, this->shipSize == ShipSize::Small ? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
-}
+//void Ship::draw( vector<vector<char>>& boardGame) const{
+//		for (int i = 0; i < this->getSize(); i++) {
+//			if (this->getIsWithColors()) {
+//				setTextColor(this->getColor());
+//			}
+//			this->getBody()[i].draw(this->getFigure());
+//			if (this->getIsWithColors()) {
+//				setTextColor(Color::WHITE);
+//			}
+//		}
+//		updateValueByPoints(this->getBody(),(int)this->shipSize, this->shipSize == ShipSize::Small ? (char)BoardCellType::SmallShip : (char)BoardCellType::BigShip, boardGame);
+//}
 
 void Ship::erase(vector<vector<char>>& boardGame) const {
-	for (int i = 0; i < this->body.size(); i++) {
-		if (this->isWithColors) {
-			setTextColor(color);
+	for (int i = 0; i < this->getSize(); i++) {
+		if (this->getIsWithColors()) {
+			setTextColor(this->getColor());
 		}
-		this->body[i].draw(' ');
-		if (this->isWithColors) {
+		this->getBody()[i].draw(' ');
+		if (this->getIsWithColors()) {
 			setTextColor(Color::WHITE);
 		}
 	}
 
-	updateValueByPoints(this->body, (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
+	updateValueByPoints(this->getBody(), (int)this->shipSize, (char)BoardCellType::Empty, boardGame);
 }
 
-Ship::~Ship() {
-	this->body.clear();
-}
+//Ship::~Ship() {
+//	this->body.clear();
+//}
 
-const Point& Ship::getCurrentShipPoint() const{
-	return this->body[0];
-}
-
-const vector<Point>& Ship::getCurrentBodyPoints() const {
-	return this->body;
-}
+//const Point& Ship::getCurrentShipPoint() const{
+//	return this->body[0];
+//}
+//
+//const vector<Point>& Ship::getCurrentBodyPoints() const {
+//	return this->body;
+//}
 
 bool Ship::isNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const {
 	if (this->shipSize == ShipSize::Big) {
@@ -106,7 +105,7 @@ bool Ship::isNextMoveEQCellType(const BoardCellType cellType, const vector<vecto
 }
 
 bool Ship::isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const {
-	Point curShipPoint = this->getCurrentShipPoint();
+	Point curShipPoint = this->getCurrentPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 
@@ -144,7 +143,7 @@ bool Ship::isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vec
 }
 
 bool Ship::isBigShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const {
-	Point curShipPoint = this->getCurrentShipPoint();
+	Point curShipPoint = this->getCurrentPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 
@@ -193,7 +192,7 @@ bool Ship::isShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>
 }
 
 bool Ship::isBigShipValidBlockMove(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const {
-	Point curShipPoint = this->getCurrentShipPoint();
+	Point curShipPoint = this->getCurrentPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 	Direction dir = this->getDirection();
@@ -253,7 +252,7 @@ bool Ship::isBigShipValidBlockMove(int& blockIndexToMove, const vector<vector<ch
 }
 
 bool Ship::isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const {
-	Point curShipPoint = this->getCurrentShipPoint();
+	Point curShipPoint = this->getCurrentPoint();
 	int curShipPointY = curShipPoint.getYPoint();
 	int curShipPointX = curShipPoint.getXPoint();
 	Direction dir = this->getDirection();
@@ -316,9 +315,9 @@ ShipSize Ship::getShipSize()const {
 	return this->shipSize;
 };
 
-char Ship::getFigure()const {
-	return this->figure;
-};
+//char Ship::getFigure()const {
+//	return this->figure;
+//};
 
 bool Ship::shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const Block& block) const {
 	if ((int)this->shipSize < (int)block.getSize()) {
@@ -328,7 +327,7 @@ bool Ship::shouldBlockExplodeShip(const vector<vector<char>>& boardGame, const B
 			int curBlockPointY = curBlockPoint.getYPoint();
 			int curBlockPointX = curBlockPoint.getXPoint();
 
-			if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) == this->figure) {
+			if (getValueByIndex(Point(curBlockPointY + 1, curBlockPointX), boardGame) == this->getFigure()) {
 				return true;
 			}
 		}

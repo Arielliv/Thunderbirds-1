@@ -9,7 +9,8 @@ BoardGameTool& BoardGameTool::operator=(const BoardGameTool& b) {
 	return *this;
 }
 
-BoardGameTool::BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors) : figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {}
+BoardGameTool::BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors) : figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+}
 
 void BoardGameTool::move(const Direction direction, vector<vector<char>>& boardGame) {
 	updateValueByPoints(this->body, this->body.size(), (char)BoardCellType::Empty, boardGame);
@@ -114,6 +115,10 @@ bool BoardGameTool::getIsWithColors() const {
 
 Color BoardGameTool::getColor() const {
 	return this->color;
+}
+
+Point BoardGameTool::getStartPoint() const {
+	return this->startPoint;
 }
 
 void BoardGameTool::setBodyAt(Point p, int index) {

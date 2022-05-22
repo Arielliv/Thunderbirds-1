@@ -2,8 +2,8 @@
 enum class BoardCellType {
 	Empty = '0',
 	Wall = 'W',
-	SmallShip = '@',
-	BigShip = '#',
+	SmallShip = '&',
+	BigShip = '@',
 	Exit = '^',
 	HorizontalGhost = '$',
 	VerticalGhost = '!',
