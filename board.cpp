@@ -4,15 +4,23 @@ Board::~Board() {
 	this->boardGame.clear();
 	this->ghosts.clear();
 	this->blocks.clear();
+	this->stepsFile.closeFile();
+	this->resultFile.closeFile();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), isSaveMode(isSaveMode){
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber, bool isFileMode, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts),isFileMode(isFileMode), isSaveMode(isSaveMode){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
 	bool isSmallShipExists = false;
 	int cur;
 	int ghostCounter = 0;
+	this->stepsFile = GameFile(true);
+	this->resultFile = GameFile(false);
+	if (isFileMode) {
+		this->stepsFile.openFile(screenNumber, isSaveMode);
+		this->resultFile.openFile(screenNumber, isSaveMode);
+	}
 
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		vector <char> row;
@@ -121,8 +129,11 @@ bool Board::runTheGame(const  int lives) {
 	bool isHittedOnce = false;
 	bool isSwitched = false;
 	char key = 0;
+	int stepCounter = 0;
+	Point wonderGhostCurrentPoint;
 
 	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
+		stepCounter++;
 		vector<int> dropBlockIndexes;
 		if (_kbhit()) {
 			key = _getch();
@@ -139,7 +150,17 @@ bool Board::runTheGame(const  int lives) {
 			}
 			else {
 				if (key != ESC) {
+					for (int i = 0; i < this->ghosts.size(); i++) {
+						string ghostType = typeid(this->ghosts[i]).name();
+						if (ghostType.compare(typeid(WonderGhost).name())) {
+							wonderGhostCurrentPoint = this->ghosts[i]->getCurrentPoint();
+						}
+					}
+					
 					Direction nextDirection = getDirectionByKey(key);
+					if (this->isFileMode && this->isSaveMode) {
+						this->stepsFile.writeToStepsFile(stepCounter, wonderGhostCurrentPoint, this->isSmallShipMove ? nextDirection : Direction::None, !this->isSmallShipMove ? nextDirection : Direction::None);
+					}
 					if (this->isSmallShipMove) {
 						if (isSwitched) {
 							isSwitched = false;
@@ -182,10 +203,15 @@ bool Board::runTheGame(const  int lives) {
 		this->legened.printStatus(lives, time, this->isSmallShipMove);
 		Sleep(200);
 	}
+
 	if (key == ESC) {
 		return true;
 	}
 	else {
+		if(this->isFileMode && this->isSaveMode){
+			this->resultFile.writeToResultFile(stepCounter, this->isLoss, this->isVictory);
+		}
+		
 		return false;
 	}
 }

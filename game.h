@@ -15,7 +15,7 @@ class Game
 	int lives = 3;
 	BoardFile fileGame;
 private:
-	bool handleFileGame(bool isWithColor, int fileNumber);
+	bool handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, bool isSaveMode);
 public:
 	void start(bool isLoadMode = false, bool isSaveMode = false,bool isSilnet = false);
 };

@@ -10,6 +10,8 @@
 #include "boardUtils.h"
 #include "legened.h"
 #include "wonderGhost.h"
+#include "gameFile.h"
+#include <typeinfo>
 
 class Board{
 	Ship bigShip;
@@ -27,6 +29,9 @@ class Board{
 	int numOfGhosts;
 	Legened legened;
 	bool isSaveMode;
+	bool isFileMode;
+	GameFile stepsFile;
+	GameFile resultFile;
 private:
 	void smallShipMove();
 	void bigShipMove();
@@ -48,7 +53,7 @@ private:
 	void moveGhosts();
 public:
 	Board() {};
-	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, bool isSaveMode = false);
+	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber,bool isFileMode = false,bool isSaveMode = false);
 	bool play(bool& isEsc, const int lives);
 	~Board();
 };

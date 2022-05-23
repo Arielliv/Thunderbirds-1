@@ -7,19 +7,19 @@ int main(int argc, char* argv[]) {
 	bool isSaveMode = false;
 	bool isSilnet = false;
 
-	if (argc > 0) {
-		mode = argv[0];
+	if (argc > 1) {
+		mode = argv[1];
 		if (mode.compare("-Load") == 0) {
 			isLoadMode = true;
 		}
 		if (mode.compare("-Save") == 0){
 			isSaveMode = true;
 		}
-		if (argc > 1 && isLoadMode) {
+		if (argc > 2 && isLoadMode) {
 			isSilnet = true;
 		}
 	}
 	Game game;
 	initRandomize();
-	game.start();
+	game.start(isLoadMode, isSaveMode, isSilnet);
 }

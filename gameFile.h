@@ -9,13 +9,16 @@
 class GameFile
 {
 private:
-	std::ifstream file;
+	std::fstream file;
 	bool isStepsFile;
 public:
+	GameFile() {};
 	GameFile(bool isStepsFile) : isStepsFile(isStepsFile) {};
-	bool openFile(std::string fileName, int fileNumber, int screenNumber);
-	void readFile();
-	void writeToStepsFile(int step, Direction smallShipDirection, Direction bigShipDirection, Point wonderGhostPoint);
-	void writeToResultFile();
+	bool openFile(std::string screenNumber, bool isWriteMode);
+	void readStepsFile(int& step, Point& wonderGhostPoint, char smallShipDirection, char bigShipDirection);
+	void readResultFile(int& step, bool& isLostLives, bool& isFinshedScreen);
+	void writeToStepsFile(int step, Point wonderGhostPoint, Direction smallShipDirection, Direction bigShipDirection);
+	void writeToResultFile(int step, bool isLostLives, bool isFinshedScreen);
 	void closeFile();
+	GameFile& operator=(const GameFile& b);
 };

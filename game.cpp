@@ -20,12 +20,12 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
 
 	while (this->lives > 0 && winningCounter < 3 && !isEsc) {
 		if ((userChoice == MenuChoice::OpenFileByNameWithColor || userChoice == MenuChoice::OpenFileByNameWithoutColor) && !isByFileName) {
-			didReadFile = this->handleFileGame(userChoice == MenuChoice::OpenFileByNameWithColor, -1);
+			didReadFile = this->handleFileGame(userChoice == MenuChoice::OpenFileByNameWithColor, -1, isLoadMode, isSaveMode);
 			isByFileName = true;
 			winningCounter = 2;
 		}
 		else if(userChoice == MenuChoice::WithColor){
-			didReadFile = this->handleFileGame(userChoice == MenuChoice::WithColor, winningCounter);
+			didReadFile = this->handleFileGame(userChoice == MenuChoice::WithColor, winningCounter, isLoadMode, isSaveMode);
 		}
 
 		if (didReadFile) {
@@ -58,24 +58,30 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
 	}
 }
 
-bool Game::handleFileGame(bool isWithColor, int fileNumber) {
+bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, bool isSaveMode) {
 	int time;
 	BoardFile fileGame;
 	int legendLocation;
 	int controlledShip;
 	int numOfBlocks;
 	int numOfGhosts;
+	std::string screenNumber;
 	std::string boardGame = "";
 	std::string fileName = "";
 
 	if (fileNumber == -1) {
 		fileName = this->menu.getFileName();
+		screenNumber = fileName.substr(3, 5);
 	}
+	else {
+		screenNumber.append("0").append(std::to_string(fileNumber+1));
+	}
+	
 
 	if (this->fileGame.openFile(fileName, fileNumber)) {
 		this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
 		this->fileGame.closeFile();
-		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
+		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts, screenNumber, isSaveMode || isLoadMode, isSaveMode);
 		return true;
 	}
 	else {
