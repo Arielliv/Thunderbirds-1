@@ -130,23 +130,23 @@ bool Board::runTheGame(const  int lives) {
 	}
 
 	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
-		if (this->isFileMode && !this->isSaveMode) {
-			this->stepsFile.readStepsFile(stepCounter, wonderGhostCurrentPoint, smallShipDirection, bigShipDirection);
-			if (smallShipDirection != ' ') {
-				this->smallShip.setDirection((Direction)smallShipDirection);
-				this->isSmallShipMove = true;
-			}
-			if (bigShipDirection != ' ') {
-				this->bigShip.setDirection((Direction)bigShipDirection);
-				this->isSmallShipMove = false;
-			}
-			for (int i = 0; i < this->ghosts.size(); i++) {
-				string ghostType = typeid(this->ghosts[i]).name();
-				if (ghostType.compare(typeid(WonderGhost).name())) {
-					this->ghosts[i]->setNextPoint(wonderGhostCurrentPoint);
-				}
-			}
-		}
+		//if (this->isFileMode && !this->isSaveMode) {
+		//	this->stepsFile.readStepsFile(stepCounter, wonderGhostCurrentPoint, smallShipDirection, bigShipDirection);
+		//	if (smallShipDirection != ' ') {
+		//		this->smallShip.setDirection((Direction)smallShipDirection);
+		//		this->isSmallShipMove = true;
+		//	}
+		//	if (bigShipDirection != ' ') {
+		//		this->bigShip.setDirection((Direction)bigShipDirection);
+		//		this->isSmallShipMove = false;
+		//	}
+		//	for (int i = 0; i < this->ghosts.size(); i++) {
+		//		string ghostType = typeid(this->ghosts[i]).name();
+		//		if (ghostType.compare(typeid(WonderGhost).name())) {
+		//			this->ghosts[i]->setNextPoint(wonderGhostCurrentPoint);
+		//		}
+		//	}
+		//}
 		stepCounter++;
 		vector<int> dropBlockIndexes;
 		if (_kbhit()) {
@@ -172,9 +172,9 @@ bool Board::runTheGame(const  int lives) {
 					}
 					
 					Direction nextDirection = getDirectionByKey(key);
-					if (this->isFileMode && this->isSaveMode) {
-						this->stepsFile.writeToStepsFile(stepCounter, wonderGhostCurrentPoint, this->isSmallShipMove ? nextDirection : Direction::None, !this->isSmallShipMove ? nextDirection : Direction::None);
-					}
+					//if (this->isFileMode && this->isSaveMode) {
+					//	this->stepsFile.writeToStepsFile(stepCounter, wonderGhostCurrentPoint, this->isSmallShipMove ? nextDirection : Direction::None, !this->isSmallShipMove ? nextDirection : Direction::None);
+					//}
 					if (this->isSmallShipMove) {
 						if (isSwitched) {
 							isSwitched = false;

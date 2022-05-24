@@ -1,26 +1,11 @@
-﻿  block.cpp
-  board.cpp
+﻿  board.cpp
 C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(13,6): warning C4101: 'counterNumOfBlocks': unreferenced local variable
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(315,22): warning C4101: 'curBlockPointX': unreferenced local variable
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(315,6): warning C4101: 'curBlockPointY': unreferenced local variable
-  boardFile.cpp
-  boardGameTool.cpp
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\boardGameTool.cpp(16,90): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\boardGameTool.cpp(28,76): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\boardGameTool.cpp(43,76): warning C4267: 'argument': conversion from 'size_t' to 'const int', possible loss of data
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\boardGameTool.cpp(98,26): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  boardUtils.cpp
+C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(333,22): warning C4101: 'curBlockPointX': unreferenced local variable
+C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(333,6): warning C4101: 'curBlockPointY': unreferenced local variable
   game.cpp
-  gameFile.cpp
   ghost.cpp
-  keys.cpp
-  legened.cpp
   main.cpp
-  menu.cpp
   point.cpp
-  ship.cpp
-  utils.cpp
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\utils.cpp(21,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   wonderGhost.cpp
   Generating Code...
   Thunderbirds 1.vcxproj -> C:\Users\adi.veiszman\source\repos\Thunderbirds-1\x64\Debug\Thunderbirds 1.exe

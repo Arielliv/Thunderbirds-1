@@ -10,7 +10,7 @@ void Ghost::moveAuto(vector<vector<char>>& boardGame) {
 	this->move(this->direction, boardGame);
 }
 
-bool Ghost::isValidMoveAuto(const vector<vector<char>>& boardGame) const {
+bool Ghost::isValidMoveAuto(const vector<vector<char>>& boardGame) {
 	Point curGhostPoint = this->getCurrentPoint();
 	int curGhostPointY = curGhostPoint.getYPoint();
 	int curGhostPointX = curGhostPoint.getXPoint();

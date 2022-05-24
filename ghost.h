@@ -15,14 +15,12 @@ public:
 	Ghost(char figure, Color color, Point startPoint, bool isWithColors, GhostType type, Direction direction = Direction::None) : BoardGameTool(figure, color, startPoint, isWithColors), type(type), direction(direction) {
 		this->pushToBody(Point(startPoint.getYPoint(), startPoint.getXPoint()));
 	};
-	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame) const;
+	virtual bool isValidMoveAuto(const vector<vector<char>>& boardGame);
 	virtual bool isHitShip(const vector<vector<char>>& boardGame);
 	Direction getDirection() const;
 	void setDirection(Direction direction) ;
 	GhostType getGhostType() const;
 	virtual void moveAuto(vector<vector<char>>& boardGame);
 	virtual Ghost& operator=(const Ghost& b);
-
-	virtual void setNextPoint(Point nextP) {};
 };
 
