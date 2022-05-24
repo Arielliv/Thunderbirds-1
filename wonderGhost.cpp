@@ -65,4 +65,8 @@ Point WonderGhost::generateNextPoint(const vector<vector<char>>& boardGame, bool
 	}
 
 	return newPoint;
-};
+}
+
+void WonderGhost::setNextPoint(Point nextP) {
+	this->nextPoint = nextP;
+}

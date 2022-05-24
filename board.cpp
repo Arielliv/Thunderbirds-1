@@ -122,13 +122,31 @@ bool Board::runTheGame(const  int lives) {
 	char key = 0;
 	int stepCounter = 0;
 	Point wonderGhostCurrentPoint;
+	char smallShipDirection = ' ', bigShipDirection = ' ';
 
-	if (isFileMode) {
+	if (this->isFileMode) {
 		this->stepsFile.openFile(this->screenNumber, isSaveMode);
 		this->resultFile.openFile(this->screenNumber, isSaveMode);
 	}
 
 	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
+		if (this->isFileMode && !this->isSaveMode) {
+			this->stepsFile.readStepsFile(stepCounter, wonderGhostCurrentPoint, smallShipDirection, bigShipDirection);
+			if (smallShipDirection != ' ') {
+				this->smallShip.setDirection((Direction)smallShipDirection);
+				this->isSmallShipMove = true;
+			}
+			if (bigShipDirection != ' ') {
+				this->bigShip.setDirection((Direction)bigShipDirection);
+				this->isSmallShipMove = false;
+			}
+			for (int i = 0; i < this->ghosts.size(); i++) {
+				string ghostType = typeid(this->ghosts[i]).name();
+				if (ghostType.compare(typeid(WonderGhost).name())) {
+					this->ghosts[i]->setNextPoint(wonderGhostCurrentPoint);
+				}
+			}
+		}
 		stepCounter++;
 		vector<int> dropBlockIndexes;
 		if (_kbhit()) {

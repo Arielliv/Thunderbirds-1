@@ -21,13 +21,12 @@ bool GameFile::openFile(std::string screenNumber, bool isWriteMode) {
 	fileName = ss.str();
 
 	if (fileName.size() > 0) {
-		this->file.open(fileName, std::ios::out | std::ios::in | std::ios::trunc);
-		//if (isWriteMode) {
-		//	this->file.open(fileName, std::ios::out);
-		//}
-		//else {
-		//	this->file.open(fileName, std::ios::in);
-		//}
+		if (isWriteMode) {
+			this->file.open(fileName, std::ios::out | std::ios::trunc);
+		}
+		else {
+			this->file.open(fileName, std::ios::in);
+		}
 		
 		if (this->file.is_open()) {
 			isFileOpen = true;
@@ -39,12 +38,12 @@ bool GameFile::openFile(std::string screenNumber, bool isWriteMode) {
 
 void GameFile::writeToStepsFile(int step, Point wonderGhostPoint, Direction smallShipDirection, Direction bigShipDirection) {
 	std::stringstream ss;
-	ss << "step: " << step << " wonderGhostPoint: x: " << wonderGhostPoint.getXPoint() << " y: " << wonderGhostPoint.getYPoint();
+	ss << "s " << step << " w " << wonderGhostPoint.getXPoint() << " " << wonderGhostPoint.getYPoint();
 	if (smallShipDirection != Direction::None) {
-		ss << " smallShipDirection: " << (char)smallShipDirection;
+		ss << " s " << (int)smallShipDirection;
 	}
 	if (bigShipDirection != Direction::None) {
-		ss << " bigShipDirection: " << (char)bigShipDirection;
+		ss << " b " << (int)bigShipDirection;
 	}
 	ss << std::endl;
 	this->file << ss.str();
@@ -52,38 +51,80 @@ void GameFile::writeToStepsFile(int step, Point wonderGhostPoint, Direction smal
 
 void GameFile::writeToResultFile(int step, bool isLostLives, bool isFinshedScreen) {
 	std::stringstream ss;
-	ss << "step: " << step;
+	ss << "s " << step;
 	if (isLostLives){
-		ss << " isLostLives: " << isLostLives;
+		ss << " l " << isLostLives;
 	}
 	if (isFinshedScreen) {
-		ss << " isFinshedScreen: " << isFinshedScreen;
+		ss << " f " << isFinshedScreen;
 	}
 	ss << std::endl;
 	this->file << ss.str();
 }
 
-void GameFile::readStepsFile(int& step, Point& wonderGhostPoint, char smallShipDirection, char bigShipDirection) {
+void GameFile::readStepsFile(int& step, Point& wonderGhostPoint, char& smallShipDirection, char& bigShipDirection) {
 	int wonderGhostPointX, wonderGhostPointY;
-	string buf;
+	std::string line;
 	std::stringstream ss;
+	int j = 0;
 
-	ss << this->file.rdbuf();
-	if (ss >> buf >> step >> buf >> buf >> wonderGhostPointX >> buf >> wonderGhostPointY >> buf >> smallShipDirection >> buf >> bigShipDirection) {
-		wonderGhostPoint = Point(wonderGhostPointX, wonderGhostPointY);
-	}
-	else {
-		throw("end of file..");
+	std::getline(this->file, line);
+
+	for (int i = 0; i < line.length(); i++) {
+		if (line[i] == 's') {
+			j = 1;
+			while (line[i+j] != ' ' && (i + j) < line.length()) {
+				ss << line[i + j];
+				j++;
+			}
+			ss >> step;
+		}
+		else if (line[i] == 'w') {
+			j = 1;
+			while (line[i + j] != ' ' && (i + j) < line.length()) {
+				ss << line[i + j];
+				j++;
+			}
+			ss >> wonderGhostPointX;
+			j = 1;
+			while (line[i + j] != ' ' && (i + j) < line.length()) {
+				ss << line[i + j];
+				j++;
+			}
+			ss >> wonderGhostPointY;
+			wonderGhostPoint = Point(wonderGhostPointX, wonderGhostPointY);
+		}
+		else if (line[i] == 'b') {
+			bigShipDirection = line[i + 2];
+		}
+		else if (line[i] == 'm') {
+			smallShipDirection = line[i + 2];
+		}
 	}
 }
 
 void GameFile::readResultFile(int& step, bool& isLostLives, bool& isFinshedScreen) {
-	string buf;
+	std::string line;
 	std::stringstream ss;
+	int j = 0;
 
-	ss << this->file.rdbuf();
-	if (!(ss >> buf >> step >> buf >> isLostLives >> buf >> isFinshedScreen)) {
-		throw("end of file..");
+	std::getline(this->file, line);
+
+	for (int i = 0; i < line.length(); i++) {
+		if (line[i] == 's') {
+			j = 1;
+			while (line[i + j] != ' ' && (i + j) < line.length()) {
+				ss << line[i + j];
+				j++;
+			}
+			ss >> step;
+		}
+		else if (line[i] == 'l') {
+			isLostLives = line[i + 2];
+		}
+		else if (line[i] == 'f') {
+			isFinshedScreen = line[i + 2];
+		}
 	}
 }
 

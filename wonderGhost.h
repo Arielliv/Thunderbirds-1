@@ -18,6 +18,7 @@ public:
 	bool isHitShip(const vector<vector<char>>& boardGame) override;
 	void moveAuto(vector<vector<char>>& boardGame) override;
 	Point getNextPoint() const;
+	void setNextPoint(Point nextP) override;
 	WonderGhost& operator=(const WonderGhost& b);
 };
 
