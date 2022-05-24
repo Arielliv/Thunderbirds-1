@@ -32,6 +32,7 @@ class Board{
 	bool isFileMode;
 	GameFile stepsFile;
 	GameFile resultFile;
+	std::string screenNumber;
 private:
 	void smallShipMove();
 	void bigShipMove();

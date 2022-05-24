@@ -21,12 +21,13 @@ bool GameFile::openFile(std::string screenNumber, bool isWriteMode) {
 	fileName = ss.str();
 
 	if (fileName.size() > 0) {
-		if (isWriteMode) {
-			this->file.open(fileName, std::ios::out);
-		}
-		else {
-			this->file.open(fileName, std::ios::in);
-		}
+		this->file.open(fileName, std::ios::out | std::ios::in | std::ios::trunc);
+		//if (isWriteMode) {
+		//	this->file.open(fileName, std::ios::out);
+		//}
+		//else {
+		//	this->file.open(fileName, std::ios::in);
+		//}
 		
 		if (this->file.is_open()) {
 			isFileOpen = true;
@@ -38,12 +39,12 @@ bool GameFile::openFile(std::string screenNumber, bool isWriteMode) {
 
 void GameFile::writeToStepsFile(int step, Point wonderGhostPoint, Direction smallShipDirection, Direction bigShipDirection) {
 	std::stringstream ss;
-	ss << "step: " << step << "wonderGhostPoint: x: " << wonderGhostPoint.getXPoint() << "y: " << wonderGhostPoint.getYPoint();
+	ss << "step: " << step << " wonderGhostPoint: x: " << wonderGhostPoint.getXPoint() << " y: " << wonderGhostPoint.getYPoint();
 	if (smallShipDirection != Direction::None) {
-		ss << "smallShipDirection: " << (char)smallShipDirection;
+		ss << " smallShipDirection: " << (char)smallShipDirection;
 	}
 	if (bigShipDirection != Direction::None) {
-		ss << "bigShipDirection: " << (char)bigShipDirection;
+		ss << " bigShipDirection: " << (char)bigShipDirection;
 	}
 	ss << std::endl;
 	this->file << ss.str();
@@ -53,10 +54,10 @@ void GameFile::writeToResultFile(int step, bool isLostLives, bool isFinshedScree
 	std::stringstream ss;
 	ss << "step: " << step;
 	if (isLostLives){
-		ss << "isLostLives: " << isLostLives;
+		ss << " isLostLives: " << isLostLives;
 	}
 	if (isFinshedScreen) {
-		ss << "isFinshedScreen: " << isFinshedScreen;
+		ss << " isFinshedScreen: " << isFinshedScreen;
 	}
 	ss << std::endl;
 	this->file << ss.str();

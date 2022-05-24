@@ -8,19 +8,13 @@ Board::~Board() {
 	this->resultFile.closeFile();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber, bool isFileMode, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts),isFileMode(isFileMode), isSaveMode(isSaveMode){
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber, bool isFileMode, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), screenNumber(screenNumber), isFileMode(isFileMode), isSaveMode(isSaveMode), stepsFile(true), resultFile(false){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
 	bool isSmallShipExists = false;
 	int cur;
 	int ghostCounter = 0;
-	this->stepsFile = GameFile(true);
-	this->resultFile = GameFile(false);
-	if (isFileMode) {
-		this->stepsFile.openFile(screenNumber, isSaveMode);
-		this->resultFile.openFile(screenNumber, isSaveMode);
-	}
 
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		vector <char> row;
@@ -42,12 +36,10 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 				isSmallShipExists = true;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
-				//Ghost g = Ghost('%', Color::YELLOW, Point(y, x), isWithColors, GhostType::Horizontal, Direction::Right);
 				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
-				//Ghost g = Ghost('!', Color::YELLOW, Point(y, x), isWithColors, GhostType::Vertical, Direction::Up);
 				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(x, y), isWithColors, GhostType::Vertical, Direction::Up)));
 				ghostCounter++;
 			}
@@ -58,7 +50,6 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 				}
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::WonderGhost) {
-				//Ghost g = WonderGhost('*', Color::YELLOW, Point(y, x), isWithColors);
 				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(x, y), isWithColors, this->boardGame)));
 				ghostCounter++;
 			}
@@ -131,6 +122,11 @@ bool Board::runTheGame(const  int lives) {
 	char key = 0;
 	int stepCounter = 0;
 	Point wonderGhostCurrentPoint;
+
+	if (isFileMode) {
+		this->stepsFile.openFile(this->screenNumber, isSaveMode);
+		this->resultFile.openFile(this->screenNumber, isSaveMode);
+	}
 
 	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
 		stepCounter++;
