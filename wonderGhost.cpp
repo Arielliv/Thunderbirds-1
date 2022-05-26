@@ -9,6 +9,16 @@ void WonderGhost::generateNextDirection(const vector<vector<char>>& boardGame) {
 }
 
 bool WonderGhost::isValidMoveAuto(const vector<vector<char>>& boardGame) {
+	this->prevDirection = this->getDirection();
 	this->generateNextDirection(boardGame);
 	return Ghost::isValidMoveAuto(boardGame);
+}
+
+bool WonderGhost::shouldSaveToFile() const{
+	if (this->getDirection() != this->prevDirection) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }

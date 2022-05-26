@@ -22,5 +22,6 @@ public:
 	GhostType getGhostType() const;
 	virtual void moveAuto(vector<vector<char>>& boardGame);
 	virtual Ghost& operator=(const Ghost& b);
+	virtual bool shouldSaveToFile() const;
 };
 

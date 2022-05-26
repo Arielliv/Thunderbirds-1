@@ -9,9 +9,11 @@
 
 class WonderGhost : public Ghost {
 private:
+	Direction prevDirection = Direction::None;
 	void generateNextDirection(const vector<vector<char>>& boardGame);
 public:
 	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, const vector<vector<char>>& boardGame);
 	bool isValidMoveAuto(const vector<vector<char>>& boardGame) override;
+	bool shouldSaveToFile() const override;
 };
 
