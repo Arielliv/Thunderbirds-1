@@ -74,7 +74,7 @@ void GameFile::readStepsFile(int& step, char& wonderGhostDirection, char& smallS
 
 	for (int i = 0; i < line.length(); i++) {
 		if (line[i] == 's') {
-			j = 1;
+			j = 2;
 			while (line[i+j] != ' ' && (i + j) < line.length()) {
 				ss << line[i + j];
 				j++;
