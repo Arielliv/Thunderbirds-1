@@ -80,7 +80,7 @@ void GameFile::readStepsFile(int& step, Direction& wonderGhostDirection, Directi
 				j++;
 			}
 			ss >> step;
-			i = +j;
+			i += j;
 		}
 		else if (line[i] == 'w') {
 			i += 2;

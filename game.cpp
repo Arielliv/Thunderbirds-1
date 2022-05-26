@@ -17,6 +17,9 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
 			return;
 		}
 	}
+	else {
+		userChoice = MenuChoice::WithColor;
+	}
 
 	while (this->lives > 0 && winningCounter < 3 && !isEsc) {
 		if ((userChoice == MenuChoice::OpenFileByNameWithColor || userChoice == MenuChoice::OpenFileByNameWithoutColor) && !isByFileName) {

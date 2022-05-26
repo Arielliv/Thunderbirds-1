@@ -108,3 +108,7 @@ void Ghost::setDirection(const Direction direction) {
 bool Ghost::shouldSaveToFile() const {
 	return false;
 }
+
+GhostType Ghost::getType() const {
+	return this->type;
+}
