@@ -117,12 +117,15 @@ void GameFile::readResultFile(int& step, bool& isLostLives, bool& isFinshedScree
 				j++;
 			}
 			ss >> step;
+			i += j;
 		}
 		else if (line[i] == 'l') {
-			isLostLives = line[i + 2];
+			i += 2;
+			isLostLives = line[i];
 		}
 		else if (line[i] == 'f') {
-			isFinshedScreen = line[i + 2];
+			i += 2;
+			isFinshedScreen = line[i];
 		}
 	}
 }

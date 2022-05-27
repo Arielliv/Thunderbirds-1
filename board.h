@@ -29,6 +29,7 @@ class Board{
 	int numOfGhosts;
 	Legened legened;
 	bool isSaveMode;
+	bool isSilnet;
 	bool isFileMode;
 	GameFile stepsFile;
 	GameFile resultFile;
@@ -49,15 +50,16 @@ private:
 	bool runTheGame(const int lives);
 	const vector<int> getFallingBlockIndexes() const;
 	void dropBlocks(const vector<int> blockIndexes);
-	void updateVictory();
+	void updateVictory(int stepCounter);
 
-	void moveGhosts();
+	void moveGhosts(int stepCounter);
 
 	bool isInFileSaveMode() const;
 	bool isInFilLoadMode() const;
+	bool isInFilLoadSilentMode() const;
 public:
 	Board() {};
-	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber,bool isFileMode = false,bool isSaveMode = false);
+	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber,bool isFileMode = false,bool isSaveMode = false, bool isSilnet = false);
 	bool play(bool& isEsc, const int lives);
 	~Board();
 };

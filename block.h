@@ -15,6 +15,6 @@ private:
 	bool isPointInsideBody(Point p);
 public:
 	Block() {};
-	Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks,char figure, Color color, Point startPoint, bool isWithColors);
+	Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks,char figure, Color color, Point startPoint, bool isWithColors,bool isSilent);
 	bool shouldBlockFall(const vector<vector<char>>& boardGame)const;
 };

@@ -20,5 +20,6 @@ public:
 	friend void clearLine(const int lineNumber);
 	void printEscOptions() const;
 	Legened& operator=(const Legened& b);
+	void printTextResults(bool isCorrect) const;
 };
 

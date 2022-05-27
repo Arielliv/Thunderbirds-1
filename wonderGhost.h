@@ -13,7 +13,7 @@ private:
 	Direction prevDirection = Direction::None;
 	void generateNextDirection(const vector<vector<char>>& boardGame);
 public:
-	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, const vector<vector<char>>& boardGame, bool isInLoadMode);
+	WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, bool isSilent, const vector<vector<char>>& boardGame, bool isInLoadMode);
 	bool isValidMoveAuto(const vector<vector<char>>& boardGame);
 	bool shouldSaveToFile() const override;
 };

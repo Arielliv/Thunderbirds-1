@@ -29,12 +29,12 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet, bool isWithCol
 
 	while (this->lives > 0 && winningCounter < 3 && !isEsc) {
 		if ((userChoice == MenuChoice::OpenFileByNameWithColor || userChoice == MenuChoice::OpenFileByNameWithoutColor) && !isByFileName) {
-			didReadFile = this->handleFileGame(userChoice == MenuChoice::OpenFileByNameWithColor, -1, isLoadMode, isSaveMode);
+			didReadFile = this->handleFileGame(userChoice == MenuChoice::OpenFileByNameWithColor, -1, isLoadMode, isSaveMode, isSilnet);
 			isByFileName = true;
 			winningCounter = 2;
 		}
-		else if(userChoice == MenuChoice::WithColor){
-			didReadFile = this->handleFileGame(userChoice == MenuChoice::WithColor, winningCounter, isLoadMode, isSaveMode);
+		else if(userChoice == MenuChoice::WithColor || userChoice == MenuChoice::WithoutColor){
+			didReadFile = this->handleFileGame(userChoice == MenuChoice::WithColor, winningCounter, isLoadMode, isSaveMode, isSilnet);
 		}
 
 		if (didReadFile) {
@@ -67,7 +67,7 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet, bool isWithCol
 	}
 }
 
-bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, bool isSaveMode) {
+bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, bool isSaveMode, bool isSilnet) {
 	int time;
 	BoardFile fileGame;
 	int legendLocation;
@@ -90,7 +90,7 @@ bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, boo
 	if (this->fileGame.openFile(fileName, fileNumber)) {
 		this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
 		this->fileGame.closeFile();
-		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts, screenNumber, isSaveMode || isLoadMode, isSaveMode);
+		this->presetBoard = Board(isWithColor, time, (BoardCellType)controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts, screenNumber, isSaveMode || isLoadMode, isSaveMode, isSilnet);
 		return true;
 	}
 	else {

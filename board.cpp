@@ -8,7 +8,7 @@ Board::~Board() {
 	this->resultFile.closeFile();
 }
 
-Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber, bool isFileMode, bool isSaveMode):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), screenNumber(screenNumber), isFileMode(isFileMode), isSaveMode(isSaveMode), stepsFile(true), resultFile(false){
+Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber, bool isFileMode, bool isSaveMode, bool isSilnet):legened(Legened(legendLocation, isWithColors)), isWithColors(isWithColors), isSmallShipMove(controlledShip == BoardCellType::SmallShip), time(time), numOfBlocks(numOfBlocks), numOfGhosts(numOfGhosts), screenNumber(screenNumber), isFileMode(isFileMode), isSaveMode(isSaveMode), stepsFile(true), resultFile(false), isSilnet(isSilnet){
 	vector<bool> blocksExists(numOfBlocks);
 	int counterNumOfBlocks;
 	bool isBigShipExists = false;
@@ -28,29 +28,29 @@ Board::Board(bool isWithColors,int time,BoardCellType controlledShip,string _boa
 	for (int x = 0; x < (int)Bounderies::rows; x++) {
 		for (int y = 0; y < (int)Bounderies::cols; y++) {
 			if (this->boardGame[x][y] == (char)BoardCellType::BigShip && !isBigShipExists) {
-				this->bigShip = Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(x, y), isWithColors);
+				this->bigShip = Ship(ShipSize::Big, '@', Color::LIGHTCYAN, Point(x, y), isWithColors, isSilnet);
 				isBigShipExists = true;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::SmallShip && !isSmallShipExists) {
-				this->smallShip = Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(x, y), isWithColors);
+				this->smallShip = Ship(ShipSize::Small, '&', Color::LIGHTMAGENTA, Point(x, y), isWithColors, isSilnet);
 				isSmallShipExists = true;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::HorizontalGhost) {
-				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, Direction::Right)));
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('%', Color::YELLOW, Point(x, y), isWithColors, GhostType::Horizontal, isSilnet, Direction::Right)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::VerticalGhost) {
-				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(x, y), isWithColors, GhostType::Vertical, Direction::Up)));
+				this->ghosts.push_back(make_shared<Ghost>(Ghost('!', Color::YELLOW, Point(x, y), isWithColors, GhostType::Vertical, isSilnet , Direction::Up)));
 				ghostCounter++;
 			}
 			if (this->boardGame[x][y] >= '1' && this->boardGame[x][y] <= parseIntToChar(numOfBlocks)) {
 				if (!blocksExists[parseCharToInt(this->boardGame[x][y])-1] ) {
-					this->blocks.push_back(Block(this->boardGame, x,  y, numOfBlocks, '*'+x+y, Color::LIGHTGREEN, Point(x,y), isWithColors));
+					this->blocks.push_back(Block(this->boardGame, x,  y, numOfBlocks, '*'+x+y, Color::LIGHTGREEN, Point(x,y), isWithColors, isSilnet));
 					blocksExists[parseCharToInt(this->boardGame[x][y])-1] = true;
 				}
 			}
 			if (this->boardGame[x][y] == (char)BoardCellType::WonderGhost) {
-				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(x, y), isWithColors, this->boardGame, this->isInFilLoadMode())));
+				this->ghosts.push_back(make_shared<WonderGhost>(WonderGhost('*', Color::YELLOW, Point(x, y), isWithColors, isSilnet, this->boardGame, this->isInFilLoadMode())));
 				ghostCounter++;
 			}
 		}
@@ -90,30 +90,32 @@ bool Board::play(bool& isEsc, const int lives) {
 
 void Board::printBoard() const {
 	clear_screen();
-	for (int x = 0; x < Bounderies::rows; x++) {
-		for (int y = 0; y < Bounderies::cols; y++) {
-			char currentCellType = getValueByIndex(Point(x, y), this->boardGame);
-			Point currentPoint = Point(y, x);
-			if (currentCellType == (char)BoardCellType::Wall) {
-				currentPoint.draw('#');
-			}
-			else{
-				currentPoint.draw(' ');
+	if (!this->isInFilLoadSilentMode()) {
+		for (int x = 0; x < Bounderies::rows; x++) {
+			for (int y = 0; y < Bounderies::cols; y++) {
+				char currentCellType = getValueByIndex(Point(x, y), this->boardGame);
+				Point currentPoint = Point(y, x);
+				if (currentCellType == (char)BoardCellType::Wall) {
+					currentPoint.draw('#');
+				}
+				else {
+					currentPoint.draw(' ');
+				}
 			}
 		}
 	}
 }
 
 void Board::initBoard() {
-	this->printBoard();
-	this->bigShip.draw(this->boardGame);
-	this->smallShip.draw(this->boardGame);
-	for (int i = 0; i < this->ghosts.size(); i++) {
-		this->ghosts[i]->draw(this->boardGame);
-	}
-	for (int i = 0; i < this->blocks.size(); i++) {
-		this->blocks[i].draw(this->boardGame);
-	}
+		this->printBoard();
+		this->bigShip.draw(this->boardGame);
+		this->smallShip.draw(this->boardGame);
+		for (int i = 0; i < this->ghosts.size(); i++) {
+			this->ghosts[i]->draw(this->boardGame);
+		}
+		for (int i = 0; i < this->blocks.size(); i++) {
+			this->blocks[i].draw(this->boardGame);
+		}
 }
 
 bool Board::runTheGame(const  int lives) {
@@ -184,7 +186,7 @@ bool Board::runTheGame(const  int lives) {
 		}
 		if ( (!this->isFileMode && _kbhit()) || (this->isInFileSaveMode() && _kbhit()) || (this->isFileMode && currentStepsFileStepCounter == stepCounter && (isNeedSmallToChange || isNeedBigToChange))) {
 			if (isNeedWonderToChange) {
-				this->moveGhosts();
+				this->moveGhosts(stepCounter);
 				isNeedWonderToChange = false;
 			}
 			if (stepCounter == 11) {
@@ -287,7 +289,7 @@ bool Board::runTheGame(const  int lives) {
 			
 			bool wasSmallShipErased = false;
 			bool wasBigShipErased = false;
-			this->moveGhosts();
+			this->moveGhosts(stepCounter);
 			isNeedWonderToChange = false;
 			if (this->isSmallShipMove && !isSwitched) {
 				wasSmallShipErased = this->smallShipMove();
@@ -307,23 +309,19 @@ bool Board::runTheGame(const  int lives) {
 				Direction smallShipD = Direction::None;
 				Direction bigShipD = Direction::None;
 				if (this->isSmallShipMove && wasSmallShipErased) {
-					
-						bigShipD = Direction::Right;
-					
+					bigShipD = Direction::Right;
 				}
 
 				if (!this->isSmallShipMove && wasBigShipErased) {
-					
-						smallShipD = Direction::Right;
-					
+					smallShipD = Direction::Right;
 				}
 
 				this->stepsFile.writeToStepsFile(stepCounter, (Direction)wonderGhostCurrentDirection,smallShipD, bigShipD);
 				smallShipDirection = Direction::None, bigShipDirection = Direction::None, wonderGhostCurrentDirection = Direction::None;
 			}
 		}
-		this->updateVictory();
-
+		this->updateVictory(stepCounter);
+		
 		if (this->isInFilLoadMode()) {
 			if (currentStepsFileStepCounter == stepCounter) {
 				this->stepsFile.readStepsFile(currentStepsFileStepCounter, wonderGhostDirection, smallShipDirection, bigShipDirection, isNeedSmallToChange, isNeedBigToChange, isNeedWonderToChange);
@@ -357,10 +355,14 @@ bool Board::runTheGame(const  int lives) {
 			this->time--;
 			stepCounter++;
 		}
+		if (!this->isInFilLoadSilentMode()) {
+			this->legened.printStatus(lives, time, this->isSmallShipMove);
+		}
 
-		this->legened.printStatus(lives, time, this->isSmallShipMove);
-
-		Sleep(200);
+		if (!this->isInFilLoadSilentMode()) {
+			Sleep(200);
+		}
+		
 	}
 
 	if (key == ESC) {
@@ -376,12 +378,20 @@ bool Board::runTheGame(const  int lives) {
 }
 
 
-void Board::moveGhosts() {
+void Board::moveGhosts(int stepCounter) {
 	for (int i = 0; i < this->ghosts.size(); i++) {
 		if (this->ghosts[i]->isValidMoveAuto(this->boardGame)) {
 			this->ghosts[i]->moveAuto(this->boardGame);
 			if (this->ghosts[i]->isHitShip(this->boardGame)) {
 				this->isLoss = true;
+				if (this->isInFilLoadSilentMode()) {
+					bool isLostLives = false;
+					bool isFinshedScreen = false;
+					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
+					if (isLostLives) {
+						this->legened.printTextResults(true);
+					}
+				}
 			}
 		}
 		else {
@@ -398,6 +408,14 @@ void Board::moveGhosts() {
 			this->ghosts[i]->moveAuto(this->boardGame);
 			if (this->ghosts[i]->isHitShip(this->boardGame)) {
 				this->isLoss = true;
+				if (this->isInFilLoadSilentMode()) {
+					bool isLostLives = false;
+					bool isFinshedScreen = false;
+					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
+					if (isLostLives) {
+						this->legened.printTextResults(true);
+					}
+				}
 			}
 		}
 	}
@@ -514,7 +532,7 @@ void Board::updateExitsStatus(const ShipSize shipSize) {
 	}
 }
 
-void Board::updateVictory() {
+void Board::updateVictory(int stepCounter) {
 	bool isVictory = true;
 	for (bool status : this->exitsStatus) {
 		if (!status) {
@@ -522,6 +540,16 @@ void Board::updateVictory() {
 		}
 	}
 	this->isVictory = isVictory;
+	if (isVictory) {
+		if (this->isInFilLoadSilentMode()) {
+			bool isLostLives = false;
+			bool isFinshedScreen = false;
+			this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
+			if (isFinshedScreen) {
+				this->legened.printTextResults(true);
+			}
+		}
+	}
 }
 
 bool Board::isInFileSaveMode() const {
@@ -532,4 +560,7 @@ bool Board::isInFilLoadMode() const {
 	return this->isFileMode && !this->isSaveMode;
 };
 
+bool Board::isInFilLoadSilentMode() const {
+	return this->isInFilLoadMode() && this->isSilnet;
+}
 

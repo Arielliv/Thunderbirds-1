@@ -7,7 +7,7 @@ Ship& Ship::operator=(const Ship& s) {
 	return *this;
 }
 
-Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors) : BoardGameTool(figure, color, startPoint, isWithColors), shipSize(shipSize){
+Ship::Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors, bool isSilent) : BoardGameTool(figure, color, startPoint, isWithColors, isSilent), shipSize(shipSize){
 	if (shipSize == ShipSize::Small) {
 		for (int i = 0; i < 2; i++) {
 			this->pushToBody(Point(this->getStartPoint().getYPoint() +i, this->getStartPoint().getXPoint()));

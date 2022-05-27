@@ -1,6 +1,6 @@
 #include "block.h"
 
-Block::Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors) :BoardGameTool( figure, color, startPoint, isWithColors){
+Block::Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors, bool isSilent) :BoardGameTool( figure, color, startPoint, isWithColors, isSilent){
 	this->createBlockRec(boardGame, x, y, numOfBlocks);
 }
 

@@ -5,42 +5,48 @@ BoardGameTool& BoardGameTool::operator=(const BoardGameTool& b) {
 	this->figure = b.figure;
 	this->color = b.color;
 	this->isWithColors = b.isWithColors;
+	this->isSilnet = b.isSilnet;
 	//this->body.assign(b.body.begin(), b.body.end());
 	this->body = b.body;
 	return *this;
 }
 
-BoardGameTool::BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors) : figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors) {
+BoardGameTool::BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors, bool isSilnet) : figure(figure), color(color), startPoint(startPoint), isWithColors(isWithColors), isSilnet(isSilnet){
 }
 
 void BoardGameTool::move(const Direction direction, vector<vector<char>>& boardGame) {
 	updateValueByPoints(this->body, this->body.size(), (char)BoardCellType::Empty, boardGame);
 	for (int i = 0; i < this->body.size(); i++) {
-
-		this->body[i].draw(' ');
+		if (!this->isSilnet) {
+			this->body[i].draw(' ');
+		}
 		this->body[i].move(direction);
 	}
-	for (int i = 0; i < this->body.size(); i++) {
-		if (this->isWithColors) {
-			setTextColor(color);
+	if (!this->isSilnet) {
+		for (int i = 0; i < this->body.size(); i++) {
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
+			this->body[i].draw(figure);
 		}
-		this->body[i].draw(figure);
 	}
 	updateValueByPoints(this->body, this->body.size(), this->figure, boardGame);
 }
 
 
 void BoardGameTool::draw(vector<vector<char>>& boardGame) const {
-	for (int i = 0; i < this->body.size(); i++) {
-		if (this->isWithColors) {
-			setTextColor(color);
-		}
-		this->body[i].draw(figure);
-		if (this->isWithColors) {
-			setTextColor(Color::WHITE);
+	if (!this->isSilnet) {
+		for (int i = 0; i < this->body.size(); i++) {
+			if (this->isWithColors) {
+				setTextColor(color);
+			}
+			this->body[i].draw(figure);
+			if (this->isWithColors) {
+				setTextColor(Color::WHITE);
+			}
 		}
 	}
-
+	
 	updateValueByPoints(this->body, this->body.size(), this->figure, boardGame);
 }
 

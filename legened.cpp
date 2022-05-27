@@ -52,3 +52,8 @@ void Legened::printEscOptions() const {
 	std::string const escOptions = "--- To exit press 9, to unpause press ESC ---";
 	std::cout << escOptions << std::endl;
 }
+
+void Legened::printTextResults(bool isCorrect) const {
+	std::string const text = "--- test result :";
+	std::cout << text << (isCorrect ? " true " : " false ")<< " ---" << std::endl;
+}

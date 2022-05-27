@@ -15,10 +15,11 @@ class BoardGameTool
 	Color color;
 	vector<Point> body;
 	bool isWithColors = false;
+	bool isSilnet = false;
 public:
 	BoardGameTool() {};
 	~BoardGameTool();
-	BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors);
+	BoardGameTool(char figure, Color color, Point startPoint, bool isWithColors, bool isSilnet);
 	virtual BoardGameTool& operator=(const BoardGameTool& b);
 	virtual const Point& getCurrentPoint() const;
 	virtual const vector<Point>& getCurrentBodyPoints() const;

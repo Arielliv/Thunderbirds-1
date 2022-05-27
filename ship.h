@@ -20,7 +20,7 @@ private:
 	bool isSmallShipValidMoveBlock(int& blockIndexToMove, const vector<vector<char>>& boardGame, vector<Block>& blocks) const;
 public:
 	Ship() {};
-	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors);
+	Ship(ShipSize shipSize, char figure, Color color, Point startPoint, bool isWithColors, bool isSilent);
 	void setDirection(const Direction _direction);
 	Direction getDirection() const;
 	void erase(vector<vector<char>>& boardGame) const;
