@@ -34,12 +34,12 @@ class Board{
 	GameFile resultFile;
 	std::string screenNumber;
 private:
-	void smallShipMove();
-	void bigShipMove();
+	bool smallShipMove(int stepCounter);
+	bool bigShipMove(int stepCounter);
 
 	bool shouldShipBeExploed() const;
 
-	void updateExitsStatus(const ShipSize shipSize);
+	void updateExitsStatus(const ShipSize shipSize, int stepCounter);
 
 	void initBoard();
 
@@ -52,6 +52,9 @@ private:
 	void updateVictory();
 
 	void moveGhosts();
+
+	bool isInFileSaveMode() const;
+	bool isInFilLoadMode() const;
 public:
 	Board() {};
 	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber,bool isFileMode = false,bool isSaveMode = false);

@@ -1,6 +1,6 @@
 ﻿#include "game.h"
 
-void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
+void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet, bool isWithColors) {
 	bool isEsc = false;
 	bool isWon = false;
 	bool isByFileName = false;
@@ -18,7 +18,13 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet) {
 		}
 	}
 	else {
-		userChoice = MenuChoice::WithColor;
+		if (isWithColors) {
+			userChoice = MenuChoice::WithColor;
+		}
+		else {
+			userChoice = MenuChoice::WithoutColor;
+		}
+		
 	}
 
 	while (this->lives > 0 && winningCounter < 3 && !isEsc) {

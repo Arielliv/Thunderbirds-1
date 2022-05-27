@@ -13,7 +13,6 @@ enum class MaxSizeOfBlockToMove{ Small = 2, Big = 6 };
 class Ship : public BoardGameTool {
 	ShipSize shipSize;
 	Direction direction = Direction::Right;
-	bool isEmpty = true;
 private:
 	bool isSmallShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;
 	bool isBigShipNextMoveEQCellType(const BoardCellType cellType, const vector<vector<char>>& boardGame) const;

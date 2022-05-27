@@ -1,23 +1,9 @@
-s 3 w 0 b 3
-s 6 w 0 b 1
-s 12 w 2 b 3
-s 15 w 1 b 1
-s 16 w 1 b 3
-s 48 w 3 s 1
-s 52 w 0 s 3
-s 62 w 1 s 0
-s 63 w 1 s 3
-s 93 w 1 s 1
-s 96 s 3
-s 104 w 1 s 1
-s 106 s 3
-s 123 w 3 s 1
-s 126 w 2 s 3
-s 132 w 2 s 1
-s 134 w 0 s 3
-s 135 w 0 s 1
-s 141 w 1 b 1
-s 144 w 0 b 3
-s 147 w 0 b 1
-s 150 w 1 b 3
-s 151 b 1
+s 0 w 1 b 3
+s 3 w 1 b 1
+s 10 w 1 b 3
+s 50 w 0 b 1
+s 70 w 0 m 1
+s 73 w 0 m 3
+s 101 w 2 m 1
+s 104 w 2 m 3
+s 138 w 0 m 1

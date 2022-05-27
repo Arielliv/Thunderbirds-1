@@ -43,7 +43,7 @@ void GameFile::writeToStepsFile(int step, Direction wonderGhostDirection, Direct
 		ss << " w " << (int)wonderGhostDirection;
 	}
 	if (smallShipDirection != Direction::None) {
-		ss << " s " << (int)smallShipDirection;
+		ss << " m " << (int)smallShipDirection;
 	}
 	if (bigShipDirection != Direction::None) {
 		ss << " b " << (int)bigShipDirection;

@@ -5,6 +5,7 @@ BoardGameTool& BoardGameTool::operator=(const BoardGameTool& b) {
 	this->figure = b.figure;
 	this->color = b.color;
 	this->isWithColors = b.isWithColors;
+	//this->body.assign(b.body.begin(), b.body.end());
 	this->body = b.body;
 	return *this;
 }

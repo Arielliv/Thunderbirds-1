@@ -134,38 +134,34 @@ bool Board::runTheGame(const  int lives) {
 		this->resultFile.openFile(this->screenNumber, isSaveMode);
 	}
 
-	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
-		vector<int> dropBlockIndexes;
-		if (this->isFileMode && !this->isSaveMode) {
-			if (currentStepsFileStepCounter == stepCounter) {
-				this->stepsFile.readStepsFile(currentStepsFileStepCounter, wonderGhostDirection, smallShipDirection, bigShipDirection);
+	if (this->isInFilLoadMode()) {
+		this->stepsFile.readStepsFile(currentStepsFileStepCounter, wonderGhostDirection, smallShipDirection, bigShipDirection);
 
-				if (smallShipDirection != Direction::None) {
-					if (!this->isSmallShipMove) {
-						isSwitched = true;
-					}
-					this->smallShip.setDirection((Direction)smallShipDirection);
-					this->isSmallShipMove = true;
-				}
-				if (bigShipDirection != Direction::None) {
-					if (this->isSmallShipMove) {
-						isSwitched = true;
-					}
-					this->bigShip.setDirection((Direction)bigShipDirection);
-					this->isSmallShipMove = false;
-				}
-				if (wonderGhostDirection != Direction::None) {
-					for (int i = 0; i < this->ghosts.size(); i++) {
-						GhostType ghostType = this->ghosts[i]->getGhostType();
-						if (ghostType == GhostType::Wondering) {
-							this->ghosts[i]->setDirection((Direction)wonderGhostDirection);
-						}
-					}
+		if (smallShipDirection != Direction::None) {
+			if (!this->isSmallShipMove) {
+				isSwitched = true;
+			}
+			this->isSmallShipMove = true;
+		}
+		if (bigShipDirection != Direction::None) {
+			if (this->isSmallShipMove) {
+				isSwitched = true;
+			}
+			this->isSmallShipMove = false;
+		}
+		if (wonderGhostDirection != Direction::None) {
+			for (int i = 0; i < this->ghosts.size(); i++) {
+				GhostType ghostType = this->ghosts[i]->getGhostType();
+				if (ghostType == GhostType::Wondering) {
+					this->ghosts[i]->setDirection((Direction)wonderGhostDirection);
 				}
 			}
 		}
+	}
+
+	while (key != ESC && !this->isVictory && this->time > 0 && !this->isLoss) {
 		isSavedToFile = false;
-		stepCounter++;
+		vector<int> dropBlockIndexes;
 
 		for (int i = 0; i < this->ghosts.size(); i++) {
 			GhostType ghostType = this->ghosts[i]->getGhostType();
@@ -176,16 +172,32 @@ bool Board::runTheGame(const  int lives) {
 			}
 		}
 
-		if ((this->isFileMode && !this->isSaveMode)) {
+		if (this->isInFilLoadMode()) {
 			isHittedOnce = true;
 		}
 
-		if ((this->isFileMode && this->isSaveMode && _kbhit()) || (this->isFileMode && currentStepsFileStepCounter == stepCounter)) {
+		if ( (!this->isFileMode && _kbhit()) || (this->isInFileSaveMode() && _kbhit()) || (this->isFileMode && currentStepsFileStepCounter == stepCounter)) {
+			
+			if (this->isInFilLoadMode()) {
+				if (smallShipDirection != Direction::None) {
+					if (!this->isSmallShipMove) {
+						isSwitched = true;
+					}
+					this->isSmallShipMove = true;
+				}
+				if (bigShipDirection != Direction::None) {
+					if (this->isSmallShipMove) {
+						isSwitched = true;
+					}
+					this->isSmallShipMove = false;
+				}
+			}
+
 			if (key != ESC) {
 				isHittedOnce = true;
 			}
 
-			if (this->isFileMode && this->isSaveMode || !this->isFileMode) {
+			if (this->isInFileSaveMode() || !this->isFileMode) {
 				key = _getch();
 			}
 
@@ -206,23 +218,25 @@ bool Board::runTheGame(const  int lives) {
 			else {
 				if (key != ESC) {
 					
-					if (!this->isFileMode || (this->isFileMode && this->isSaveMode)) {
+					if (!this->isFileMode || this->isInFileSaveMode()) {
 						nextDirection = getDirectionByKey(key);
 					}
 					
-					if (this->isFileMode && this->isSaveMode) {
-						isSavedToFile = true;
-						this->stepsFile.writeToStepsFile(stepCounter, (Direction)wonderGhostCurrentDirection, this->isSmallShipMove ? nextDirection : Direction::None, !this->isSmallShipMove ? nextDirection : Direction::None);
-						smallShipDirection = Direction::None, bigShipDirection = Direction::None, wonderGhostCurrentDirection = Direction::None;
-					}
+					
+					bool wasSmallShipErased = false;
+					bool wasBigShipErased = false;
+
 					if (this->isSmallShipMove) {
 						if (isSwitched) {
 							isSwitched = false;
 						}
-						if (!this->isFileMode || (this->isFileMode && this->isSaveMode)) {
+						if (!this->isFileMode || this->isInFileSaveMode()) {
 							this->smallShip.setDirection(nextDirection);
 						}
-						this->smallShipMove();
+						else if (this->isInFilLoadMode()) {
+							this->smallShip.setDirection(smallShipDirection);
+						}
+						wasSmallShipErased = this->smallShipMove(stepCounter);
 						dropBlockIndexes = getFallingBlockIndexes();
 						dropBlocks(dropBlockIndexes);
 					}
@@ -230,39 +244,88 @@ bool Board::runTheGame(const  int lives) {
 						if (isSwitched) {
 							isSwitched = false;
 						}
-						if (!this->isFileMode || (this->isFileMode && this->isSaveMode)) {
+						if (!this->isFileMode || this->isInFileSaveMode()) {
 							this->bigShip.setDirection(nextDirection);
 						}
-						this->bigShipMove();
+						else if (this->isInFilLoadMode()) {
+							this->bigShip.setDirection(bigShipDirection);
+						}
+						wasBigShipErased = this->bigShipMove(stepCounter);
 						dropBlockIndexes = getFallingBlockIndexes();
 						dropBlocks(dropBlockIndexes);
+					}
+
+					if (this->isInFileSaveMode()) {
+						Direction smallShipD = Direction::None;
+						Direction bigShipD = Direction::None;
+						if (this->isSmallShipMove) {
+							smallShipD = nextDirection;
+							if (wasSmallShipErased) {
+								bigShipD = Direction::Right;
+							}
+						}
+
+						if (!this->isSmallShipMove) {
+							bigShipD = nextDirection;
+							if (wasSmallShipErased) {
+								smallShipD = Direction::Right;
+							}
+						}
+						
+						this->stepsFile.writeToStepsFile(stepCounter, (Direction)wonderGhostCurrentDirection, smallShipD, bigShipD);
+						isSavedToFile = true;
+						smallShipDirection = Direction::None, bigShipDirection = Direction::None, wonderGhostCurrentDirection = Direction::None;
 					}
 				}
 			}
 		}
 		else if (isHittedOnce && !this->isLoss) {
-			if (this->isFileMode && this->isSaveMode && isSavedToFile && wonderGhostCurrentDirection != Direction::None) {
-				isSavedToFile = true;
-				this->stepsFile.writeToStepsFile(stepCounter, (Direction)wonderGhostCurrentDirection, Direction::None, Direction::None);
-				smallShipDirection = Direction::None, bigShipDirection = Direction::None, wonderGhostCurrentDirection = Direction::None;
-			}
+			bool wasSmallShipErased = false;
+			bool wasBigShipErased = false;
 			this->moveGhosts();
 			if (this->isSmallShipMove && !isSwitched) {
-					this->smallShipMove();
+				wasSmallShipErased = this->smallShipMove(stepCounter);
 					dropBlockIndexes = getFallingBlockIndexes();
 					dropBlocks(dropBlockIndexes);
 			}
 			else if (!isSwitched) {
-				this->bigShipMove();
+				wasBigShipErased = this->bigShipMove(stepCounter);
 				dropBlockIndexes = getFallingBlockIndexes();
 				dropBlocks(dropBlockIndexes);
 
 			}
+
+			if (this->isInFilLoadMode() && isSavedToFile && wonderGhostCurrentDirection != Direction::None) {
+				isSavedToFile = true;
+				this->stepsFile.writeToStepsFile(stepCounter, (Direction)wonderGhostCurrentDirection, wasBigShipErased? Direction::Right: Direction::None, wasSmallShipErased ? Direction::Right : Direction::None);
+				smallShipDirection = Direction::None, bigShipDirection = Direction::None, wonderGhostCurrentDirection = Direction::None;
+			}
 		}
 		this->updateVictory();
+
+		if (this->isInFilLoadMode()) {
+			if (currentStepsFileStepCounter == stepCounter) {
+				smallShipDirection = Direction::None;
+				bigShipDirection = Direction::None;
+				wonderGhostDirection = Direction::None;
+				this->stepsFile.readStepsFile(currentStepsFileStepCounter, wonderGhostDirection, smallShipDirection, bigShipDirection);
+
+				if (wonderGhostDirection != Direction::None) {
+					for (int i = 0; i < this->ghosts.size(); i++) {
+						GhostType ghostType = this->ghosts[i]->getGhostType();
+						if (ghostType == GhostType::Wondering) {
+							this->ghosts[i]->setDirection((Direction)wonderGhostDirection);
+						}
+					}
+				}
+			}
+		}
+
 		if (isHittedOnce) {
 			this->time--;
+			stepCounter++;
 		}
+
 		this->legened.printStatus(lives, time, this->isSmallShipMove);
 
 		Sleep(200);
@@ -272,7 +335,7 @@ bool Board::runTheGame(const  int lives) {
 		return true;
 	}
 	else {
-		if(this->isFileMode && this->isSaveMode){
+		if(this->isInFileSaveMode()){
 			this->resultFile.writeToResultFile(stepCounter, this->isLoss, this->isVictory);
 		}
 		
@@ -308,7 +371,8 @@ void Board::moveGhosts() {
 	}
 };
 
-void Board::smallShipMove() {
+bool Board::smallShipMove(int stepCounter) {
+	bool wasItErased = false;
 	bool isBlockCanMove = true;
 	Direction dir = this->smallShip.getDirection();
 	int blockIndexToMove = -1;
@@ -330,12 +394,15 @@ void Board::smallShipMove() {
 	}
 
 	if (this->smallShip.isShipVictoryMove(this->boardGame)) {
-		this->updateExitsStatus(ShipSize::Small);
+		this->updateExitsStatus(ShipSize::Small,stepCounter);
 		this->smallShip.erase(this->boardGame);
+		wasItErased = true;
 	}
+	return wasItErased;
 }
 
-void Board::bigShipMove() {
+bool Board::bigShipMove(int stepCounter) {
+	bool wasItErased = false;
 	bool isBlockCanMove = true;
 	Direction dir = this->bigShip.getDirection();
 	int blockIndexToMove = -1;
@@ -360,9 +427,11 @@ void Board::bigShipMove() {
 	}
 
 	if (this->bigShip.isShipVictoryMove(this->boardGame)) {
-		this->updateExitsStatus(ShipSize::Big);
+		this->updateExitsStatus(ShipSize::Big, stepCounter);
 		this->bigShip.erase(this->boardGame);
+		wasItErased = true;
 	}
+	return wasItErased;
 }
 
 bool Board::shouldShipBeExploed() const {
@@ -401,7 +470,7 @@ void Board::dropBlocks(const vector<int> blockIndexes) {
 	}
 }
 
-void Board::updateExitsStatus(const ShipSize shipSize) {
+void Board::updateExitsStatus(const ShipSize shipSize, int stepCounter) {
 	Point curPoint;
 	if (shipSize == ShipSize::Small) {
 			this->exitsStatus[0] = true;
@@ -422,5 +491,13 @@ void Board::updateVictory() {
 	}
 	this->isVictory = isVictory;
 }
+
+bool Board::isInFileSaveMode() const {
+	return this->isFileMode && this->isSaveMode;
+};
+
+bool Board::isInFilLoadMode() const {
+	return this->isFileMode && !this->isSaveMode;
+};
 
 

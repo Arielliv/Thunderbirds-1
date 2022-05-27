@@ -17,6 +17,6 @@ class Game
 private:
 	bool handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, bool isSaveMode);
 public:
-	void start(bool isLoadMode = false, bool isSaveMode = false,bool isSilnet = false);
+	void start(bool isLoadMode = false, bool isSaveMode = false,bool isSilnet = false,bool isWithColors = false);
 };
 

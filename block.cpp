@@ -1,11 +1,6 @@
 #include "block.h"
 
-Block& Block::operator=(const Block& b) {
-	this->isEmpty = b.isEmpty;
-	return *this;
-}
-
-Block::Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors) :BoardGameTool( figure, color, startPoint, isWithColors), isEmpty(false){
+Block::Block(const vector<vector<char>>& boardGame, int x, int y, int numOfBlocks, char figure, Color color, Point startPoint, bool isWithColors) :BoardGameTool( figure, color, startPoint, isWithColors){
 	this->createBlockRec(boardGame, x, y, numOfBlocks);
 }
 
@@ -30,10 +25,6 @@ bool Block::isPointInsideBody(Point p) {
 		}
 	}
 	return false;
-}
-
-bool Block::getIsEmpty()const {
-	return this->isEmpty;
 }
 
 bool Block::shouldBlockFall(const vector<vector<char>>& boardGame) const {
