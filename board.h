@@ -34,12 +34,12 @@ class Board{
 	GameFile resultFile;
 	std::string screenNumber;
 private:
-	bool smallShipMove(int stepCounter);
-	bool bigShipMove(int stepCounter);
+	bool smallShipMove();
+	bool bigShipMove();
 
 	bool shouldShipBeExploed() const;
 
-	void updateExitsStatus(const ShipSize shipSize, int stepCounter);
+	void updateExitsStatus(const ShipSize shipSize);
 
 	void initBoard();
 

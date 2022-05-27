@@ -1,6 +1,6 @@
 #include "wonderGhost.h"
 
-WonderGhost::WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, const vector<vector<char>>& boardGame) : Ghost(figure, color, startPoint, isWithColors, GhostType::Wondering) {
+WonderGhost::WonderGhost(char figure, Color color, Point startPoint, bool isWithColors, const vector<vector<char>>& boardGame,bool isInLoadMode) : Ghost(figure, color, startPoint, isWithColors, GhostType::Wondering), isInLoadMode(isInLoadMode){
 	this->generateNextDirection(boardGame);
 };
 
@@ -10,7 +10,9 @@ void WonderGhost::generateNextDirection(const vector<vector<char>>& boardGame) {
 
 bool WonderGhost::isValidMoveAuto(const vector<vector<char>>& boardGame) {
 	this->prevDirection = this->getDirection();
-	this->generateNextDirection(boardGame);
+	if (!this->isInLoadMode) {
+		this->generateNextDirection(boardGame);
+	}
 	return Ghost::isValidMoveAuto(boardGame);
 }
 

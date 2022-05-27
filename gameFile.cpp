@@ -65,11 +65,13 @@ void GameFile::writeToResultFile(int step, bool isLostLives, bool isFinshedScree
 	this->file << ss.str();
 }
 
-void GameFile::readStepsFile(int& step, Direction& wonderGhostDirection, Direction& smallShipDirection, Direction& bigShipDirection) {
+void GameFile::readStepsFile(int& step, Direction& wonderGhostDirection, Direction& smallShipDirection, Direction& bigShipDirection, bool& isNeedSmallToChange, bool& isNeedBigToChange, bool& isNeedWonderToChange) {
 	std::string line;
 	std::stringstream ss;
 	int j = 0;
-
+	isNeedBigToChange = false;
+	isNeedSmallToChange = false;
+	isNeedWonderToChange = false;
 	std::getline(this->file, line);
 
 	for (int i = 0; i < line.length(); i++) {
@@ -85,14 +87,17 @@ void GameFile::readStepsFile(int& step, Direction& wonderGhostDirection, Directi
 		else if (line[i] == 'w') {
 			i += 2;
 			wonderGhostDirection = (Direction)(line[i] - '0');
+			isNeedWonderToChange = true;
 		}
 		else if (line[i] == 'b') {
 			i += 2;
 			bigShipDirection = (Direction)(line[i] - '0');
+			isNeedBigToChange = true;
 		}
 		else if (line[i] == 'm') {
 			i += 2;
 			smallShipDirection = (Direction)(line[i] - '0');
+			isNeedSmallToChange = true;
 		}
 	}
 }
