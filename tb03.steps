@@ -1,0 +1,160 @@
+s 0 w 1 b 3
+s 1 w 1
+s 2 w 1
+s 3 w 2 b 1
+s 4 w 2 b 3
+s 5 w 2
+s 7 w 0
+s 8 w 1
+s 9 w 0
+s 10 w 2
+s 11 w 0
+s 12 w 1
+s 13 w 2
+s 14 w 1
+s 15 w 2
+s 16 w 0
+s 17 w 2
+s 18 w 2
+s 19 w 0
+s 20 w 2
+s 21 w 0
+s 22 w 1
+s 23 w 1
+s 24 w 2 b 1
+s 25 w 2
+s 26 w 1
+s 27 w 0
+s 28 w 2
+s 29 w 0
+s 30 w 2
+s 31 w 1 b 3
+s 32 w 1
+s 33 w 0
+s 34 w 1
+s 35 w 3
+s 36 w 0
+s 37 b 1
+s 39 w 2
+s 40 w 3 b 3
+s 41 w 3
+s 42 w 1
+s 43 w 0 b 1
+s 44 w 0
+s 45 w 2
+s 46 w 3
+s 47 w 2 b 3
+s 48 w 2
+s 49 w 3
+s 50 w 0
+s 51 w 1
+s 52 w 0
+s 53 w 2
+s 54 w 3
+s 55 w 2
+s 56 w 3 b 1
+s 57 w 3
+s 58 w 1
+s 59 w 0
+s 60 w 0
+s 61 w 1
+s 62 w 0 m 1
+s 63 w 0
+s 64 w 2
+s 65 w 1 m 2
+s 66 w 1
+s 67 w 0
+s 68 w 1
+s 69 w 3
+s 70 w 1
+s 71 w 0
+s 72 w 1
+s 73 w 2
+s 74 w 3
+s 75 w 1 m 1
+s 76 w 1
+s 77 w 0
+s 78 w 1 m 2
+s 79 w 1
+s 80 w 2
+s 81 w 1
+s 82 w 1 m 1
+s 83 w 1
+s 84 w 0 m 2
+s 85 w 0 m 0
+s 86 w 0
+s 87 w 0
+s 88 w 0 m 2
+s 89 w 0
+s 91 w 1
+s 92 w 2
+s 93 w 3
+s 94 w 2
+s 95 w 1
+s 96 w 1
+s 97 w 3
+s 98 w 0
+s 99 w 1
+s 100 w 2
+s 101 w 0
+s 102 w 3
+s 103 w 2
+s 104 w 3 m 3
+s 105 w 3
+s 106 w 1
+s 107 w 0
+s 108 w 0
+s 109 w 1
+s 110 w 0
+s 111 w 1
+s 113 w 2
+s 114 w 3
+s 115 w 2
+s 116 w 0
+s 117 w 3
+s 118 w 0
+s 119 w 2
+s 120 w 1
+s 121 w 0 m 1
+s 122 w 0
+s 123 m 2
+s 125 w 1 m 1
+s 126 w 1
+s 127 m 2
+s 129 w 2
+s 130 w 0
+s 131 w 3
+s 132 w 0
+s 133 w 1
+s 134 w 0
+s 135 w 0
+s 136 w 1
+s 137 w 2
+s 138 w 3
+s 139 w 2 m 1
+s 140 w 2
+s 141 w 0
+s 142 m 2
+s 144 w 1 m 1
+s 145 w 1
+s 146 w 0
+s 147 w 1 m 2
+s 148 w 1
+s 149 m 1
+s 151 w 3
+s 152 w 0 m 3
+s 153 w 0
+s 154 w 2
+s 155 w 0
+s 156 w 3 m 1
+s 157 w 3
+s 158 w 3
+s 159 w 1 m 3
+s 160 w 1
+s 161 w 2
+s 162 w 0
+s 163 w 3 m 1
+s 164 w 3
+s 165 w 1
+s 166 w 2 m 3
+s 167 w 2 b 1

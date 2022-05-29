@@ -193,7 +193,6 @@ bool Board::runTheGame(const  int lives) {
 				int a = 2;
 			}
 			
-			
 
 			if (key != ESC) {
 				isHittedOnce = true;
@@ -274,7 +273,6 @@ bool Board::runTheGame(const  int lives) {
 							bigShipD = nextDirection;
 							if (wasBigShipErased) {
 								smallShipD = Direction::Right;
-								
 							}
 						}
 						

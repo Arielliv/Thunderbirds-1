@@ -80,12 +80,11 @@ bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, boo
 
 	if (fileNumber == -1) {
 		fileName = this->menu.getFileName();
-		screenNumber = fileName.substr(3, 5);
+		screenNumber = fileName.substr(2, 2);
 	}
 	else {
 		screenNumber.append("0").append(std::to_string(fileNumber+1));
 	}
-	
 
 	if (this->fileGame.openFile(fileName, fileNumber)) {
 		this->fileGame.readFile(time, controlledShip, boardGame, legendLocation, numOfBlocks, numOfGhosts);
