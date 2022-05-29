@@ -53,7 +53,7 @@ void Legened::printEscOptions() const {
 	std::cout << escOptions << std::endl;
 }
 
-void Legened::printTextResults(bool isCorrect) const {
-	std::string const text = "--- test result :";
-	std::cout << text << (isCorrect ? " true " : " false ")<< " ---" << std::endl;
+void Legened::printResultTest(bool isCorrect) const {
+	std::string const text = "Test result: ";
+	std::cout << text << (isCorrect ? "passed" : "failed") << std::endl;
 }

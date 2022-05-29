@@ -54,7 +54,8 @@ void Game::start(bool isLoadMode, bool isSaveMode, bool isSilnet, bool isWithCol
 			winningCounter = 0;
 		}
 	}
-	if (!isEsc) {
+
+	if (!isEsc && !isSilnet) {
 		if (isWon) {
 			this->menu.printWin();
 		}
@@ -83,7 +84,7 @@ bool Game::handleFileGame(bool isWithColor, int fileNumber, bool isLoadMode, boo
 		screenNumber = fileName.substr(2, 2);
 	}
 	else {
-		screenNumber.append("0").append(std::to_string(fileNumber+1));
+		screenNumber.append("0").append(std::to_string(fileNumber + 1));
 	}
 
 	if (this->fileGame.openFile(fileName, fileNumber)) {

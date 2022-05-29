@@ -350,22 +350,24 @@ bool Board::runTheGame(const  int lives) {
 		}
 		if (!this->isInFileLoadSilentMode()) {
 			this->legened.printStatus(lives, time, this->isSmallShipMove);
-		}
-		if (!this->isInFileLoadSilentMode()) {
 			Sleep(200);
 		}
+		//if (!this->isInFileLoadSilentMode()) {
+		//	Sleep(200);
+		//}
 	}
 
-	this->stepsFile.closeFile();
-	this->resultFile.closeFile();
-
 	if (key == ESC) {
+		this->stepsFile.closeFile();
+		this->resultFile.closeFile();
 		return true;
 	}
 	else {
 		if(this->isInFileSaveMode()){
 			this->resultFile.writeToResultFile(stepCounter, this->isLoss, this->isVictory);
 		}
+		this->stepsFile.closeFile();
+		this->resultFile.closeFile();
 		return false;
 	}
 }
@@ -381,7 +383,7 @@ void Board::moveGhosts(int stepCounter) {
 					bool isFinshedScreen = false;
 					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
 					if (isLostLives) {
-						this->legened.printTextResults(true);
+						this->legened.printResultTest(true);
 					}
 				}
 			}
@@ -405,7 +407,7 @@ void Board::moveGhosts(int stepCounter) {
 					bool isFinshedScreen = false;
 					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
 					if (isLostLives) {
-						this->legened.printTextResults(true);
+						this->legened.printResultTest(true);
 					}
 				}
 			}
@@ -538,7 +540,8 @@ void Board::updateVictory(int stepCounter) {
 			bool isFinshedScreen = false;
 			this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
 			if (isFinshedScreen) {
-				this->legened.printTextResults(true);
+				this->legened.printResultTest(true);
+				Sleep(1000);
 			}
 		}
 	}
