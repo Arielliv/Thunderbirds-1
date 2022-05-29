@@ -55,8 +55,8 @@ private:
 	void moveGhosts(int stepCounter);
 
 	bool isInFileSaveMode() const;
-	bool isInFilLoadMode() const;
-	bool isInFilLoadSilentMode() const;
+	bool isInFileLoadMode() const;
+	bool isInFileLoadSilentMode() const;
 public:
 	Board() {};
 	Board(bool isWithColors, int time, BoardCellType controlledShip, string _boardGame, int legendLocation, int numOfBlocks, int numOfGhosts, std::string screenNumber,bool isFileMode = false,bool isSaveMode = false, bool isSilnet = false);

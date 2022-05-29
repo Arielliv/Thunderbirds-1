@@ -132,4 +132,5 @@ void GameFile::readResultFile(int& step, bool& isLostLives, bool& isFinshedScree
 
 void GameFile::closeFile() {
 	this->file.close();
+	this->file.clear();
 }

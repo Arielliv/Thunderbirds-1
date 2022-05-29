@@ -58,4 +58,5 @@ void BoardFile::readFile(int& time, int& controlledShip, std::string& boardGame,
 
 void BoardFile::closeFile() {
 	this->inFile.close();
+	this->inFile.clear();
 }
