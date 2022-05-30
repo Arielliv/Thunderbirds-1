@@ -49,7 +49,7 @@ private:
 	void updateValueByCellType(const BoardCellType cellType, const bool shouldErase);
 	bool runTheGame(const int lives);
 	const vector<int> getFallingBlockIndexes() const;
-	void dropBlocks(const vector<int> blockIndexes);
+	void dropBlocks(const vector<int> blockIndexes, int stepCounter);
 	void updateVictory(int stepCounter);
 
 	void moveGhosts(int stepCounter);

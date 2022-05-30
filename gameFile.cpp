@@ -1,7 +1,6 @@
 #include "gameFile.h"
 
 GameFile& GameFile::operator=(const GameFile& b) {
-	//should copy also file ?????????????
 	this->isStepsFile = b.isStepsFile;
 	return *this;
 }

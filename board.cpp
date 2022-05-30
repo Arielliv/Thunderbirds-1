@@ -133,10 +133,9 @@ bool Board::runTheGame(const  int lives) {
 	bool isNeedBigToChange = false;
 	bool isNeedWonderToChange = false;
 
-	if (this->isFileMode) {
-		this->stepsFile.openFile(this->screenNumber, isSaveMode);
-		this->resultFile.openFile(this->screenNumber, isSaveMode);
-		//to add if of returned bool, if false should exit game
+	if (this->isFileMode && lives == 3) {
+		this->stepsFile.openFile(this->screenNumber, this->isSaveMode);
+		this->resultFile.openFile(this->screenNumber, this->isSaveMode);
 	}
 
 	if (this->isInFileLoadMode()) {
@@ -181,16 +180,11 @@ bool Board::runTheGame(const  int lives) {
 		if (this->isInFileLoadMode()) {
 			isHittedOnce = true;
 		}
-		if (stepCounter == 59) {
-			int a = 2;
-		}
-		if ( (!this->isFileMode && _kbhit()) || (this->isInFileSaveMode() && _kbhit()) || (this->isFileMode && currentStepsFileStepCounter == stepCounter && (isNeedSmallToChange || isNeedBigToChange))) {
+
+		if ((!this->isFileMode && _kbhit()) || (this->isInFileSaveMode() && _kbhit()) || (this->isFileMode && currentStepsFileStepCounter == stepCounter && (isNeedSmallToChange || isNeedBigToChange))) {
 			if (isNeedWonderToChange) {
 				this->moveGhosts(stepCounter);
 				isNeedWonderToChange = false;
-			}
-			if (stepCounter == 11) {
-				int a = 2;
 			}
 
 			if (key != ESC) {
@@ -237,7 +231,7 @@ bool Board::runTheGame(const  int lives) {
 						}
 						wasSmallShipErased = this->smallShipMove();
 						dropBlockIndexes = getFallingBlockIndexes();
-						dropBlocks(dropBlockIndexes);
+						dropBlocks(dropBlockIndexes, stepCounter);
 					}
 					else {
 						if (isSwitched) {
@@ -252,7 +246,7 @@ bool Board::runTheGame(const  int lives) {
 						}
 						wasBigShipErased = this->bigShipMove();
 						dropBlockIndexes = getFallingBlockIndexes();
-						dropBlocks(dropBlockIndexes);
+						dropBlocks(dropBlockIndexes, stepCounter);
 					}
 
 					if (this->isInFileSaveMode()) {
@@ -289,12 +283,12 @@ bool Board::runTheGame(const  int lives) {
 			if (this->isSmallShipMove && !isSwitched) {
 				wasSmallShipErased = this->smallShipMove();
 					dropBlockIndexes = getFallingBlockIndexes();
-					dropBlocks(dropBlockIndexes);
+					dropBlocks(dropBlockIndexes, stepCounter);
 			}
 			else if (!isSwitched) {
 				wasBigShipErased = this->bigShipMove();
 				dropBlockIndexes = getFallingBlockIndexes();
-				dropBlocks(dropBlockIndexes);
+				dropBlocks(dropBlockIndexes, stepCounter);
 			}
 
 			if (this->isInFileSaveMode() && wonderGhostCurrentDirection != Direction::None) {
@@ -352,22 +346,19 @@ bool Board::runTheGame(const  int lives) {
 			this->legened.printStatus(lives, time, this->isSmallShipMove);
 			Sleep(200);
 		}
-		//if (!this->isInFileLoadSilentMode()) {
-		//	Sleep(200);
-		//}
 	}
 
 	if (key == ESC) {
-		this->stepsFile.closeFile();
-		this->resultFile.closeFile();
 		return true;
 	}
 	else {
 		if(this->isInFileSaveMode()){
 			this->resultFile.writeToResultFile(stepCounter, this->isLoss, this->isVictory);
 		}
-		this->stepsFile.closeFile();
-		this->resultFile.closeFile();
+		if (lives == 1 || (exitsStatus[0] == true && exitsStatus[1] == true)) {
+			this->stepsFile.closeFile();
+			this->resultFile.closeFile();
+		}
 		return false;
 	}
 }
@@ -382,9 +373,7 @@ void Board::moveGhosts(int stepCounter) {
 					bool isLostLives = false;
 					bool isFinshedScreen = false;
 					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
-					if (isLostLives) {
-						this->legened.printResultTest(true);
-					}
+					this->legened.printResultTest(isLostLives, this->screenNumber);
 				}
 			}
 		}
@@ -406,9 +395,7 @@ void Board::moveGhosts(int stepCounter) {
 					bool isLostLives = false;
 					bool isFinshedScreen = false;
 					this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
-					if (isLostLives) {
-						this->legened.printResultTest(true);
-					}
+					this->legened.printResultTest(isLostLives, this->screenNumber);
 				}
 			}
 		}
@@ -503,13 +490,19 @@ const vector<int> Board::getFallingBlockIndexes() const {
 	return blockIndexes;
 }
 
-void Board::dropBlocks(const vector<int> blockIndexes) {
+void Board::dropBlocks(const vector<int> blockIndexes, int stepCounter) {
 	for (int i = 0; i < blockIndexes.size(); i++) {
 		if (this->blocks[blockIndexes[i]].isValidMove(Direction::Down, this->boardGame)) {
 			this->blocks[blockIndexes[i]].move(Direction::Down, this->boardGame);
 		}
 		if (this->shouldShipBeExploed()) {
 			this->isLoss = true;
+			if (this->isInFileLoadSilentMode()) {
+				bool isLostLives = false;
+				bool isFinshedScreen = false;
+				this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
+				this->legened.printResultTest(isLostLives, this->screenNumber);
+			}
 		}
 	}
 }
@@ -528,6 +521,8 @@ void Board::updateExitsStatus(const ShipSize shipSize) {
 
 void Board::updateVictory(int stepCounter) {
 	bool isVictory = true;
+	bool isLostLives = false;
+	bool isFinshedScreen = false;
 	for (bool status : this->exitsStatus) {
 		if (!status) {
 			isVictory = false;
@@ -536,13 +531,9 @@ void Board::updateVictory(int stepCounter) {
 	this->isVictory = isVictory;
 	if (isVictory) {
 		if (this->isInFileLoadSilentMode()) {
-			bool isLostLives = false;
-			bool isFinshedScreen = false;
 			this->resultFile.readResultFile(stepCounter, isLostLives, isFinshedScreen);
-			if (isFinshedScreen) {
-				this->legened.printResultTest(true);
-				Sleep(1000);
-			}
+			this->legened.printResultTest(isFinshedScreen, this->screenNumber);
+			Sleep(1000);
 		}
 	}
 }

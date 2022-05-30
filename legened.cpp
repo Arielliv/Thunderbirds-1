@@ -53,7 +53,18 @@ void Legened::printEscOptions() const {
 	std::cout << escOptions << std::endl;
 }
 
-void Legened::printResultTest(bool isCorrect) const {
-	std::string const text = "Test result: ";
-	std::cout << text << (isCorrect ? "passed" : "failed") << std::endl;
+void Legened::printResultTest(bool isCorrect, std::string screenNumber) const {
+	char key = 0;
+
+	gotoxy(20, 12);
+	std::string const text = "Test result of screen number ";
+	std::cout << text << screenNumber << " " << (isCorrect ? "PASSED" : "FAILED") << std::endl;
+	gotoxy(25, 22);
+	std::cout << "(Press any key to continue)" << std::endl;
+
+	while (key == 0) {
+		if (_kbhit()) {
+			key = _getch();
+		}
+	}
 }

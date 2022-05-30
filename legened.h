@@ -20,6 +20,6 @@ public:
 	friend void clearLine(const int lineNumber);
 	void printEscOptions() const;
 	Legened& operator=(const Legened& b);
-	void printResultTest(bool isCorrect) const;
+	void printResultTest(bool isCorrect, std::string screenNumber) const;
 };
 
