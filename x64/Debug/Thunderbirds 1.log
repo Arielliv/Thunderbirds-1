@@ -1,5 +1,2 @@
-﻿  board.cpp
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(13,6): warning C4101: 'counterNumOfBlocks': unreferenced local variable
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(483,22): warning C4101: 'curBlockPointX': unreferenced local variable
-C:\Users\adi.veiszman\source\repos\Thunderbirds-1\board.cpp(483,6): warning C4101: 'curBlockPointY': unreferenced local variable
+﻿  main.cpp
   Thunderbirds 1.vcxproj -> C:\Users\adi.veiszman\source\repos\Thunderbirds-1\x64\Debug\Thunderbirds 1.exe

@@ -1,6 +1,6 @@
 #include "game.h"
 #include "utils.h"
-//argv [load/save,silent]
+
 int main(int argc, char* argv[]) {
 	Game game;
 	string mode, option;

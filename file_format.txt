@@ -1,0 +1,36 @@
+steps files format:
+------------------
+s = step
+w = wonder ghost direction (Up = 0, Down = 1, Left = 2, Right = 3)
+m = small ship direction
+b = big ship direction
+
+
+example:
+s 45 w 1 b 3
+
+In the above example:
+step = 45
+wonder ghost direction = 1 (Down)
+big ship direction = 3 (Right)
+
+
+
+result files format:
+-------------------
+s = step
+l = is lost lives (1 = true, 0 = false)
+f = is finshed screen (1 = true, 0 = false)
+
+
+example:
+s 149 f 1
+
+In the above example:
+step=149
+is finshed screen = 1 (finised)
+
+
+Extra:
+-----
+Option to run "-load" mode with colors by: "-load -color".

@@ -7,3 +7,4 @@ Bonus features:
 - Designed with extra graphics.
 - Boards contain different blocks count, shape and size (size is between 2 and 6).
 - Lives remain the same from previous screen.
+- Option to run "-load" mode with colors by: "-load -color".
